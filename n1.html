@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N1 · Secuencias y tiempo · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html">N0 · Tu placa</a>
+    <a href="n1.html" class="on" aria-current="page">N1 · Secuencias</a>
+    <a href="n2.html">N2 · Variables</a>
+    <span class="soon" title="Próximamente">N3 · Botones</span>
+    <span class="soon" title="Próximamente">N4 · Sensores</span>
+    <span class="soon" title="Próximamente">N5–N10</span>
+    <a href="guia.html">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="n1">
+  <h2 class="lvl"><span class="badge">N1</span> Secuencias y tiempo</h2>
+  <p class="lead">Un programa es una lista de órdenes que se ejecutan una detrás de otra, muy deprisa. Si quieres que algo dure, tienes que decirle a la placa que espere. Lo vamos a ver con colores y con una animación.</p>
+  <div class="row"><span class="pill">⏱️ 2 sesiones</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span><span class="pill crit">T</span></div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🎯</span> Objetivo</h3>
+    <ul>
+      <li>Ordenar instrucciones para conseguir un comportamiento (secuencia).</li>
+      <li>Controlar el tiempo con esperas y calcular cuánto dura un ciclo.</li>
+      <li>Usar colores RGB y dibujar en la matriz con el bloque Bitmap.</li>
+      <li>«Narrar» lo que hace el programa por la consola para poder comprobarlo.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar</h3>
+    <div class="grid2">
+      <div>
+        <p><b>El orden importa… y el tiempo también.</b> La placa ejecuta millones de instrucciones por segundo. Si pones «rellenar de rojo» y justo después «rellenar de verde», el rojo dura una millonésima de segundo y tú solo ves el verde. El bloque <b>Esperar</b> congela el programa durante los milisegundos que le digas: es lo que hace que un color «dure».</p>
+        <p><b>Colores RGB.</b> Cada LED de la matriz tiene en realidad tres luces pequeñitas: roja (R), verde (G) y azul (B). Cada una se enciende con una intensidad de 0 a 255. Mezclándolas se obtienen unos 16,7 millones de colores: (255, 0, 0) es rojo puro; (255, 170, 0), ámbar; (255, 255, 255), blanco.</p>
+      </div>
+      <div>
+        <p><b>Coordenadas de la matriz.</b> Para dibujar, cada LED tiene una posición: la columna <b>x</b> (de 0 a 4, de izquierda a derecha) y la fila <b>y</b> (de 0 a 4, de arriba abajo). Internamente los 25 LED están numerados del 0 al 24, fila a fila: el número de un LED es <code>y × 5 + x</code>.</p>
+        <div class="designer" style="gap:10px">
+          <div class="dz show-idx" id="idxgrid" aria-label="Numeración de los LED"></div>
+        </div>
+        <p class="small">Numeración de los 25 LED. El de la esquina superior izquierda es el 0 (x = 0, y = 0).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 1 · El semáforo</h3>
+    <p>Vamos a convertir la matriz entera en un semáforo: rojo, verde y ámbar, cada uno el tiempo que le toca. Y para poder comprobar que el programa va por donde debe, cada vez que cambie de color lo contará por la consola.</p>
+    <div class="grid2" style="align-items:start">
+      <figure class="prog-img"><img src="img/N1a_semaforo.webp" alt="Programa del semáforo: en Bucle, enviar línea ROJO, rellenar rojo, esperar 3000; VERDE, rellenar verde, esperar 3000; ÁMBAR, rellenar ámbar, esperar 1000"><figcaption>Proyecto «N1a Semáforo de colores».</figcaption></figure>
+      <div>
+        <ol class="steps">
+          <li class="just">En Inicializar: consola a 115200, <b>Iniciar</b> la matriz y <b>Establecer brillo</b> a 60 (de 0 a 255; a tope deslumbra y gasta más).</li>
+          <li class="just">En Bucle, para cada color, tres bloques en este orden: <b>Enviar línea</b> con el nombre del color, <b>Rellenar</b> con ese color y <b>Esperar</b> el tiempo que dura.</li>
+          <li class="just">Rojo 3000 ms, verde 3000 ms y ámbar 1000 ms.</li>
+        </ol>
+        <div class="sim-row" style="margin-top:8px">
+          <div><div class="mx" id="mx-n1a"></div><div class="mx-label">Simulación</div></div>
+        </div>
+      </div>
+    </div>
+    <h3 class="sec-title" style="margin-top:14px"><span class="ico">🖥️</span> Mira la consola</h3>
+    <div class="serial" id="sim-n1a"></div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>¿Cuánto dura un ciclo completo del semáforo? ¿Cuántos ciclos hace en un minuto?</li>
+        <li>Activa la opción de mostrar la hora de cada línea (si tu consola la tiene) o cronometra: ¿coinciden los tiempos con los que programaste?</li>
+        <li>Mueve el «Enviar línea» de cada color <i>debajo</i> de su «Esperar». ¿Qué cambia en la consola? ¿Te sigue sirviendo para saber qué color se ve en cada momento?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 2 · Un corazón que late</h3>
+    <p>Una animación no es más que una secuencia de dibujos (fotogramas) que se muestran uno tras otro con una espera entre medias, igual que un dibujo animado. Con el bloque <b>Bitmap</b> pintas los 25 LED de golpe, eligiendo el color de cada uno.</p>
+    <div class="grid2" style="align-items:start">
+      <figure class="prog-img tall-img"><img src="img/N1b_corazon.webp" alt="Programa del corazón: dos bitmaps, corazón grande y pequeño, alternados con esperas de 150 y 700 ms y la palabra pum en la consola"><figcaption>Proyecto «N1b Corazón que late».</figcaption></figure>
+      <div>
+        <ol class="steps">
+          <li class="just">En Inicializar: consola, Iniciar la matriz y brillo 50.</li>
+          <li class="just">En Bucle: un <b>Bitmap</b> con el corazón grande, <b>Enviar línea</b> «pum» y <b>Esperar 150 ms</b>.</li>
+          <li class="just">Un Bitmap con el corazón pequeño y Esperar 150 ms.</li>
+          <li class="just">Repite el corazón grande con su «pum» (el latido es doble: pum-pum) y termina con el pequeño y una espera larga, de 700 ms.</li>
+        </ol>
+        <p class="small">Truco: copia y pega un Bitmap (Ctrl+C, Ctrl+V) para no tener que pintar los 25 LED cada vez.</p>
+        <div class="sim-row"><div><div class="mx" id="mx-n1b"></div><div class="mx-label">Simulación</div></div><div class="serial" id="sim-n1b" style="min-width:220px"></div></div>
+      </div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Suma las esperas de un latido completo. ¿Cuántos latidos por minuto da este corazón? ¿Es un ritmo normal para una persona en reposo?</li>
+        <li>En la consola aparecen dos «pum» por latido. ¿Cómo podrías saber, solo mirando la consola, cuánto dura cada latido?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🎨</span> Diseñador de la matriz</h3>
+    <p>Diseña aquí tus fotogramas antes de pasarlos al bloque Bitmap. Elige un color y pulsa los LED. Debajo verás qué LED has encendido, con su número y sus coordenadas, que es justo lo que necesitas para los retos.</p>
+    <div class="designer">
+      <div>
+        <div class="palette" id="pal"></div>
+        <div class="dz" id="dz"></div>
+        <div class="row" style="margin-top:8px">
+          <button class="btn ghost" id="dz-clear">Borrar</button>
+          <button class="btn ghost" id="dz-idx">Ver números</button>
+          <button class="btn ghost" id="dz-heart">Cargar corazón</button>
+        </div>
+      </div>
+      <div style="flex:1 1 260px">
+        <b>LED encendidos</b>
+        <pre class="code" id="dz-out" style="min-height:120px">Todavía no has encendido ninguno.</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🚀</span> Retos</h3>
+    <div class="retos">
+      <div class="reto b"><span class="tag">Básico</span><h4>Semáforo de peatones</h4><p>Convierte el semáforo en uno de peatones: verde fijo, verde parpadeando (encender y apagar varias veces) y rojo. La consola tiene que decir en todo momento qué está pasando.</p></div>
+      <div class="reto m"><span class="tag">Medio</span><h4>Tu propia animación</h4><p>Diseña una animación de al menos 4 fotogramas (una flecha que avanza, una cara que guiña un ojo, una ola…). Diséñala primero en el diseñador y documenta en el porfolio el número de cada LED encendido.</p></div>
+      <div class="reto p"><span class="tag">Pro</span><h4>Corazón a 60 y a 120</h4><p>Ajusta las esperas para que el corazón lata exactamente a 60 latidos por minuto, y después a 120 (como después de correr). Explica tus cálculos y comprueba el resultado contando los «pum» de la consola durante 30 segundos.</p></div>
+    </div>
+  </div>
+
+  <details class="capo">
+    <summary>🔧 Bajo el capó: colores, LED y memoria</summary>
+    <div class="in">
+      <p>El bloque <b>Rellenar</b> del semáforo se convierte en esta instrucción. Fíjate en que el color ámbar que elegiste en la paleta se ha transformado en sus tres componentes:</p>
+<pre class="code">micromatrix_steamakers.<span class="f">FillColor</span>(<span class="f">CRGB</span>(255,170,0));   <span class="c">// R=255, G=170, B=0  → ámbar</span>
+<span class="f">delay</span>(1000);</pre>
+      <p>El Bitmap genera una función que recibe <b>25 colores</b>, uno por LED, en orden de 0 a 24, y los copia a una lista (un <i>array</i>) antes de enviarlos todos de golpe a la matriz:</p>
+<pre class="code"><span class="f">fnc_micromatrix_esp32ks_bitmap</span>(<span class="f">CRGB</span>(0,0,0), <span class="f">CRGB</span>(255,0,0), <span class="f">CRGB</span>(0,0,0), <span class="f">CRGB</span>(255,0,0), <span class="f">CRGB</span>(0,0,0),   <span class="c">// fila 0: LED 0–4</span>
+                               <span class="f">CRGB</span>(255,0,0), ...                                                    <span class="c">// fila 1: LED 5–9</span>
+                               ... );                                                                 <span class="c">// hasta el LED 24</span>
+<span class="c">// dentro de la librería: copia los 25 colores y llama a FastLED.show()</span></pre>
+      <div class="bridge">
+        <div><h4>💡 ¿Cómo llegan los colores a cada LED?</h4>
+          <p>Los 25 LED de la matriz (WS2812) están conectados en cadena a un único pin del ESP32, el <b>io13</b>. La placa envía por ese cable un tren de datos: 24 bits por LED (8 para el verde, 8 para el rojo y 8 para el azul, en ese orden). Cada LED se queda con los primeros 24 bits que le llegan y pasa el resto al siguiente. Por eso el orden de los LED (del 0 al 24) es tan importante.</p></div>
+        <div><h4>🧮 La cuenta del corazón</h4>
+          <p>Un latido completo dura 150 + 150 + 150 + 700 = <b>1150 ms</b>. En un minuto (60 000 ms) caben 60 000 ÷ 1150 ≈ <b>52 latidos</b>. Para el reto pro: si quieres 60 latidos por minuto, cada latido debe durar 1000 ms. Las tres primeras esperas ya suman 450 ms, así que la última tendría que ser de 550 ms.</p>
+          <p class="small">(El tiempo que tarda la placa en enviar los colores es de unas centésimas de milisegundo: no cuenta en el cálculo).</p></div>
+      </div>
+      <p><b>Brillo.</b> El bloque <i>Establecer brillo</i> no cambia los colores que guardas: aplica un factor a todos al enviarlos. Con brillo 60, un rojo de 255 sale aproximadamente a 255 × 60 ÷ 256 ≈ 60. Menos brillo significa menos consumo; lo mediremos de verdad en el N8 con el medidor de energía de la placa.</p>
+    </div>
+  </details>
+
+  <div class="card quiz" data-quiz="n1">
+    <h3 class="sec-title"><span class="ico">🔎</span> ¿Lo has entendido?</h3>
+    <div class="qs"></div>
+    <div class="row" style="margin-top:8px"><button class="btn qcheck">Comprobar</button><button class="btn ghost qreset">Empezar de nuevo</button><span class="score"></span></div>
+    <p class="small">Cuando termines, haz una captura con tu puntuación para el porfolio.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📁</span> Al porfolio</h3>
+    <ul class="portfolio">
+      <li>Capturas de tus programas (semáforo y animación) y de la consola de cada uno.</li>
+      <li>Vídeo corto de la matriz funcionando (10–15 segundos basta).</li>
+      <li>El diseño de tus fotogramas (captura del diseñador) con los números de LED que has usado.</li>
+      <li>Los cálculos de tiempos: duración del ciclo del semáforo y latidos por minuto del corazón.</li>
+      <li>Captura de tu resultado en «¿Lo has entendido?».</li>
+    </ul>
+  </div>
+
+    <div class="done-row"><button class="check" data-done="n1">☐ He terminado el N1</button></div>
+</section>
+<div class="pager"><a href="n0.html">← N0 · Tu placa</a><a href="n2.html">N2 · Variables →</a></div>
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N2 · Variables · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html">N0 · Tu placa</a>
+    <a href="n1.html">N1 · Secuencias</a>
+    <a href="n2.html" class="on" aria-current="page">N2 · Variables</a>
+    <span class="soon" title="Próximamente">N3 · Botones</span>
+    <span class="soon" title="Próximamente">N4 · Sensores</span>
+    <span class="soon" title="Próximamente">N5–N10</span>
+    <a href="guia.html">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="n2">
+  <h2 class="lvl"><span class="badge">N2</span> Variables: la memoria de la placa</h2>
+  <p class="lead">Hasta ahora la placa hacía siempre lo mismo. Para que «recuerde» cosas (cuántas veces has pulsado, qué número ha salido, cuánto tiempo lleva encendida) necesitamos variables. Ya las conoces de Python; aquí verás que tienen tipo, que se ven en la consola y que, a veces, nos engañan.</p>
+  <div class="row"><span class="pill">⏱️ 2 sesiones</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span><span class="pill crit">T</span></div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🎯</span> Objetivo</h3>
+    <ul>
+      <li>Crear variables de tipo número, texto y verdadero/falso, y darles un valor inicial.</li>
+      <li>Modificar una variable mientras el programa funciona (sumar, guardar un número al azar…).</li>
+      <li>Mostrar el valor de una variable en la consola y en la matriz, mezclado con texto.</li>
+      <li>Detectar y corregir un error que no impide que el programa funcione, pero hace que muestre algo raro.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar: una caja con nombre… y con tipo</h3>
+    <p>Una variable es un espacio de la memoria del microcontrolador al que le ponemos un nombre para guardar un dato y usarlo después. En Python podías escribir <code>dado = 4</code> y Python adivinaba el tipo. En STEAMakersBlocks, en cambio, <b>cada tipo de variable tiene su propio bloque</b> (y su color), porque el programa se traduce a C++, un lenguaje que necesita saber desde el principio qué clase de dato va a guardar cada variable.</p>
+    <table class="t">
+      <tr><th>Tipo en STEAMakersBlocks</th><th>Para qué sirve</th><th>En Python</th><th>En C++ (lo que genera)</th></tr>
+      <tr><td>Número</td><td>Contadores, medidas, resultados de cálculos</td><td><code>int</code> / <code>float</code></td><td><code>double</code></td></tr>
+      <tr><td>Texto</td><td>Nombres, mensajes</td><td><code>str</code></td><td><code>String</code></td></tr>
+      <tr><td>Verdadero / falso</td><td>Saber si algo está pasando o no (encendido, alarma activada…)</td><td><code>bool</code></td><td><code>boolean</code></td></tr>
+    </table>
+    <div class="note info"><b>Dos costumbres que te ahorrarán problemas.</b> Da siempre un valor inicial a tus variables en <b>Inicializar</b> (así sabes con qué valor empiezan). Y para mezclar texto y números en la consola usa <b>crear texto con</b>; si el dato es un número sin decimales, pásalo por el bloque <b>Número entero</b>. En el Programa 2 descubrirás por qué.</div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 1 · El dado electrónico</h3>
+    <p>Cada vez que pulses el botón A, la placa elegirá un número al azar del 1 al 6, lo guardará en la variable <code>dado</code>, lo mostrará en la matriz y lo contará por la consola. Usamos el botón solo como «disparador»: en el N3 aprenderás a sacarle todo el partido.</p>
+    <figure class="prog-img"><img src="img/N2a_dado.webp" alt="Programa del dado: en Inicializar, consola, matriz y dado igual a 0; en Bucle, si el pulsador A se ha pulsado, dado igual a entero aleatorio de 1 a 6, enviar línea Ha salido más el número y mostrar el número en la matriz"><figcaption>Proyecto «N2a Dado electrónico».</figcaption></figure>
+    <ol class="steps">
+      <li class="just">Crea la variable: menú <b>Variables → Crear variable…</b> y llámala <code>dado</code>. Es de tipo número.</li>
+      <li class="just">En Inicializar: consola a 115200, Iniciar la matriz, <b>Establecer dado = 0</b> y un mensaje que diga qué hay que hacer.</li>
+      <li class="just">En Bucle, un bloque <b>si</b> (menú Lógica) con la condición <b>Pulsador A se ha pulsado</b> (menú micro:STEAMakers → Sensores).</li>
+      <li class="just">Dentro del si: <b>Establecer dado = entero aleatorio de 1 a 6</b> (menú Matemáticas), un <b>Enviar línea</b> con <b>crear texto con</b> «Ha salido: » + <b>Número entero</b> (dado), y el bloque <b>Texto</b> de la matriz con el mismo número.</li>
+    </ol>
+    <div class="sim-row">
+      <div><div class="mx" id="mx-n2a"></div><div class="mx-label">Simulación de la matriz</div><div class="row" style="justify-content:center;margin-top:6px"><button class="btn" id="btn-n2a">Pulsar A</button></div></div>
+      <div class="serial" id="sim-n2a"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Lanza el dado 30 veces y apunta cuántas veces sale cada número. ¿Salen todos más o menos lo mismo? ¿Esperabas que salieran exactamente 5 de cada?</li>
+        <li>Fíjate en la matriz: el 1 aparece pegado a la izquierda y es más estrecho que el resto. ¿Por qué crees que pasa? (Pista: cada número es un dibujo de puntos y no todos miden lo mismo).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🐞</span> Programa 2 · El contador que miente</h3>
+    <p>Este programa cuenta de 0 a 9 una y otra vez, un número por segundo. Funciona… pero algo no cuadra. Tu misión es de detective: <b>móntalo tal cual, súbelo y observa con atención la consola y la matriz</b>. Hay un error escondido.</p>
+    <figure class="prog-img"><img src="img/N2b_contador_miente.webp" alt="Programa contador: enviar línea contador igual más Formatear número contador con 0 decimales, texto en la matriz con Formatear número, sumar 1 a contador, contador igual a resto de contador entre 10, esperar 1000"><figcaption>Proyecto «N2b El contador que miente». El bloque «resto de … ÷ 10» hace que después del 9 vuelva al 0.</figcaption></figure>
+    <div class="sim-row">
+      <div><div class="mx" id="mx-n2b"></div><div class="mx-label">Lo que verás en la matriz</div></div>
+      <div class="serial" id="sim-n2b"></div>
+    </div>
+    <div class="note"><b>Investiga</b>
+      <ul>
+        <li>¿En qué columna aparece el 1? ¿Y el resto de números se ven enteros?</li>
+        <li>Mira la consola con lupa: cuenta los espacios que hay entre el «=» y el número. ¿Cuántos esperabas?</li>
+        <li>Encuentra el bloque culpable, cámbialo por otro que ya conoces y comprueba que el problema desaparece.</li>
+      </ul>
+    </div>
+    <details class="capo"><summary>💡 Pista 1</summary><div class="in"><p>El programa no tiene un error de lógica: el contador cuenta bien. El problema está en <i>cómo se convierte el número en texto</i> antes de enviarlo a la consola y a la matriz.</p></div></details>
+    <details class="capo"><summary>💡 Pista 2</summary><div class="in"><p>En la consola sale un espacio de más delante del número. En la matriz, un espacio no se ve, pero <b>ocupa sitio</b>: empuja el número hacia la derecha.</p></div></details>
+    <details class="capo"><summary>💡 Pista 3</summary><div class="in"><p>Mira la sección «Antes de empezar» de este nivel y la Guía rápida: ¿qué bloque se recomienda para mostrar un número sin decimales?</p></div></details>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 3 · La ficha de la placa: los tres tipos juntos</h3>
+    <p>Un programa con una variable de cada tipo: el nombre de la placa (texto), los segundos que lleva encendida (número) y si está encendida (verdadero/falso).</p>
+    <figure class="prog-img"><img src="img/N2c_ficha_tipos.webp" alt="Programa con variables nombre de tipo texto, segundos de tipo número y encendida de tipo verdadero falso, que se muestran en la consola cada segundo"><figcaption>Proyecto «N2c Ficha de la placa». Fíjate en los colores: cada tipo de variable tiene el suyo.</figcaption></figure>
+    <div class="serial" id="sim-n2c"></div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>La variable <code>encendida</code> vale «verdadero», pero en la consola sale un <b>1</b>. ¿Qué crees que saldría si valiera «falso»?</li>
+        <li>Quita el bloque «Número entero» de la línea de los segundos y conecta la variable directamente. ¿Qué cambia en la consola? ¿Por qué crees que pasa?</li>
+        <li>Pulsa RESET: ¿con qué valor vuelven a empezar los segundos? ¿Dónde se decide ese valor?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🚀</span> Retos</h3>
+    <div class="retos">
+      <div class="reto b"><span class="tag">Básico</span><h4>Color al azar</h4><p>Cada vez que pulses A, la matriz entera se rellena con un color aleatorio y la consola muestra sus valores, por ejemplo «R = 120 G = 33 B = 250». Necesitarás tres variables y el bloque <b>Rellenar R G B</b>.</p></div>
+      <div class="reto m"><span class="tag">Medio</span><h4>Contador de tiradas</h4><p>Mejora el dado para que lleve la cuenta de las tiradas y la consola diga «Tirada 7: ha salido 3». ¿Dónde tiene que estar el bloque que suma 1 a las tiradas?</p></div>
+      <div class="reto p"><span class="tag">Pro</span><h4>¿Es justo el dado?</h4><p>Cuenta cuántos seises van saliendo y muestra en la consola el porcentaje de seises. Con el botón A lanzas una vez; con el B, cien veces de golpe. ¿A qué número se acerca el porcentaje cuantas más tiradas haces? ¿Por qué?</p></div>
+    </div>
+  </div>
+
+  <details class="capo">
+    <summary>🔧 Bajo el capó: tipos, azar y el espacio invisible</summary>
+    <div class="in">
+      <p>Las variables se declaran al principio del programa en C++. STEAMakersBlocks añade un prefijo a las de texto (<code>s_</code>) y a las de verdadero/falso (<code>b_</code>) para no confundirlas:</p>
+<pre class="code"><span class="k">double</span>  segundos;      <span class="c">// Número   → número con decimales (64 bits)</span>
+String  s_nombre;      <span class="c">// Texto</span>
+<span class="k">boolean</span> b_encendida;   <span class="c">// Verdadero/falso</span></pre>
+      <p>Por eso un número de STEAMakersBlocks siempre «tiene decimales»: es un <code>double</code>. Si lo envías tal cual, <code>String(segundos)</code> lo escribe con dos decimales («5.00»). Y un <code>boolean</code> convertido a texto se escribe como <b>1</b> (verdadero) o <b>0</b> (falso).</p>
+      <div class="bridge">
+        <div><h4>🎲 El dado por dentro</h4>
+<pre class="code"><span class="k">double</span> <span class="f">math_random_int</span>(<span class="k">int</span> a, <span class="k">int</span> b) {
+  <span class="k">if</span> (a > b) { <span class="k">int</span> c = a; a = b; b = c; }
+  <span class="k">return</span> (<span class="k">double</span>)<span class="f">random</span>(a, b+1);
+}</pre>
+          <p>La función <code>random(mín, máx)</code> de Arduino <b>no incluye el máximo</b>; por eso STEAMakersBlocks le suma 1, para que el 6 también pueda salir. En el ESP32, <code>random()</code> usa el generador de números aleatorios que lleva el propio chip, que aprovecha el ruido eléctrico de su circuitería.</p></div>
+        <div><h4>🐍 Lo mismo en Python</h4>
+<pre class="code"><span class="k">import</span> random
+dado = random.<span class="f">randint</span>(1, 6)   <span class="c"># incluye el 6</span>
+<span class="f">print</span>(<span class="s">"Ha salido:"</span>, dado)</pre>
+          <p>Fíjate: <code>randint</code> de Python sí incluye los dos extremos; <code>random</code> de Arduino no. Detalles así son los que provocan errores «de uno de más o de uno de menos».</p></div>
+      </div>
+      <p><b>El espacio invisible.</b> El bloque «Formatear número con 0 decimales» se traduce como <code>String(contador, 0)</code>. Esa función reserva siempre un hueco mínimo de <i>decimales + 2</i> caracteres y lo rellena con espacios por la izquierda: con 0 decimales, el 1 se convierte en «␣1». En la consola apenas se nota, pero en la matriz el espacio ocupa 3 columnas y empuja el número fuera. El bloque «Número entero» genera <code>String((long)contador)</code>, que convierte primero el número en entero y no añade relleno.</p>
+    </div>
+  </details>
+
+  <div class="card quiz" data-quiz="n2">
+    <h3 class="sec-title"><span class="ico">🔎</span> ¿Lo has entendido?</h3>
+    <div class="qs"></div>
+    <div class="row" style="margin-top:8px"><button class="btn qcheck">Comprobar</button><button class="btn ghost qreset">Empezar de nuevo</button><span class="score"></span></div>
+    <p class="small">Cuando termines, haz una captura con tu puntuación para el porfolio.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📁</span> Al porfolio</h3>
+    <ul class="portfolio">
+      <li>Capturas de tus tres programas y de la consola de cada uno.</li>
+      <li>Tu tabla con los resultados de lanzar el dado 30 veces.</li>
+      <li>El «informe del detective» del Programa 2: qué observaste, qué bloque era el culpable, cómo lo arreglaste y una foto de la matriz antes y después.</li>
+      <li>El reto que hayas hecho, con su captura de consola.</li>
+      <li>Captura de tu resultado en «¿Lo has entendido?».</li>
+    </ul>
+  </div>
+  <div class="done-row"><button class="check" data-done="n2">☐ He terminado el N2</button></div>
+</section>
+<div class="pager"><a href="n1.html">← N1 · Secuencias</a></div>
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

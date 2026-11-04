@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guía rápida · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html">N0 · Tu placa</a>
+    <a href="n1.html">N1 · Secuencias</a>
+    <a href="n2.html">N2 · Variables</a>
+    <span class="soon" title="Próximamente">N3 · Botones</span>
+    <span class="soon" title="Próximamente">N4 · Sensores</span>
+    <span class="soon" title="Próximamente">N5–N10</span>
+    <a href="guia.html" class="on" aria-current="page">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="guia">
+  <h2 class="lvl"><span class="badge">📘</span> Guía rápida</h2>
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📍</span> Lo que lleva la placa y dónde está conectado</h3>
+    <p>En STEAMakersBlocks casi nunca tendrás que escribir estos números, porque los bloques de <i>micro:STEAMakers</i> ya los llevan dentro. Pero te servirán para entender el código C++ y, más adelante, para no usar por error un pin que ya está ocupado.</p>
+    <table class="t">
+      <tr><th>Elemento</th><th>Tipo</th><th>Pin (ESP32)</th></tr>
+      <tr><td>Matriz 5×5 de LED RGB (WS2812)</td><td>Actuador</td><td>io13</td></tr>
+      <tr><td>Botón A</td><td>Sensor digital</td><td>io0</td></tr>
+      <tr><td>Botón B</td><td>Sensor digital</td><td>io17</td></tr>
+      <tr><td>Logo táctil</td><td>Sensor digital</td><td>io27</td></tr>
+      <tr><td>Sensor de luz (fototransistor)</td><td>Sensor analógico</td><td>io39</td></tr>
+      <tr><td>Micrófono</td><td>Sensor analógico</td><td>io35</td></tr>
+      <tr><td>Zumbador</td><td>Actuador</td><td>io33</td></tr>
+      <tr><td>Temperatura y humedad (AHT20)</td><td>Sensor I2C</td><td>SDA io21 · SCL io22</td></tr>
+      <tr><td>Acelerómetro y giroscopio (MPU6050)</td><td>Sensor I2C</td><td>SDA io21 · SCL io22</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🖥️</span> La consola serie, en cinco reglas</h3>
+    <ol class="steps">
+      <li class="just">La velocidad de la consola tiene que ser la misma que la del bloque <b>Iniciar Baudios</b>. En este manual, siempre <b>115200</b>.</li>
+      <li class="just">«Enviar línea» termina con un salto de línea; «Enviar» sin salto escribe a continuación, en la misma línea. Útil para montar frases con datos.</li>
+      <li class="just">Para mezclar texto y números usa <b>crear texto con</b>, y para mostrar un número sin decimales, el bloque <b>Número entero</b>.</li>
+      <li class="just">No llenes la consola: si envías datos en cada vuelta del bucle sin esperar, salen miles de líneas por segundo y no se puede leer nada.</li>
+      <li class="just">Para ver datos que cambian (luz, sonido, temperatura…), mejor que la consola es el <b>Serial Plotter</b>, que los dibuja en una gráfica y deja descargarlos en CSV. Lo usaremos a partir del N4.</li>
+    </ol>
+  </div>
+</section>
+
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

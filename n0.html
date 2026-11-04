@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N0 · Conoce tu placa y tu entorno · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html" class="on" aria-current="page">N0 · Tu placa</a>
+    <a href="n1.html">N1 · Secuencias</a>
+    <a href="n2.html">N2 · Variables</a>
+    <span class="soon" title="Próximamente">N3 · Botones</span>
+    <span class="soon" title="Próximamente">N4 · Sensores</span>
+    <span class="soon" title="Próximamente">N5–N10</span>
+    <a href="guia.html">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="n0">
+  <h2 class="lvl"><span class="badge">N0</span> Conoce tu placa y tu entorno</h2>
+  <p class="lead">Antes de programar nada, vamos a saber qué tenemos entre manos, a preparar el entorno y a conseguir que la placa nos hable por primera vez.</p>
+  <div class="row"><span class="pill">⏱️ 1–2 sesiones</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span><span class="pill crit">T</span></div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🎯</span> Objetivo</h3>
+    <ul>
+      <li>Saber qué es un microcontrolador y en qué se diferencia de un ordenador.</li>
+      <li>Reconocer los sensores y actuadores que lleva la micro:STEAMakers.</li>
+      <li>Crear un proyecto en STEAMakersBlocks, subirlo a la placa y abrir la consola serie.</li>
+      <li>Entender para qué sirven las dos zonas de todo programa: <b>Inicializar</b> y <b>Bucle</b>.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar: ¿qué es un microcontrolador?</h3>
+    <p>Un microcontrolador es un ordenador diminuto metido en un solo chip. Tiene su procesador, su memoria y sus «patas» (los pines) para comunicarse con el mundo. No tiene pantalla ni teclado: se dedica a una sola tarea, la que tú le programes, y la repite sin descanso mientras tenga alimentación. Hay microcontroladores en el microondas, en la lavadora, en el mando de la tele y en cualquier juguete que se mueva o se ilumine.</p>
+    <p>Todos los sistemas que vamos a construir siguen el mismo esquema: <b>entrada → proceso → salida</b>. Los sensores (luz, sonido, temperatura, botones…) son las entradas; el programa que corre en el ESP32 es el proceso; y los actuadores (la matriz de LED, el zumbador, un motor…) son las salidas.</p>
+    <div class="note info"><b>La gran diferencia con Python.</b> Tus programas de Python se ejecutaban en el ordenador. Ahora el ordenador solo sirve para <i>escribir</i> el programa y <i>enviarlo</i> a la placa. Una vez subido, el programa queda guardado en la memoria de la placa y se ejecuta ella sola, aunque la desconectes del ordenador y la alimentes con una batería.</div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🔍</span> La micro:STEAMakers por dentro</h3>
+    <p>Dale la vuelta a la placa con los botones y pulsa sobre cada número (o sobre la lista) para saber qué es, para qué sirve, qué pin usa y en qué nivel del manual lo vas a trabajar. Fíjate en que por detrás los botones A y B aparecen cambiados de lado: es la misma placa vista desde el otro lado.</p>
+    <div class="row ig-tabs" id="igtabs">
+      <button class="btn" data-v="frente">Cara frontal</button>
+      <button class="btn ghost" data-v="detras">Cara trasera</button>
+      <button class="btn ghost" data-v="shield">Con la placa de expansión</button>
+      <label class="small ig-lbl"><input type="checkbox" id="iglabels" checked> Mostrar etiquetas</label>
+    </div>
+    <div class="ig-wrap">
+      <div class="ig-stage" id="igstage"></div>
+      <div class="ig-side">
+        <ol class="ig-list" id="iglist"></ol>
+        <div class="infobox" id="iginfo"><b>Elige un elemento</b><br><span class="small">Aquí aparecerá su descripción, el pin que usa y en qué nivel lo trabajarás.</span></div>
+      </div>
+    </div>
+    <p class="small" style="margin-top:10px">El cerebro es un ESP32 de doble núcleo a 240 MHz, con 520 KB de RAM, 4 MB de memoria flash para tu programa, WiFi y Bluetooth. Imágenes de la placa: manual «ESP32 micro:STEAMakers» de Innova Didactic, utilizadas con su permiso.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🛠️</span> Prepara tu entorno (solo la primera vez)</h3>
+    <ol class="steps">
+      <li class="just">Entra en <b>steamakersblocks.com</b> e inicia sesión. Puedes usar <i>Iniciar sesión con Google</i> o <i>con Microsoft</i> con tu cuenta del centro. (Antes esta web se llamaba ArduinoBlocks; si encuentras tutoriales con ese nombre, es lo mismo).</li>
+      <li class="just">Comprueba que en tu ordenador está el <b>Connector</b>, el programa que hace de puente entre la web y la placa. Sin él, la web no puede enviar nada por el USB. Si no está, se descarga desde la propia web (menú de ayuda, «Connector»).</li>
+      <li class="just">Pulsa <b>Nuevo proyecto → Iniciar un proyecto personal</b>. En <b>Tipo de proyecto</b> elige <b>ESP32 micro:STEAMakers</b> (¡no otro: cada tipo trae bloques distintos!) y ponle un nombre que se entienda, por ejemplo <i>N0 Consola – Tu nombre</i>.</li>
+      <li class="just">Conecta la placa al ordenador con un cable USB. Ojo: hay cables que solo cargan y no transmiten datos; si la placa no aparece, prueba con otro.</li>
+      <li class="just">Cuando tengas el programa hecho, pulsa <b>Subir</b>. La web lo traduce a C++, lo compila y lo envía a la placa. Tarda unos segundos; espera a que termine antes de tocar nada.</li>
+      <li class="just">Abre la <b>Consola</b>, elige la velocidad <b>115200</b> y pulsa <b>Conectar</b>. A partir de aquí verás todo lo que tu programa envíe con los bloques «Enviar línea».</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 1 · Una vez… y siempre</h3>
+    <p>Todo programa de STEAMakersBlocks tiene dos zonas. Lo que pongas en <b>Inicializar</b> se ejecuta <b>una sola vez</b>, nada más arrancar la placa: ahí se preparan las cosas (abrir la consola, encender la matriz, dar valores iniciales). Lo que pongas en <b>Bucle</b> se repite <b>una y otra vez, para siempre</b>. Este primer programa sirve para verlo con tus propios ojos.</p>
+    <figure class="prog-img"><img src="img/N0a_consola.webp" alt="Programa en bloques: en Inicializar, iniciar la consola a 115200 baudios y enviar una línea; en Bucle, enviar una línea y esperar 1000 ms"><figcaption>Programa real en STEAMakersBlocks (proyecto «N0a Consola: una vez y siempre»).</figcaption></figure>
+    <ol class="steps">
+      <li class="just">Del menú <b>Comunicaciones → Puerto serie</b>, arrastra a Inicializar el bloque <b>Iniciar Baudios</b> y elige <b>115200</b>.</li>
+      <li class="just">Debajo, pon un <b>Enviar línea</b> con un texto (lo encontrarás en el menú <b>Texto</b>): «Hola. Esto está en INICIALIZAR…».</li>
+      <li class="just">En Bucle, pon otro <b>Enviar línea</b> con «Esto está en BUCLE…» y, debajo, <b>Esperar 1000 milisegundos</b> (menú <b>Tiempo</b>).</li>
+      <li class="just">Sube el programa y abre la consola a 115200.</li>
+    </ol>
+
+    <h3 class="sec-title" style="margin-top:18px"><span class="ico">🖥️</span> Mira la consola</h3>
+    <p>Así debería verse. Pulsa <b>▶ Simular</b> para verlo en marcha (la simulación va al mismo ritmo que la placa).</p>
+    <div class="serial" id="sim-n0a"></div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>¿Cuántas veces aparece la línea de Inicializar? ¿Y la del Bucle, al cabo de 10 segundos?</li>
+        <li>Pulsa el botón <b>RESET</b> de la parte de atrás de la placa (búscalo en la infografía). ¿Qué vuelve a salir en la consola? ¿Por qué?</li>
+        <li>Cambia la espera a 250 ms. ¿Cuántas líneas por segundo salen ahora?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 2 · Hola, mundo… en la matriz</h3>
+    <p>Ahora la placa va a decir algo con luz. La matriz de 5×5 LED de colores es pequeña, así que para escribir una palabra hay que hacerla pasar de derecha a izquierda, como en los carteles luminosos.</p>
+    <figure class="prog-img"><img src="img/N0b_hola.webp" alt="Programa en bloques: en Inicializar, consola e iniciar matriz; en Bucle, texto con scroll HOLA, esperar 4000 ms y enviar una línea"><figcaption>Proyecto «N0b Hola mundo en la matriz».</figcaption></figure>
+    <ol class="steps">
+      <li class="just">En Inicializar: <b>Iniciar Baudios 115200</b> y, del menú <b>micro:STEAMakers → NeoMatrix</b>, el bloque <b>Iniciar</b> (deja la matriz apagada para empezar desde cero).</li>
+      <li class="just">En Bucle: <b>Texto con scroll</b> con la palabra HOLA, el color que quieras y 120 ms (la velocidad: cuanto menos, más rápido).</li>
+      <li class="just">Añade <b>Esperar 4000 ms</b> para dar tiempo a que pase el texto y, después, un <b>Enviar línea</b> que avise de que ha terminado.</li>
+    </ol>
+    <div class="sim-row">
+      <div><div class="mx" id="mx-n0b"></div><div class="mx-label">Simulación de la matriz</div></div>
+      <div class="serial" id="sim-n0b"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Quita el bloque Esperar y vuelve a subir el programa. ¿Qué pasa con el texto? ¿Por qué crees que ocurre?</li>
+        <li>El scroll avanza una columna cada 120 ms. Si la palabra ocupa unas 25 columnas, ¿cuánto tarda en pasar entera?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🩺</span> Si algo no funciona</h3>
+    <table class="t">
+      <tr><th>Lo que pasa</th><th>Lo más probable</th><th>Qué hacer</th></tr>
+      <tr><td>No aparece ningún puerto para subir</td><td>El Connector no está abierto o el cable no transmite datos</td><td>Abre el Connector y prueba otro cable o puerto USB</td></tr>
+      <tr><td>La consola muestra símbolos raros (ÿ⸮⸮…)</td><td>La velocidad de la consola no coincide con la del programa</td><td>Elige 115200 en la consola, la misma que en el bloque Iniciar</td></tr>
+      <tr><td>La consola no muestra nada</td><td>Falta el bloque Iniciar Baudios o la consola no está conectada</td><td>Revisa Inicializar y pulsa Conectar en la consola</td></tr>
+      <tr><td>Error al compilar</td><td>Tipo de proyecto equivocado o un bloque suelto</td><td>Comprueba que el proyecto es «ESP32 micro:STEAMakers» y que no quedan bloques sueltos</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🚀</span> Retos</h3>
+    <div class="retos">
+      <div class="reto b"><span class="tag">Básico</span><h4>Tu mensaje</h4><p>Cambia HOLA por tu nombre, elige otro color y haz que en la consola, al arrancar, salga «Placa de [tu nombre] lista».</p></div>
+      <div class="reto m"><span class="tag">Medio</span><h4>Latido de vida</h4><p>Haz que la consola escriba «sigo viva» exactamente cada 2 segundos mientras la matriz muestra tu mensaje. ¿Dónde tienes que colocar cada bloque?</p></div>
+      <div class="reto p"><span class="tag">Pro</span><h4>Cuenta antes de mirar</h4><p>Con una espera de 500 ms en el Bucle, calcula cuántas líneas debería escribir la placa en 1 minuto. Compruébalo cronometrando y explica en el porfolio por qué puede salir alguna menos.</p></div>
+    </div>
+  </div>
+
+  <details class="capo">
+    <summary>🔧 Bajo el capó: lo que hay detrás de los bloques</summary>
+    <div class="in">
+      <p>Cuando pulsas Subir, STEAMakersBlocks convierte tus bloques en un programa en C++ (el lenguaje de Arduino), lo compila y lo envía a la placa. Este es el código real que genera el Programa 1:</p>
+<pre class="code"><span class="k">void</span> <span class="f">setup</span>()                 <span class="c">// = Inicializar: se ejecuta UNA vez</span>
+{
+  Serial.<span class="f">begin</span>(115200);         <span class="c">// abre el puerto serie a 115200 baudios</span>
+  Serial.<span class="f">flush</span>();
+  <span class="k">while</span>(Serial.<span class="f">available</span>()>0) Serial.<span class="f">read</span>();  <span class="c">// vacía lo que hubiera llegado</span>
+  Serial.<span class="f">println</span>(<span class="f">String</span>(<span class="s">"Hola. Esto está en INICIALIZAR: se escribe UNA sola vez."</span>));
+}
+
+<span class="k">void</span> <span class="f">loop</span>()                  <span class="c">// = Bucle: se repite SIEMPRE</span>
+{
+  <span class="f">yield</span>();                       <span class="c">// deja respirar al sistema (WiFi, tareas internas)</span>
+  Serial.<span class="f">println</span>(<span class="f">String</span>(<span class="s">"Esto está en BUCLE: se repite sin parar"</span>));
+  <span class="f">delay</span>(1000);                   <span class="c">// espera 1000 ms sin hacer nada más</span>
+}</pre>
+      <div class="bridge">
+        <div><h4>🐍 Lo mismo en Python</h4>
+<pre class="code"><span class="k">import</span> time
+<span class="f">print</span>(<span class="s">"Hola. Esto está en INICIALIZAR"</span>)
+<span class="k">while</span> <span class="k">True</span>:
+    <span class="f">print</span>(<span class="s">"Esto está en BUCLE"</span>)
+    time.<span class="f">sleep</span>(1)</pre></div>
+        <div><h4>🧮 ¿Qué significa 115200 baudios?</h4>
+          <p>Es la velocidad del puerto serie: 115 200 bits por segundo. Cada carácter viaja en 10 bits (8 de datos más uno de inicio y otro de parada), así que caben unos <b>11 520 caracteres por segundo</b>. La línea del Bucle tiene 40 caracteres más el salto de línea, y tarda unos 3,6 ms en enviarse: casi nada comparado con la espera de 1000 ms.</p>
+        </div>
+      </div>
+      <p>Fíjate en que no existe un «programa principal» como en Python: en un microcontrolador, <code>loop()</code> es el bucle infinito, y si se terminara la placa no tendría nada que hacer. Por eso en Arduino no escribimos <code>while True</code>: ya lo hace el sistema por nosotros.</p>
+    </div>
+  </details>
+
+  <div class="card quiz" data-quiz="n0">
+    <h3 class="sec-title"><span class="ico">🔎</span> ¿Lo has entendido?</h3>
+    <div class="qs"></div>
+    <div class="row" style="margin-top:8px"><button class="btn qcheck">Comprobar</button><button class="btn ghost qreset">Empezar de nuevo</button><span class="score"></span></div>
+    <p class="small">Cuando termines, haz una captura con tu puntuación para el porfolio.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📁</span> Al porfolio</h3>
+    <ul class="portfolio">
+      <li>Captura de tus dos programas en bloques (con tu nombre en el proyecto).</li>
+      <li>Captura de la consola del Programa 1, donde se vea la línea de Inicializar y varias del Bucle.</li>
+      <li>Foto o vídeo corto de la matriz mostrando tu mensaje (reto básico).</li>
+      <li>Respuesta, con tus palabras, a esta pregunta: <i>¿qué pondrías en Inicializar y qué en Bucle si quisieras que la placa saludara al encenderse y después parpadeara siempre?</i></li>
+      <li>Captura de tu resultado en «¿Lo has entendido?».</li>
+    </ul>
+  </div>
+
+    <div class="done-row"><button class="check" data-done="n0">☐ He terminado el N0</button></div>
+</section>
+<div class="pager"><a href="index.html">← Inicio</a><a href="n1.html">N1 · Secuencias →</a></div>
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
