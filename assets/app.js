@@ -9,7 +9,7 @@
     ['N1','Secuencias y tiempo','Colores, esperas y animaciones','n1'],
     ['N2','Variables','Números, textos y verdadero/falso','n2'],
     ['N3','Botones y decisiones','Si… si no, y la consola para depurar','n3'],
-    ['N4','Sensores y umbrales','Luz y sonido: medir e interpretar',null],
+    ['N4','Sensores y umbrales','Luz y sonido: medir e interpretar','n4'],
     ['R50','Reto 50','El semáforo de ruido del aula',null,'reto'],
     ['N5','Sonido y bucles','Zumbador, notas y melodías',null],
     ['N6','Listas y bucles anidados','Gráficos de barras en la matriz',null],
@@ -159,6 +159,70 @@
     const mx=makeMatrix(document.getElementById('mx-n3c')); const pr=miniConsole(document.getElementById('sim-n3c'));
     let on=false; pr('Interruptor: pulsa A para encender o apagar');
     document.getElementById('n3c-a').addEventListener('click',()=>{on=!on; fill(mx,on?'#ffdd55':'#2a2a2a'); pr(on?'Luz: ENCENDIDA':'Luz: APAGADA');});
+  }
+
+  // ---------- N4 ----------
+  function Plotter(el,series,opts={}){
+    if(!el) return null;
+    el.innerHTML=`<div class="bar"><b>Serial Plotter</b> · simulación <span class="sp"></span>${series.map(s=>`<span class="lg"><i style="background:${s.color}"></i>${s.name}</span>`).join('')}<button class="cl">Pausa</button></div><canvas></canvas><div class="last"></div>`;
+    const cv=el.querySelector('canvas'), ctx=cv.getContext('2d'), last=el.querySelector('.last'), N=opts.points||120;
+    const data=series.map(()=>[]); let paused=false;
+    el.querySelector('.cl').addEventListener('click',e=>{paused=!paused; e.target.textContent=paused?'Seguir':'Pausa';});
+    function draw(){
+      const w=cv.clientWidth||300, h=cv.clientHeight||200, r=window.devicePixelRatio||1;
+      if(cv.width!==w*r){cv.width=w*r; cv.height=h*r;}
+      ctx.setTransform(r,0,0,r,0,0); ctx.fillStyle='#0b1220'; ctx.fillRect(0,0,w,h);
+      let mx=opts.max!=null?opts.max:Math.max(10,...data.flat()); mx=opts.max!=null?mx:Math.ceil(mx*1.1);
+      ctx.strokeStyle='#1f2b3d'; ctx.fillStyle='#6f86a3'; ctx.font='11px ui-monospace,Consolas,monospace'; ctx.lineWidth=1;
+      for(let k=0;k<=4;k++){const y=6+(h-14)*k/4; ctx.beginPath(); ctx.moveTo(34,y); ctx.lineTo(w,y); ctx.stroke(); ctx.fillText(String(Math.round(mx*(1-k/4))),2,y+4);}
+      series.forEach((s,i)=>{const d=data[i]; ctx.strokeStyle=s.color; ctx.lineWidth=2; ctx.beginPath();
+        d.forEach((v,j)=>{const x=34+(w-36)*(j+N-d.length)/(N-1), y=6+(h-14)*(1-v/mx); j?ctx.lineTo(x,y):ctx.moveTo(x,y);}); ctx.stroke();});
+    }
+    return {push(vals){ if(paused) return; vals.forEach((v,i)=>{data[i].push(v); if(data[i].length>N) data[i].shift();}); draw(); last.textContent=series.map((s,i)=>`${s.name}=${Number(vals[i]).toFixed(6)}`).join('   ');}};
+  }
+  function onVisible(el,fn){ if(!el) return; let t=null; const io=new IntersectionObserver(es=>{es.forEach(e=>{ if(e.isIntersecting&&!t) t=fn(); else if(!e.isIntersecting&&t){clearInterval(t); t=null;} });}); io.observe(el); }
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  // Ruido de la luz y sonido «realistas» (a partir de una grabación con placa real)
+  const LUZ_PCT=[()=>0,()=>Math.round(rnd(3,7)),()=>Math.round(rnd(14,20)),()=>Math.round(rnd(60,98))];
+  const LUZ_TXT=['tapado','aula','ventana','linterna'];
+  function sonidoInst(modo){ // una muestra suelta (bruto)
+    const amp=[0,220,900][modo]; if(!amp) return Math.random()<0.02?Math.round(rnd(1,30)):0;
+    const v=amp*Math.sin(Math.random()*2*Math.PI)*rnd(0.3,1); return v>0?Math.round(v):0;
+  }
+  if(document.getElementById('plot-n4a')){
+    const P=Plotter(document.getElementById('plot-n4a'),[{name:'luz',color:'#ffd43b'},{name:'sonido',color:'#4dabf7'}],{max:100});
+    const sl=document.getElementById('n4a-luz'), lv=document.getElementById('n4a-lv'); let voz=false, palm=0;
+    sl.addEventListener('input',()=>lv.textContent=LUZ_TXT[sl.value]);
+    document.querySelectorAll('#n4 .hold[data-s]').forEach(b=>{b.addEventListener('pointerdown',e=>{e.preventDefault(); voz=true; b.classList.add('ghost');}); ['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>{voz=false; b.classList.remove('ghost');}));});
+    document.getElementById('n4a-palm').addEventListener('click',()=>palm=3);
+    onVisible(document.getElementById('plot-n4a'),()=>setInterval(()=>{
+      let s=0; if(palm>0){palm--; s=Math.random()<0.6?Math.round(rnd(5,30)):0;} else if(voz){ s=Math.random()<0.35?Math.round(rnd(1,13)):0; }
+      P.push([LUZ_PCT[sl.value](),s]);
+    },100));
+  }
+  if(document.getElementById('plot-n4b')){
+    const P=Plotter(document.getElementById('plot-n4b'),[{name:'luz',color:'#ffd43b'},{name:'umbral',color:'#ff6b6b'}],{max:400});
+    const mx=makeMatrix(document.getElementById('mx-n4b'));
+    const sl=document.getElementById('n4b-luz'), um=document.getElementById('n4b-um'), v=document.getElementById('n4b-v'), uv=document.getElementById('n4b-uv');
+    onVisible(document.getElementById('plot-n4b'),()=>setInterval(()=>{
+      const luz=Math.max(0,Math.round(+sl.value+rnd(-6,6))), u=+um.value; v.textContent=sl.value; uv.textContent=u;
+      fill(mx,luz<u?'#ffffff':'#2a2a2a'); P.push([luz,u]);
+    },120));
+  }
+  if(document.getElementById('plot-n4c')){
+    const P=Plotter(document.getElementById('plot-n4c'),[{name:'instante',color:'#4dabf7'},{name:'pico',color:'#ff922b'}]);
+    let modo=0, palm=0, beat=0;
+    document.querySelectorAll('#n4 [data-snd]').forEach(b=>b.addEventListener('click',()=>{modo=+b.dataset.snd; document.querySelectorAll('#n4 [data-snd]').forEach(x=>x.classList.toggle('on',x===b));}));
+    document.getElementById('n4c-palm').addEventListener('click',()=>palm=1);
+    onVisible(document.getElementById('plot-n4c'),()=>setInterval(()=>{
+      let pico=0;
+      if(modo===2){ beat=(beat+1)%5; pico=Math.round([1000,650,400,300,220][beat]*rnd(0.85,1.05)); }
+      else if(modo===1){ pico=Math.random()<0.4?Math.round(rnd(20,270)):Math.round(rnd(0,15)); }
+      else pico=Math.random()<0.08?Math.round(rnd(1,30)):0;
+      if(palm>0){ pico=Math.max(pico,Math.round(rnd(700,1000))); palm=0; }
+      const inst=modo===2?Math.round(pico*rnd(0,0.75)):(Math.random()<0.15?Math.round(pico*rnd(0,0.6)):0);
+      P.push([inst,pico]);
+    },135));
   }
 
   // ---------- Rejilla de índices ----------
@@ -312,6 +376,13 @@
   }
   // ---------- Tests autocorregibles ----------
   const QUIZ={
+    n4:[
+      {q:'El bloque «Nivel de luz» en modo 0..4095 da 4095. ¿Qué significa?',o:['Que está a oscuras','Que el ADC lee el máximo: unos 3,3 V en el pin','Que el sensor está roto','Que hay 4095 lux'],a:1,f:'El ADC del ESP32 es de 12 bits: convierte de 0 a 3,3 V en un número de 0 a 4095. 4095 es el máximo que puede leer.'},
+      {q:'En el aula, la luz marca 5 % todo el rato, tanto con la luz encendida como con la persiana a medias. ¿Qué harías?',o:['Cambiar de placa','Usar el valor bruto (0..4095), que tiene más detalle','Multiplicar por 100','Nada, el sensor no sirve'],a:1,f:'El porcentaje quita los decimales de valor × 100 ÷ 4095: muchos valores brutos distintos dan el mismo %. Con el bruto ves las diferencias pequeñas.'},
+      {q:'Hablas delante de la placa y el bloque «Nivel de sonido» da casi siempre 0. ¿Por qué?',o:['El micrófono está apagado','Cada lectura es una foto de la onda en un instante, y casi siempre cae fuera de una cresta','Hay que hablar en inglés','Falta iniciar la consola'],a:1,f:'El sonido es una onda que sube y baja muy deprisa. Una lectura suelta capta un instante; para medir el ruido hay que tomar muchas y quedarse con la mayor (el pico).'},
+      {q:'Una luz nocturna se enciende y se apaga sin parar cuando la luz está justo en el umbral. ¿Qué la arregla mejor?',o:['Esperar 5 segundos en cada vuelta','Dos umbrales: uno para encender y otro más alto para apagar','Subir el brillo','Usar el porcentaje'],a:1,f:'Es la histéresis: entre los dos umbrales la luz no cambia de estado, así que el ruido de la medida ya no la hace parpadear.'},
+      {q:'¿Qué da map(1000, 0, 400, 0, 5) en Arduino?',o:['5','4','12','Un error'],a:2,f:'map hace la regla de tres sin recortar: 1000 × 5 ÷ 400 = 12,5 → 12 (entero). Para que no se salga de 0..4 hace falta constrain («limitar»).'}
+    ],
     n3:[
       {q:'Quieres que una variable suba de 1 en 1 cada vez que pulsas A. ¿Qué bloque usas en la condición?',o:['Pulsador A pulsado','Pulsador A se ha pulsado','Pulsador táctil','Esperar 1000 ms'],a:1,f:'«Se ha pulsado» es verdadero una sola vez por pulsación; «pulsado» lo es todo el tiempo que mantienes el botón, y el contador subiría sin parar.'},
       {q:'Con el bloque «Pulsador A pulsado», ¿cuándo es verdadero?',o:['Una vez por pulsación','Solo al soltar','Todo el tiempo que lo mantienes apretado','Nunca, hay que usar el táctil'],a:2,f:'Pregunta por el estado de ahora mismo: es verdadero mientras el botón está apretado.'},
