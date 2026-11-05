@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N4 · Sensores y umbrales · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html">N0 · Tu placa</a>
+    <a href="n1.html">N1 · Secuencias</a>
+    <a href="n2.html">N2 · Variables</a>
+    <a href="n3.html">N3 · Botones</a>
+    <a href="n4.html" class="on" aria-current="page">N4 · Sensores</a>
+    <span class="soon" title="Próximamente">R50</span>
+    <span class="soon" title="Próximamente">N5–N10</span>
+    <a href="guia.html">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="n4">
+  <h2 class="lvl"><span class="badge">N4</span> Sensores y umbrales</h2>
+  <p class="lead">Los botones solo dicen sí o no. Ahora la placa va a <b>medir</b>: cuánta luz le llega y qué pasa con el sonido a su alrededor. Aprenderás a mirar los datos en una gráfica, a desconfiar de un número suelto y a elegir el valor a partir del cual la placa reacciona: el <b>umbral</b>.</p>
+  <div class="row"><span class="pill">⏱️ 2 sesiones</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span><span class="pill crit">2.2</span><span class="pill crit">T</span></div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🎯</span> Objetivo</h3>
+    <ul>
+      <li>Leer el sensor de luz y el micrófono de la placa, en porcentaje y en valor bruto (0 a 4095).</li>
+      <li>Usar el <b>Serial Plotter</b> para ver los datos como una gráfica y guardarlos en CSV.</li>
+      <li><b>Medir antes de decidir</b>: elegir un umbral a partir de tus propias medidas.</li>
+      <li>Entender por qué una lectura suelta del micrófono no sirve y cómo se calcula un <b>pico</b>.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar</h3>
+    <p>Un sensor <b>analógico</b> no da 0 o 1, sino una tensión que puede tomar muchos valores. El ESP32 la convierte en un número con su <b>convertidor analógico-digital</b> (ADC) de 12 bits: 0 V es 0 y 3,3 V es 4095. Los bloques de luz y de sonido te dejan elegir cómo quieres el dato:</p>
+    <table class="t">
+      <tr><th>Opción del bloque</th><th>Qué da</th><th>Cuándo usarla</th></tr>
+      <tr><td><b>%</b></td><td>De 0 a 100</td><td>Para hacerse una idea rápida</td></tr>
+      <tr><td><b>0..4095</b> (bruto)</td><td>El número que da el ADC, sin tocar</td><td>Cuando los valores son pequeños y necesitas más detalle</td></tr>
+    </table>
+    <p style="margin-top:12px">Los dos sensores están dentro de la placa: el de <b>luz</b> es un fototransistor (pin io39) y el <b>micrófono</b> está en el pin io35. Mira la infografía del N0 si no los localizas.</p>
+    <div class="bridge">
+      <div><h4>📈 El Serial Plotter</h4>
+        <p>Está junto al botón <b>Consola</b> del editor. En vez de líneas de texto, dibuja una gráfica con cada dato que envías con el bloque <b>Plotter</b> (nombre y valor). Si pulsas sobre el nombre de una serie, la ocultas. Y puedes <b>grabar</b> los datos y descargarlos en <b>CSV</b> para analizarlos en una hoja de cálculo.</p></div>
+      <div><h4>🐍 En Python</h4>
+<pre class="code">luz = <span class="f">leer_luz</span>()
+<span class="k">if</span> luz &lt; umbral:
+    <span class="f">encender</span>()
+<span class="k">else</span>:
+    <span class="f">apagar</span>()</pre>
+        <p>Un umbral es solo un <b>si</b> que compara una medida con un número. Lo difícil es elegir bien ese número.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 1 · Luz y sonido al plotter</h3>
+    <p>El primer paso con cualquier sensor es <b>mirarlo</b>. Este programa envía al plotter el nivel de luz y el de sonido, en porcentaje, veinte veces por segundo.</p>
+    <figure class="prog-img"><img src="img/N4a_luz_sonido_plotter.webp" alt="Programa: en Inicializar, iniciar la consola a 115200 y enviar un mensaje; en Bucle, Plotter luz con Nivel de luz en %, Plotter sonido con Nivel de sonido en % y esperar 50 ms"><figcaption>Proyecto «N4a Luz y sonido al plotter».</figcaption></figure>
+    <ol class="steps">
+      <li class="just">Sube el programa y abre el <b>Serial Plotter</b>.</li>
+      <li class="just">Durante unos 30 segundos: tapa el sensor de luz con el dedo, déjalo con la luz del aula y acércale la linterna del móvil. Después, silencio, habla cerca de la placa y da un par de palmadas.</li>
+      <li class="just">Graba los datos y descarga el CSV para tu porfolio.</li>
+    </ol>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:220px">
+        <label class="small">Luz que le llega: <b id="n4a-lv">aula</b></label>
+        <input type="range" id="n4a-luz" min="0" max="3" step="1" value="1">
+        <div class="small" style="display:flex;justify-content:space-between"><span>tapado</span><span>aula</span><span>ventana</span><span>linterna</span></div>
+        <div class="row"><button class="btn hold" data-s="voz">Mantén: hablar</button><button class="btn ghost" id="n4a-palm">Palmada</button></div>
+      </div>
+      <div class="plotter" id="plot-n4a"></div>
+    </div>
+    <p class="small">La simulación usa valores parecidos a los que dio una placa real en un aula. Los tuyos pueden ser distintos: por eso hay que medir.</p>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Apunta en una tabla el valor de luz tapado, con la luz del aula, junto a la ventana y con la linterna. ¿Te sorprende el valor del aula? ¿Cuántos «escalones» de porcentaje hay entre tapado y aula?</li>
+        <li>Con la linterna, la línea de luz tiembla mucho aunque no muevas nada. ¿Por qué crees que pasa? (Pista: muchas luces LED parpadean muy deprisa, tan rápido que tu ojo no lo nota).</li>
+        <li>Habla sin parar delante de la placa. ¿La línea del sonido sube y se queda arriba, o salen picos sueltos con muchos ceros entre medias? Guárdate la respuesta: la explicación está en el Programa 3.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 2 · Luz nocturna con umbral</h3>
+    <p>Cuando hay poca luz, la matriz se enciende en blanco. Como en el aula el porcentaje se queda muy bajo, aquí leemos el valor <b>bruto</b> (0..4095), que tiene 41 veces más detalle. Además del dato, enviamos al plotter el <b>umbral</b>: así se ve una línea horizontal y sabes exactamente cuándo debe encenderse.</p>
+    <figure class="prog-img"><img src="img/N4b_luz_nocturna.webp" alt="Programa luz nocturna: umbral igual a 80; en Bucle, luz igual a Nivel de luz en bruto, Plotter luz y Plotter umbral; si luz menor que umbral rellenar blanco, si no limpiar; esperar 100 ms"><figcaption>Proyecto «N4b Luz nocturna con umbral».</figcaption></figure>
+    <ol class="steps">
+      <li class="just">Con el Programa 1 (o con este mismo) mide tus valores <b>brutos</b>: tapado y con la luz del aula.</li>
+      <li class="just">Elige el umbral entre los dos, más cerca del valor tapado. El 80 del ejemplo sirve para la placa con la que se preparó este material; el tuyo puede ser otro.</li>
+      <li class="just">Comprueba en el plotter que la línea de luz cruza la del umbral justo cuando la matriz cambia.</li>
+    </ol>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+        <div class="mx" id="mx-n4b"></div><div class="mx-label">Simulación</div>
+        <label class="small">Luz (bruto): <b id="n4b-v">200</b></label>
+        <input type="range" id="n4b-luz" min="0" max="400" value="200" style="width:200px">
+        <label class="small">Umbral: <b id="n4b-uv">80</b></label>
+        <input type="range" id="n4b-um" min="10" max="300" value="80" style="width:200px">
+      </div>
+      <div class="plotter" id="plot-n4b"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Coloca la luz justo encima del umbral, casi tocándolo. ¿Qué le pasa a la matriz? ¿Qué problema tendría una farola que funcionara así?</li>
+        <li>¿Qué pasaría si eligieras un umbral de 300 en un aula donde la luz da unos 200?</li>
+        <li>¿Por qué crees que no hemos usado el porcentaje en este programa? Justifícalo con tus medidas.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 3 · El sonómetro de picos</h3>
+    <p>El sonido es una <b>onda</b>: la presión del aire sube y baja cientos de veces por segundo. El bloque «Nivel de sonido» no mide «cuánto ruido hay»: hace una foto de la onda en <b>un instante</b>. Si la foto cae en un valle, da 0 aunque estés gritando. Por eso el Programa 1 daba picos sueltos con muchos ceros.</p>
+    <p>La solución es hacer <b>muchas fotos seguidas</b> (1000) y quedarse con la <b>mayor</b>: el <b>pico</b>. Es lo mismo que buscar el máximo de una lista en Python.</p>
+    <figure class="prog-img"><img src="img/N4c_sonometro.webp" alt="Programa sonómetro: en Bucle, pico igual a 0; repetir 1000 veces: muestra igual a Nivel de sonido bruto y si muestra mayor que pico, pico igual a muestra; Plotter instante con Nivel de sonido y Plotter pico; esperar 50 ms"><figcaption>Proyecto «N4c Sonómetro de picos».</figcaption></figure>
+    <div class="bridge">
+      <div><h4>🐍 En Python</h4>
+<pre class="code">pico = 0
+<span class="k">for</span> i <span class="k">in</span> <span class="f">range</span>(1000):
+    muestra = <span class="f">leer_sonido</span>()
+    <span class="k">if</span> muestra &gt; pico:
+        pico = muestra</pre></div>
+      <div><h4>⏱️ ¿Cuánto tarda?</h4>
+        <p>Con la placa real, cada vuelta del Bucle duró unos 135 ms. Si quitas la espera de 50 ms, las 1000 lecturas ocupan unos 80 ms: cada lectura tarda unos <b>80 microsegundos</b>. En 80 ms una voz hace decenas de oscilaciones, así que el pico las «caza».</p></div>
+    </div>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="row"><button class="btn ghost on" data-snd="0">Silencio</button><button class="btn ghost" data-snd="1">Hablar</button><button class="btn ghost" data-snd="2">Música cerca</button></div>
+        <button class="btn" id="n4c-palm">Palmada</button>
+      </div>
+      <div class="plotter" id="plot-n4c"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Compara las dos líneas mientras hablas. ¿Cuál representa mejor lo que oyes? ¿Por qué?</li>
+        <li>Con una palmada el pico sube de golpe y en la siguiente vuelta vuelve casi a cero. ¿Te serviría así para encender una alarma de ruido que se vea bien? ¿Qué cambiarías?</li>
+        <li>Cambia 1000 por 100 en el «repetir». ¿Qué le pasa al pico? ¿Y a la velocidad con la que llegan los datos al plotter?</li>
+        <li>Graba un CSV en silencio, hablando y con música. ¿Qué valores de pico propondrías como límite entre «silencio», «conversación» y «mucho ruido»? Los vas a necesitar en el Reto 50.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🚀</span> Retos</h3>
+    <div class="retos">
+      <div class="reto b"><span class="tag">Básico</span><h4>Alarma de cajón</h4><p>Mete la placa en un cajón o en una caja. Si alguien la abre y entra luz, la matriz se pone roja, suena un pitido y la consola avisa con el valor de luz. Mide antes el valor con la caja cerrada y abierta para elegir el umbral.</p></div>
+      <div class="reto m"><span class="tag">Medio</span><h4>Luxómetro de colores</h4><p>Divide la luz en <b>5 niveles</b> y da a cada uno un color (de morado, muy oscuro, a blanco, mucha luz). Usa el bloque <b>mapear</b> para pasar del valor bruto a un nivel de 0 a 4 y <b>limitar</b> para que nunca se salga de ese rango. La consola solo escribe cuando cambia el nivel.</p></div>
+      <div class="reto p"><span class="tag">Pro</span><h4>Luz sin parpadeos</h4><p>Arregla el problema de la luz nocturna cuando la luz ronda el umbral: usa <b>dos umbrales</b>, uno para encender y otro más alto para apagar, y una variable verdadero/falso que recuerde si está encendida. Envía al plotter la luz y los dos umbrales. Esto se llama <b>histéresis</b> y lo llevan los termostatos y las farolas.</p></div>
+    </div>
+  </div>
+
+  <details class="capo">
+    <summary>🔧 Bajo el capó: el ADC, el porcentaje y el plotter</summary>
+    <div class="in">
+      <p>Así traduce STEAMakersBlocks el Programa 1:</p>
+<pre class="code">Serial.<span class="f">print</span>(<span class="f">String</span>(<span class="s">"luz"</span>)); Serial.<span class="f">print</span>(<span class="s">"="</span>);
+Serial.<span class="f">println</span>(<span class="f">String</span>((<span class="k">double</span>)<span class="f">map</span>(<span class="f">analogRead</span>(39),0,4095,0,100),6));</pre>
+      <div class="bridge">
+        <div><h4>🔢 Del voltio al número</h4>
+          <p><code>analogRead(39)</code> lee la tensión del pin 39 y la convierte en un número de 0 a 4095 (2<sup>12</sup> = 4096 valores). Cada escalón vale unos 3,3 V ÷ 4095 ≈ <b>0,8 mV</b>. En el ESP32 el ADC no es perfectamente lineal y se satura un poco antes de los 3,3 V, así que para medidas de precisión hay que calibrar.</p>
+          <p>El porcentaje sale de <code>map(valor, 0, 4095, 0, 100)</code>, que hace una regla de tres con números <b>enteros</b>: % = valor × 100 ÷ 4095, quitando los decimales. Por eso cualquier bruto entre 205 y 245 da el mismo 5 %: con el porcentaje pierdes detalle.</p></div>
+        <div><h4>📈 Lo que recibe el plotter</h4>
+          <p>Cada bloque Plotter envía una línea como <code>luz=37.000000</code>: el nombre, un igual y el valor con seis decimales. El Serial Plotter de STEAMakersBlocks busca ese formato para saber a qué serie pertenece cada número. Si abres la consola normal con este programa, verás esas líneas tal cual.</p></div>
+      </div>
+      <div class="bridge">
+        <div><h4>🎤 El micrófono</h4>
+          <p>El bloque de sonido es <code>analogRead(35)</code>: una sola muestra de la onda. En esta placa la señal oscila alrededor de 0 V, y cuando baja de 0 V el ADC no puede leer negativos y da 0. Por eso casi todas las lecturas sueltas son 0 y solo de vez en cuando «aciertas» en una cresta. El pico de 1000 muestras es la forma más sencilla de convertir esa onda en un nivel de ruido.</p></div>
+        <div><h4>🧮 «Mapear» y «limitar»</h4>
+<pre class="code">nivel = <span class="f">constrain</span>(<span class="f">map</span>(luz, 0,400, 0,5), 0,4);</pre>
+          <p><code>map</code> no recorta: si la luz vale 1000, da 12. <code>constrain</code> lo encierra entre 0 y 4. Lo usarás en el luxómetro.</p></div>
+      </div>
+    </div>
+  </details>
+
+  <div class="card quiz" data-quiz="n4">
+    <h3 class="sec-title"><span class="ico">🔎</span> ¿Lo has entendido?</h3>
+    <div class="qs"></div>
+    <div class="row" style="margin-top:8px"><button class="btn qcheck">Comprobar</button><button class="btn ghost qreset">Empezar de nuevo</button><span class="score"></span></div>
+    <p class="small">Cuando termines, haz una captura con tu puntuación para el porfolio.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📁</span> Al porfolio</h3>
+    <ul class="portfolio">
+      <li>Capturas de tus tres programas y del Serial Plotter de cada uno.</li>
+      <li>Tu tabla de medidas de luz (tapado, aula, ventana, linterna) en porcentaje y en bruto, y el umbral que elegiste con su justificación.</li>
+      <li>El CSV del sonómetro (silencio, conversación, música) y los límites que propones a partir de él.</li>
+      <li>Tus respuestas a «Interpreta lo que ves», sobre todo por qué una lectura suelta del micrófono casi siempre da 0.</li>
+      <li>El reto que hayas hecho, con una captura del plotter o de la consola y un vídeo corto funcionando.</li>
+      <li>Captura de tu resultado en «¿Lo has entendido?».</li>
+    </ul>
+  </div>
+  <div class="done-row"><button class="check" data-done="n4">☐ He terminado el N4</button></div>
+</section>
+<div class="pager"><a href="n3.html">← N3 · Botones</a></div>
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
