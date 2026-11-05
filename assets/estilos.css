@@ -121,6 +121,7 @@ details.capo .in{padding:0 16px 14px}
 .btn{border:1px solid var(--brand);background:var(--brand);color:#fff;border-radius:9px;padding:8px 14px;font:inherit;font-size:.92rem;cursor:pointer}
 .btn.ghost{background:#fff;color:var(--brand)}
 .btn:hover{filter:brightness(1.07)}
+.btn.hold{touch-action:none;user-select:none}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
 /* Placa */

@@ -8,7 +8,7 @@
     ['N0','Tu placa y tu entorno','Inicializar, Bucle y consola','n0'],
     ['N1','Secuencias y tiempo','Colores, esperas y animaciones','n1'],
     ['N2','Variables','Números, textos y verdadero/falso','n2'],
-    ['N3','Botones y decisiones','Si… si no, y la consola para depurar',null],
+    ['N3','Botones y decisiones','Si… si no, y la consola para depurar','n3'],
     ['N4','Sensores y umbrales','Luz y sonido: medir e interpretar',null],
     ['R50','Reto 50','El semáforo de ruido del aula',null,'reto'],
     ['N5','Sonido y bucles','Zumbador, notas y melodías',null],
@@ -134,6 +134,32 @@
     setup:[api=>{s2c=0; api.print('Hola, me llamo micro:STEAMakers');}],
     loop:[api=>{s2c++; api.print('Llevo '+s2c+' segundos encendida'); api.print('¿Encendida? 1');},(a,w)=>w(1000)]
   });
+
+  // ---------- N3 ----------
+  if(document.getElementById('sim-n3a')){
+    const st={A:0,B:0,T:0};
+    document.querySelectorAll('.hold').forEach(b=>{
+      const k=b.dataset.k, on=e=>{e.preventDefault(); st[k]=1; b.classList.add('ghost');}, off=()=>{st[k]=0; b.classList.remove('ghost');};
+      b.addEventListener('pointerdown',on); ['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,off));
+    });
+    Serial(document.getElementById('sim-n3a'),'',{
+      setup:[api=>api.print('Lector de botones: pulsa A, B o el logo')],
+      loop:[api=>api.print(`A = ${st.A}   B = ${st.B}   táctil = ${st.T}`),(a,w)=>w(200)]
+    });
+  }
+  function miniConsole(el){ el.innerHTML=`<div class="bar"><b>Consola</b> · 115200 baudios <span class="sp"></span><button class="cl">Limpiar</button></div><div class="out"></div>`; const out=el.querySelector('.out'), t0=Date.now(); el.querySelector('.cl').addEventListener('click',()=>out.innerHTML=''); return s=>{const ms=Date.now()-t0; const d=document.createElement('div'); d.innerHTML=`<span class="t">${String(Math.floor(ms/1000)).padStart(2,'0')}.${String(ms%1000).padStart(3,'0')} → </span>`; d.appendChild(document.createTextNode(s)); out.appendChild(d); out.scrollTop=out.scrollHeight;}; }
+  if(document.getElementById('sim-n3b')){
+    const mx=makeMatrix(document.getElementById('mx-n3b')); const pr=miniConsole(document.getElementById('sim-n3b'));
+    let c=0; const draw=()=>paint(mx,txtArr(String(c),'#33ff33')); pr('Contador listo. A suma, B resta, logo pone a cero'); draw();
+    document.getElementById('n3b-a').addEventListener('click',()=>{c++; pr('Contador: '+c); draw();});
+    document.getElementById('n3b-b').addEventListener('click',()=>{c--; pr('Contador: '+c); draw();});
+    document.getElementById('n3b-t').addEventListener('click',()=>{c=0; pr('Reinicio. Contador: 0'); draw();});
+  }
+  if(document.getElementById('sim-n3c')){
+    const mx=makeMatrix(document.getElementById('mx-n3c')); const pr=miniConsole(document.getElementById('sim-n3c'));
+    let on=false; pr('Interruptor: pulsa A para encender o apagar');
+    document.getElementById('n3c-a').addEventListener('click',()=>{on=!on; fill(mx,on?'#ffdd55':'#2a2a2a'); pr(on?'Luz: ENCENDIDA':'Luz: APAGADA');});
+  }
 
   // ---------- Rejilla de índices ----------
   if(document.getElementById('idxgrid')){
@@ -286,6 +312,13 @@
   }
   // ---------- Tests autocorregibles ----------
   const QUIZ={
+    n3:[
+      {q:'Quieres que una variable suba de 1 en 1 cada vez que pulsas A. ¿Qué bloque usas en la condición?',o:['Pulsador A pulsado','Pulsador A se ha pulsado','Pulsador táctil','Esperar 1000 ms'],a:1,f:'«Se ha pulsado» es verdadero una sola vez por pulsación; «pulsado» lo es todo el tiempo que mantienes el botón, y el contador subiría sin parar.'},
+      {q:'Con el bloque «Pulsador A pulsado», ¿cuándo es verdadero?',o:['Una vez por pulsación','Solo al soltar','Todo el tiempo que lo mantienes apretado','Nunca, hay que usar el táctil'],a:2,f:'Pregunta por el estado de ahora mismo: es verdadero mientras el botón está apretado.'},
+      {q:'Tienes: si «A pulsado» → verde; sino si «A pulsado y B pulsado» → ámbar. Pulsas los dos a la vez. ¿Qué color sale?',o:['Ámbar','Verde, porque la primera condición ya se cumple','Los dos a la vez','Ninguno'],a:1,f:'Se ejecuta solo la primera rama que se cumple. La condición de los dos botones tiene que ir antes que la de A sola.'},
+      {q:'La variable encendida vale verdadero. ¿Cuánto vale «no encendida»?',o:['Verdadero','Falso','1','No se puede saber'],a:1,f:'«no» da el valor contrario: no verdadero = falso.'},
+      {q:'En el código C++ los botones se leen como !digitalRead(0). ¿Por qué ese «!»?',o:['Es un error de STEAMakersBlocks','Porque al pulsar, el pin pasa a 0 (lógica inversa) y el ! le da la vuelta','Para leer más rápido','Para el antirrebote'],a:1,f:'Los botones A y B están a 1 en reposo y a 0 al pulsar. El ! (no) invierte el valor para que pulsado sea 1.'}
+    ],
     n2:[
       {q:'¿Qué tipo de variable usarías para guardar el nombre de una persona?',o:['Número','Texto','Verdadero/falso','Cualquiera, da igual'],a:1,f:'Un nombre es una cadena de letras: una variable de tipo texto (String en C++, str en Python).'},
       {q:'Con el bloque «entero aleatorio de 1 a 6», ¿puede salir el 6?',o:['No, nunca sale el último','Sí: incluye los dos extremos','Solo si pulsas el botón dos veces','Solo sale el 6 si lo pones en Inicializar'],a:1,f:'El bloque incluye el 1 y el 6. Por dentro, STEAMakersBlocks llama a random(1, 7), porque random() de Arduino no incluye el máximo.'},
