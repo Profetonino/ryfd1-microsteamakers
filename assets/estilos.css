@@ -131,6 +131,28 @@ details.capo .in{padding:0 16px 14px}
 .plotter .last{padding:6px 10px;font:12.5px ui-monospace,Consolas,monospace;color:#9fb3cc;border-top:1px solid #1f2b3d;min-height:1.6em;overflow-x:auto;white-space:nowrap}
 .btn.ghost.on{background:var(--accent,#0b7285);color:#fff}
 input[type=range]{accent-color:#0b7285}
+/* ---- Mejoras didácticas ---- */
+details.paso{border:1px solid #b9dfe2;border-radius:12px;background:#f2fafb;margin:12px 0}
+details.paso>summary{cursor:pointer;padding:10px 14px;font-weight:700;color:var(--brand);list-style:none;display:flex;align-items:center;gap:8px}
+details.paso>summary::-webkit-details-marker{display:none}
+details.paso>summary::after{content:"▸";margin-left:auto;transition:transform .2s}
+details.paso[open]>summary::after{transform:rotate(90deg)}
+details.paso .in{padding:0 14px 10px}
+.ruta{display:inline-block;background:#e8eefc;color:#2b3f73;border-radius:6px;padding:0 6px;font-size:.86em;font-weight:600;white-space:nowrap}
+.entender{border-left:4px solid #7048e8;background:#f3f0ff;border-radius:0 12px 12px 0;padding:10px 16px;margin:14px 0}
+.entender h4{margin:2px 0 6px;color:#5f3dc4}
+.entender p{margin:6px 0}
+figure.esquema{margin:14px 0;padding:10px;border:1px solid var(--line);border-radius:12px;background:#fff;text-align:center}
+figure.esquema svg{width:100%;max-width:680px;height:auto}
+figure.esquema figcaption{font-size:.86rem;color:var(--ink2);margin-top:6px}
+.g{border-bottom:1.5px dotted #7048e8;cursor:help}
+.gpop{position:absolute;z-index:50;max-width:320px;background:#1d2433;color:#fff;border-radius:10px;padding:10px 12px;font-size:.88rem;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.gpop b{display:block;margin-bottom:3px;color:#d0bfff}.gpop a{color:#a5d8ff;font-size:.82rem}
+.opc{font-size:.72rem;font-weight:600;background:#e8eefc;color:#2b3f73;border-radius:999px;padding:2px 8px}
+details.capo .amp{font-size:.88rem;color:var(--ink2);font-style:italic;margin:4px 0 8px}
+#glos-list dt{font-weight:700;margin-top:12px;color:var(--brand)}#glos-list dd{margin:2px 0 0 0}
+#glos-list .hl{background:#fff3bf;border-radius:6px}
+
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
 /* Placa */
