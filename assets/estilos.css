@@ -84,6 +84,8 @@ table.rubrica th:nth-child(1){background:#fdeaea}table.rubrica th:nth-child(2){b
 
 /* Puente Python */
 .bridge{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bridge>div{min-width:0}
+pre.code{overflow-x:auto}
 @media (max-width:640px){.bridge{grid-template-columns:1fr}}
 .bridge>div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fbfcfe}
 .bridge h4{margin:0 0 6px;font-size:.95rem}
