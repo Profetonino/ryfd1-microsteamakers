@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N6 · Listas y bucles anidados · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css?v=83499602">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html">N0 · Tu placa</a>
+    <a href="n1.html">N1 · Secuencias</a>
+    <a href="n2.html">N2 · Variables</a>
+    <a href="n3.html">N3 · Botones</a>
+    <a href="n4.html">N4 · Sensores</a>
+    <a href="r50.html">R50 · Reto</a>
+    <a href="n5.html">N5 · Sonido</a>
+    <a href="n6.html" class="on" aria-current="page">N6 · Listas</a>
+    <span class="soon" title="Próximamente">N7–N10</span>
+    <a href="evaluacion.html">Evaluación</a>
+    <a href="glosario.html">Glosario</a>
+    <a href="guia.html">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="n6">
+  <h2 class="lvl"><span class="badge">N6</span> Listas y <span class="g" data-g="anidado">bucles anidados</span></h2>
+  <p class="lead">Una variable guarda un dato. Pero un sensor da un dato cada pocos milisegundos, y para hacer una gráfica o una estadística necesitas guardar <b>muchos</b>. Para eso están las <b>listas</b>. Y para recorrer la matriz punto a punto, fila a fila, aprenderás a meter un bucle <b>dentro</b> de otro.</p>
+  <div class="row"><span class="pill">⏱️ 2–3 sesiones</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span><span class="pill crit">T</span></div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🎯</span> Objetivo</h3>
+    <ul>
+      <li>Crear una lista de números, añadir y quitar elementos, y leer uno por su <b>posición</b>.</li>
+      <li>Recorrer una lista con un bucle y calcular estadísticas: media, máximo, mínimo, <span class="g" data-g="moda">moda</span>.</li>
+      <li>Usar <b>bucles anidados</b> para recorrer la matriz por columnas y filas.</li>
+      <li>Dibujar un <b>gráfico de barras</b> en la matriz y hacer que se desplace con datos en vivo.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar</h3>
+    <p>Una <span class="g" data-g="lista">lista</span> es una variable que guarda <b>varios valores en orden</b>. Cada valor ocupa una <span class="g" data-g="posicion">posición</span>, y las posiciones empiezan a contar en <b>0</b>, igual que en Python: en una lista de 5 elementos, las posiciones van de 0 a 4.</p>
+    <div class="bridge">
+      <div><h4>🐍 En Python</h4>
+<pre class="code">temperaturas = [18, 21, 19, 24, 22]
+temperaturas.<span class="f">append</span>(20)    <span class="c"># añadir al final</span>
+temperaturas.<span class="f">pop</span>(0)         <span class="c"># quitar la posición 0</span>
+<span class="f">print</span>(temperaturas[1])   <span class="c"># → 21</span>
+<span class="f">print</span>(<span class="f">len</span>(temperaturas))</pre></div>
+      <div><h4>🧩 En STEAMakersBlocks</h4>
+        <p>Las listas se crean en <span class="ruta">Listas › Numérica</span> con <b>Crear lista… (Número)</b>. Después aparecen sus bloques: <b>Añadir</b> (append), <b>Eliminar posición</b> (pop), <b>Obtener posición</b> ([ ]), <b>Actualizar posición</b>, <b>Número de elementos</b> (len), <b>Eliminar todo</b>, <b>Por cada elemento</b> y <b>Calcular</b> (estadísticas).</p></div>
+    </div>
+    <div class="entender"><h4>💡 Para entenderlo: una cajonera numerada</h4><p>Una variable es una caja con etiqueta (N2). Una lista es una <b>cajonera</b>: una sola etiqueta, «temperaturas», y muchos cajones numerados. Para sacar algo dices el número del cajón: «temperaturas, cajón 1». El primer cajón es el <b>0</b>, por eso el cajón 1 es el <b>segundo</b>. Es la confusión más típica con las listas: tenla presente cuando algo «salga desplazado».</p></div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 1 · Una lista de datos</h3>
+    <p>Guardamos las temperaturas máximas de cinco días, las recorremos para escribirlas una a una y pedimos a la lista sus estadísticas. Todo va en <b>Inicializar</b>: se ejecuta una vez y ya está. Abre la consola y pulsa RESET si te lo pierdes.</p>
+    <figure class="prog-img tall-img"><img src="img/N6a_lista.webp" alt="Programa: en Inicializar, añadir 18, 21, 19, 24 y 22 a la lista temperaturas; por cada elemento con posición n, enviar Día n+1 y la temperatura de la posición n; después número de datos, media con un decimal, máxima y mínima"><figcaption>Proyecto «N6a Una lista de datos».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">En <span class="ruta">Listas › Numérica</span> pulsa <b>Crear lista… (Número)</b> y llámala <b>temperaturas</b>. Crea también una variable de número, <b>n</b> (<span class="ruta">Variables</span>).</li>
+      <li class="just">En Inicializar: la consola y cinco bloques <b>Lista [temperaturas] Añadir</b> con 18, 21, 19, 24 y 22.</li>
+      <li class="just">Un bloque <b>Lista [temperaturas] Por cada elemento</b>. En su hueco <b>Posición</b> elige la variable <b>n</b>: en cada vuelta, n valdrá 0, 1, 2…</li>
+      <li class="just">Dentro, un <b>Enviar línea</b> con «Día » + <b>Número entero</b>(n + 1) + «: » + <b>Número entero</b>(<b>Lista [temperaturas] Obtener posición</b> n) + « ºC». El «n + 1» es para que los días salgan del 1 al 5 y no del 0 al 4.</li>
+      <li class="just">Después del bucle: <b>Número de elementos</b> y tres <b>Calcular</b> (Promedio, Máximo y Mínimo). La media lleva decimales: usa <b>Formatear número</b> con 1 decimal.</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div class="small">Cambia los datos (posiciones 0 a 4):</div>
+        <div class="row" id="n6a-in"></div>
+      </div>
+      <div class="serial" id="sim-n6a"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>¿Qué temperatura hay en la <b>posición 3</b>? ¿Y qué día de la semana es? Explica la diferencia entre posición y número de día.</li>
+        <li>Comprueba la media a mano. ¿Coincide? ¿Por qué la media tiene decimales y los datos no?</li>
+        <li>Pon un dato muy alto (por ejemplo 40) en el simulador. ¿Cuánto cambia la media? ¿Y la máxima? ¿Cuál de las dos describe mejor «cómo ha sido la semana»?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 2 · Un gráfico de barras</h3>
+    <p>Cada número de la lista será la altura de una columna de la matriz. Para encender los LED hay que recorrer <b>todas las columnas</b> y, dentro de cada columna, <b>todas las filas</b>: un «contar con» dentro de otro.</p>
+    <figure class="esquema"><svg viewBox="0 0 680 360" role="img" aria-label="Gráfico de barras en la matriz con coordenadas" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,system-ui,sans-serif"><title>Gráfico de barras en la matriz con coordenadas</title><text x="210.0" y="12" font-size="13" text-anchor="middle" font-weight="700" fill="#1d2433">x (columna) →</text><text x="22" y="180.0" font-size="13" text-anchor="middle" font-weight="700" fill="#1d2433" transform="rotate(-90 22 180.0)">← y (fila)</text><text x="98.0" y="34" font-size="12" text-anchor="middle" fill="#4a5468">0</text><text x="98.0" y="338" font-size="12" text-anchor="middle" fill="#0e7c86" font-weight="700">altura 1</text><text x="154.0" y="34" font-size="12" text-anchor="middle" fill="#4a5468">1</text><text x="154.0" y="338" font-size="12" text-anchor="middle" fill="#0e7c86" font-weight="700">altura 3</text><text x="210.0" y="34" font-size="12" text-anchor="middle" fill="#4a5468">2</text><text x="210.0" y="338" font-size="12" text-anchor="middle" fill="#0e7c86" font-weight="700">altura 5</text><text x="266.0" y="34" font-size="12" text-anchor="middle" fill="#4a5468">3</text><text x="266.0" y="338" font-size="12" text-anchor="middle" fill="#0e7c86" font-weight="700">altura 2</text><text x="322.0" y="34" font-size="12" text-anchor="middle" fill="#4a5468">4</text><text x="322.0" y="338" font-size="12" text-anchor="middle" fill="#0e7c86" font-weight="700">altura 4</text><text x="60" y="72.0" font-size="12" text-anchor="end" fill="#4a5468">0</text><text x="60" y="128.0" font-size="12" text-anchor="end" fill="#4a5468">1</text><text x="60" y="184.0" font-size="12" text-anchor="end" fill="#4a5468">2</text><text x="60" y="240.0" font-size="12" text-anchor="end" fill="#4a5468">3</text><text x="60" y="296.0" font-size="12" text-anchor="end" fill="#4a5468">4</text><rect x="66" y="36" width="288" height="288" rx="10" fill="#111"/><circle cx="98.0" cy="68.0" r="20" fill="#2a2a2a"/><circle cx="98.0" cy="124.0" r="20" fill="#2a2a2a"/><circle cx="98.0" cy="180.0" r="20" fill="#2a2a2a"/><circle cx="98.0" cy="236.0" r="20" fill="#2a2a2a"/><circle cx="98.0" cy="292.0" r="20" fill="#40c057"/><circle cx="154.0" cy="68.0" r="20" fill="#2a2a2a"/><circle cx="154.0" cy="124.0" r="20" fill="#2a2a2a"/><circle cx="154.0" cy="180.0" r="20" fill="#40c057"/><circle cx="154.0" cy="236.0" r="20" fill="#40c057"/><circle cx="154.0" cy="292.0" r="20" fill="#40c057"/><circle cx="210.0" cy="68.0" r="20" fill="#40c057"/><circle cx="210.0" cy="124.0" r="20" fill="#40c057"/><circle cx="210.0" cy="180.0" r="20" fill="#40c057"/><circle cx="210.0" cy="236.0" r="20" fill="#40c057"/><circle cx="210.0" cy="292.0" r="20" fill="#40c057"/><circle cx="266.0" cy="68.0" r="20" fill="#2a2a2a"/><circle cx="266.0" cy="124.0" r="20" fill="#2a2a2a"/><circle cx="266.0" cy="180.0" r="20" fill="#2a2a2a"/><circle cx="266.0" cy="236.0" r="20" fill="#40c057"/><circle cx="266.0" cy="292.0" r="20" fill="#40c057"/><circle cx="322.0" cy="68.0" r="20" fill="#2a2a2a"/><circle cx="322.0" cy="124.0" r="20" fill="#40c057"/><circle cx="322.0" cy="180.0" r="20" fill="#40c057"/><circle cx="322.0" cy="236.0" r="20" fill="#40c057"/><circle cx="322.0" cy="292.0" r="20" fill="#40c057"/><text x="322.0" y="356" font-size="11" text-anchor="middle" fill="#4a5468"></text><text x="390" y="60" font-size="13" font-weight="700" fill="#1d2433" style="white-space:pre">Lista alturas = [1, 3, 5, 2, 4]</text><text x="390" y="82" font-size="13" font-weight="400" fill="#4a5468" style="white-space:pre">(posiciones 0, 1, 2, 3 y 4)</text><text x="390" y="126" font-size="13" font-weight="700" fill="#1d2433" style="white-space:pre">Un LED (x, y) se enciende si</text><text x="390" y="148" font-size="13" font-weight="700" fill="#0e7c86" style="white-space:pre">   y ≥ 5 − altura</text><text x="390" y="192" font-size="13" font-weight="400" fill="#1d2433" style="white-space:pre">Columna 1 (altura 3): 5 − 3 = 2</text><text x="390" y="214" font-size="13" font-weight="400" fill="#1d2433" style="white-space:pre">→ se encienden y = 2, 3 y 4</text><text x="390" y="258" font-size="13" font-weight="400" fill="#4a5468" style="white-space:pre">La fila 0 está ARRIBA: por eso</text><text x="390" y="280" font-size="13" font-weight="400" fill="#4a5468" style="white-space:pre">las barras se dibujan «desde abajo»</text><text x="390" y="302" font-size="13" font-weight="400" fill="#4a5468" style="white-space:pre">comparando con 5 − altura.</text></svg><figcaption>La fila 0 está arriba. Para que la barra «crezca» desde abajo, un LED se enciende si su fila es mayor o igual que 5 − altura.</figcaption></figure>
+    <figure class="prog-img tall-img"><img src="img/N6b_barras.webp" alt="Programa gráfico de barras: lista alturas 1, 3, 5, 2, 4; limpiar; contar con x de 0 a 4: altura igual a obtener posición x, enviar línea; contar con y de 0 a 4: si y mayor o igual que 5 menos altura, píxel x y en verde"><figcaption>Proyecto «N6b Gráfico de barras».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">Crea la lista <b>alturas</b> y tres variables de número: <b>x</b>, <b>y</b> y <b>altura</b>.</li>
+      <li class="just">En Inicializar: consola, <b>Iniciar</b> y <b>brillo 40</b> (<span class="ruta">micro:STEAMakers › NeoMatrix</span>), cinco <b>Añadir</b> (1, 3, 5, 2, 4) y <b>Limpiar</b>.</li>
+      <li class="just">Un <b>contar con</b> (<span class="ruta">Control</span>) con la variable <b>x</b>, desde 0 hasta 4 de a 1. Dentro: <b>Establecer altura = Lista [alturas] Obtener posición x</b> y un <b>Enviar línea</b> que lo cuente.</li>
+      <li class="just">Todavía dentro del primero, <b>otro contar con</b> con la variable <b>y</b>, desde 0 hasta 4. Dentro: un <b>si</b> con <b>y ≥ 5 − altura</b> (comparar en <span class="ruta">Lógica</span>, la resta en <span class="ruta">Matemáticas</span>) que pinte <b>Píxel X = x, Y = y</b> (<span class="ruta">micro:STEAMakers › NeoMatrix</span>).</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div><div class="mx" id="mx-n6b"></div><div class="mx-label">Simulación</div>
+        <div class="row" style="justify-content:center;margin-top:6px"><button class="btn" id="n6b-run">▶ Dibujar</button><button class="btn ghost" id="n6b-step">Paso a paso</button></div></div>
+      <div style="flex:1;min-width:240px"><div class="small">Alturas (de 0 a 5):</div><div class="row" id="n6b-in"></div><div class="serial" id="sim-n6b"></div></div>
+    </div>
+    <div class="entender"><h4>💡 Para entenderlo: el acomodador del cine</h4><p>Un acomodador revisa un cine fila por fila: «fila 1: butaca 1, 2, 3…; fila 2: butaca 1, 2, 3…». Por cada vuelta del bucle de <b>fuera</b> (la fila), el bucle de <b>dentro</b> da todas sus vueltas (las butacas). Aquí, por cada columna x, el bucle de las filas y da 5 vueltas: en total, <b>5 × 5 = 25</b> preguntas «¿enciendo este LED?». Pulsa «Paso a paso» en el simulador y míralo vuelta a vuelta.</p></div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>En «Paso a paso», ¿qué variable cambia más deprisa, x o y? ¿Cuántas veces se ejecuta el «si» en total?</li>
+        <li>Cambia <b>y ≥ 5 − altura</b> por <b>y &lt; altura</b>. ¿Qué le pasa al gráfico? ¿Por qué?</li>
+        <li>¿Qué pasa si pones una altura de 7? ¿Y de −1? ¿Cómo lo evitarías? (Pista: N4).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 3 · Gráfico de luz en vivo</h3>
+    <p>Ahora los datos vienen del sensor. Cada 0,3 s leemos la luz, la convertimos en una altura de 0 a 5, la <b>añadimos al final</b> de la lista y <b>quitamos la más antigua</b> (posición 0). Así la lista siempre tiene 5 datos y el gráfico se <b>desplaza</b> hacia la izquierda, como en un monitor de un hospital.</p>
+    <figure class="prog-img tall-img"><img src="img/N6c_luz_vivo.webp" alt="Programa gráfico de luz en vivo: en Inicializar, repetir 5 veces añadir 0 a la lista lecturas; en Bucle, luz igual a nivel de luz bruto, añadir a la lista limitar mapear luz de 0 a 400 a 0 a 5, eliminar posición 0, limpiar, dibujar las barras con dos contar con y enviar línea, esperar 300 ms"><figcaption>Proyecto «N6c Gráfico de luz en vivo».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">Parte del Programa 2: <b>duplica</b> el proyecto o copia sus bloques. Cambia la lista por una nueva, <b>lecturas</b>, y crea la variable <b>luz</b>.</li>
+      <li class="just">En Inicializar, en lugar de los cinco valores: <b>repetir 5 veces → Añadir 0</b>. La lista empieza con cinco ceros.</li>
+      <li class="just">Mueve los dos «contar con» al <b>Bucle</b>. Antes de ellos: <b>Establecer luz = Nivel de luz</b> (0..4095), <b>Añadir</b> a la lista <b>limitar(mapear(luz de 0–400 a 0–5), 0, 5)</b>, <b>Eliminar posición 0</b> y <b>Limpiar</b>.</li>
+      <li class="just">Al final del Bucle, un <b>Enviar línea</b> con la luz y la última altura (posición 4), y <b>Esperar 300 ms</b>.</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+        <div class="mx" id="mx-n6c"></div><div class="mx-label">Simulación</div>
+        <label class="small">Luz (bruto): <b id="n6c-v">200</b></label>
+        <input type="range" id="n6c-luz" min="0" max="450" value="200" style="width:200px">
+      </div>
+      <div class="serial" id="sim-n6c"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Mueve la mano sobre el sensor despacio y luego deprisa. ¿Cuántos segundos de «historia» caben en la matriz?</li>
+        <li>¿Qué pasaría si quitaras el bloque «Eliminar posición 0»? Piensa en el tamaño de la lista al cabo de una hora. (La memoria de la placa es grande, pero no infinita).</li>
+        <li>¿Por qué hace falta <b>Limpiar</b> antes de dibujar? Pruébalo sin él.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🚀</span> Retos</h3>
+    <div class="retos">
+      <div class="reto b"><span class="tag">Básico</span><h4>El dado en cifras</h4><p>Al pulsar A, lanza el dado 30 veces y guarda las tiradas en una lista (vacíala antes). La consola muestra la media (con dos decimales), la moda, el mínimo y el máximo. ¿Se parece la media a 3,5? ¿Y si lo lanzas 30 veces más?</p></div>
+      <div class="reto m"><span class="tag">Medio</span><h4>Ecualizador</h4><p>Cambia la luz del Programa 3 por el <b>pico del sonido</b> (N4) y haz que las barras se muevan con la música, sin espera. Los LED de arriba, en rojo; el del medio, en amarillo, y los de abajo, en verde, como en un equipo de música.</p></div>
+      <div class="reto p"><span class="tag">Pro</span><h4>Ordenar la lista</h4><p>Al pulsar A, crea una lista de 6 números al azar y <b>ordénala tú</b> con el método de la burbuja: recorre la lista comparando cada número con el siguiente y, si están al revés, intercámbialos; repite el recorrido varias veces. Muestra la lista tras cada pasada y cuenta los intercambios. Después, compara con el bloque <b>Ordenar</b> de la lista.</p></div>
+    </div>
+  </div>
+
+  <details class="capo">
+    <summary>🔧 Bajo el capó: listas que crecen y bucles que se adaptan</summary>
+    <div class="in">
+      <p>Así traduce STEAMakersBlocks las listas del Programa 1:</p>
+<pre class="code"><span class="k">#include</span> &lt;ArrayListAB.h&gt;
+ArrayListAB&lt;<span class="k">double</span>&gt; listNum_temperaturas;
+...
+listNum_temperaturas.<span class="f">add</span>(18);
+<span class="k">for</span> (n = 0; n &lt; listNum_temperaturas.<span class="f">size</span>(); n++) {
+  Serial.<span class="f">println</span>(... listNum_temperaturas[n] ...);
+}
+listNum_temperaturas.<span class="f">average</span>();   <span class="c">// también maxim(), minim(), mode()…</span></pre>
+      <div class="bridge">
+        <div><h4>📦 Una lista que crece</h4>
+          <p>En C++ «de toda la vida», un conjunto de datos (un <i>array</i>) tiene un tamaño fijo que se decide al escribir el programa. <code>ArrayListAB</code> es una pequeña librería que guarda los datos en la memoria y la va <b>ampliando</b> cuando añades elementos, igual que una lista de Python. Cada número ocupa 8 bytes (es un <code>double</code>), así que mil lecturas ocupan unos 8 KB de los 520 KB de RAM del ESP32.</p>
+          <p>Fíjate en que «Por cada elemento» es un <code>for</code> sobre la <b>posición</b> (de 0 a <code>size()</code> − 1), no sobre el valor: por eso dentro necesitas «Obtener posición n».</p></div>
+        <div><h4>🔁 Un «contar con» que piensa</h4>
+          <p>Cuando el «hasta» de un «contar con» es una operación, como <code>4 − i</code> en el reto pro, STEAMakersBlocks no sabe al escribir el código si va a contar hacia arriba o hacia abajo, y genera esto:</p>
+<pre class="code"><span class="k">int</span> j_end = (4 - i);
+<span class="k">for</span> (j = 0; (0 &lt;= j_end) ? j &lt;= j_end : j &gt;= j_end;
+     j += (0 &lt;= j_end) ? +1 : -1) { ... }</pre>
+          <p>El <code>? :</code> es un «si… si no» en una sola línea: decide el sentido en el momento de ejecutarse.</p></div>
+      </div>
+    </div>
+  </details>
+
+  <div class="card quiz" data-quiz="n6">
+    <h3 class="sec-title"><span class="ico">🔎</span> ¿Lo has entendido?</h3>
+    <div class="qs"></div>
+    <div class="row" style="margin-top:8px"><button class="btn qcheck">Comprobar</button><button class="btn ghost qreset">Empezar de nuevo</button><span class="score"></span></div>
+    <p class="small">Cuando termines, haz una captura con tu puntuación para el porfolio.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📁</span> Al porfolio</h3>
+    <ul class="portfolio">
+      <li>Capturas de tus tres programas y de la consola del Programa 1.</li>
+      <li>Foto del gráfico de barras en la matriz y vídeo corto del gráfico de luz en vivo.</li>
+      <li>Tus respuestas a «Interpreta lo que ves», sobre todo la diferencia entre posición y número de día, y cuántas veces se ejecuta el «si» del gráfico.</li>
+      <li>El reto que hayas hecho, con su captura de consola. Si es el pro, explica con tus palabras cómo funciona el método de la burbuja.</li>
+      <li>Captura de tu resultado en «¿Lo has entendido?».</li>
+    </ul>
+  </div>
+  <div class="done-row"><button class="check" data-done="n6">☐ He terminado el N6</button></div>
+</section>
+<div class="pager"><a href="n5.html">← N5 · Sonido</a></div>
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js?v=83499602"></script>
+</body>
+</html>
