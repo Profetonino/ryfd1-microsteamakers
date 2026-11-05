@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reto 50 · Semáforo de ruido · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html">N0 · Tu placa</a>
+    <a href="n1.html">N1 · Secuencias</a>
+    <a href="n2.html">N2 · Variables</a>
+    <a href="n3.html">N3 · Botones</a>
+    <a href="n4.html">N4 · Sensores</a>
+    <a href="r50.html" class="on" aria-current="page">R50 · Reto</a>
+    <span class="soon" title="Próximamente">N5–N10</span>
+    <a href="glosario.html">Glosario</a>
+    <a href="guia.html">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="r50">
+  <h2 class="lvl"><span class="badge reto">R50</span> Reto 50 · El semáforo de ruido del aula</h2>
+  <p class="lead">Has llegado a la mitad del camino. Ahora no hay un programa que copiar: hay un <b>problema real</b> que resolver con todo lo que sabes. Este reto es una <b>evidencia evaluable</b>: se califica con la rúbrica que tienes al final de la página.</p>
+  <div class="row"><span class="pill">⏱️ 3–4 sesiones</span><span class="pill">👥 Por parejas</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span></div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📣</span> La situación</h3>
+    <p>En clase cuesta concentrarse cuando sube el ruido, pero nadie se da cuenta de cuándo se ha pasado de «estamos hablando de la práctica» a «no se oye nada». Os piden un <b>semáforo de ruido</b> para colocarlo en un sitio visible del aula:</p>
+    <table class="t">
+      <tr><th>Color</th><th>Significa</th></tr>
+      <tr><td><span style="color:#2e9d52;font-weight:700">● Verde</span></td><td>Silencio de trabajo: se puede leer y concentrarse.</td></tr>
+      <tr><td><span style="color:#e8a400;font-weight:700">● Ámbar</span></td><td>Conversación normal: se trabaja en parejas o en grupo.</td></tr>
+      <tr><td><span style="color:#d64545;font-weight:700">● Rojo</span></td><td>Demasiado ruido: hay que bajar la voz.</td></tr>
+    </table>
+    <p style="margin-top:12px">Un semáforo que se pone rojo con cada golpe de una silla y vuelve a verde al instante no sirve de nada: nadie le haría caso. Tiene que reflejar el <b>ruido que hay de verdad</b> y verse con calma.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">✅</span> Requisitos</h3>
+    <p><b>Lo mínimo para que el reto esté aprobado:</b></p>
+    <ul>
+      <li>Mide el sonido con el <b>pico de muchas lecturas</b>, como en el sonómetro del N4 (una lectura suelta no sirve).</li>
+      <li>Muestra en la matriz <b>tres estados</b> con sus colores.</li>
+      <li>La consola dice en qué estado está y con qué valor.</li>
+      <li>Has probado el semáforo en silencio, en una conversación y con mucho ruido, y lo has anotado.</li>
+    </ul>
+    <p><b>Para subir de nivel</b> (mira la rúbrica):</p>
+    <ul>
+      <li>Umbrales elegidos con <b>tus propias medidas</b> (<span class="g" data-g="csv">CSV</span> del Serial Plotter).</li>
+      <li>La consola solo escribe cuando <b>cambia</b> el estado (lo aprendiste en el N3).</li>
+      <li>Un <b><span class="g" data-g="suavizado">nivel suavizado</span></b> que baja poco a poco, para que un golpe aislado no lo dispare y el semáforo no parpadee.</li>
+      <li>Una <b><span class="g" data-g="tabla-pruebas">tabla de pruebas</span></b> con varios casos, y la explicación de algún fallo que encontrasteis y cómo lo arreglasteis.</li>
+      <li>Una mejora propia: aviso sonoro solo si el rojo dura varios segundos, dos <span class="g" data-g="umbral">umbrales</span> por estado (<span class="g" data-g="histeresis">histéresis</span>), calibración con un botón…</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧭</span> Cómo abordarlo: cinco fases</h3>
+    <p>Un reto grande se resuelve <b>por partes</b>. No intentéis montarlo todo de golpe: haced una fase, comprobad que funciona y pasad a la siguiente.</p>
+    <ol class="steps">
+      <li class="just"><b>Medir.</b> Con el sonómetro de picos del N4, grabad un CSV en el aula real: un rato en silencio, una conversación normal y mucho ruido. Apuntad en el porfolio los valores de pico típicos de cada situación.</li>
+      <li class="just"><b>Diseñar.</b> Antes de tocar un bloque, escribid en el porfolio el plan en palabras (<span class="g" data-g="pseudocodigo">pseudocódigo</span>): qué medís, cómo decidís el estado y qué hacéis en cada uno. Elegid los dos umbrales (verde/ámbar y ámbar/rojo) a partir de vuestras medidas y justificadlos.</li>
+      <li class="just"><b>Programar por partes.</b> Primero la medida (el pico) y comprobad en el plotter que tiene sentido. Después la decisión (una variable <code>estado</code> con 0, 1 o 2) y comprobad en la consola que cambia cuando debe. Por último, los colores.</li>
+      <li class="just"><b>Probar.</b> Rellenad la tabla de pruebas de abajo. Si algo no hace lo que esperabais, buscad la causa con la consola o el plotter, corregidlo y volved a probar. Guardad el «antes» y el «después».</li>
+      <li class="just"><b>Documentar.</b> Subid al porfolio todo lo que pide el apartado «Al porfolio».</li>
+    </ol>
+    <figure class="esquema"><svg viewBox="0 0 680 120" role="img" aria-label="Escala del nivel de ruido con tres zonas" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,system-ui,sans-serif"><title>Escala del nivel de ruido con tres zonas</title><rect x="20" y="40" width="160" height="34" rx="6" fill="#2e9d52"/><rect x="180" y="40" width="300" height="34" fill="#f2b705"/><rect x="480" y="40" width="180" height="34" rx="6" fill="#d64545"/><text x="100" y="62" font-size="14" fill="#fff" text-anchor="middle" font-weight="700">VERDE</text><text x="330" y="62" font-size="14" fill="#1d2433" text-anchor="middle" font-weight="700">ÁMBAR</text><text x="570" y="62" font-size="14" fill="#fff" text-anchor="middle" font-weight="700">ROJO</text><line x1="180" y1="30" x2="180" y2="84" stroke="#1d2433" stroke-width="2"/><line x1="480" y1="30" x2="480" y2="84" stroke="#1d2433" stroke-width="2"/><text x="180" y="22" font-size="13" text-anchor="middle" font-weight="700" fill="#1d2433">umbral 1 = ?</text><text x="480" y="22" font-size="13" text-anchor="middle" font-weight="700" fill="#1d2433">umbral 2 = ?</text><text x="20" y="104" font-size="12" fill="#4a5468">0 (silencio)</text><text x="660" y="104" font-size="12" fill="#4a5468" text-anchor="end">nivel de ruido →</text><text x="330" y="104" font-size="12" fill="#4a5468" text-anchor="middle">los dos umbrales los decidís con vuestras medidas</text></svg><figcaption>El estado sale de comparar el nivel de ruido con dos umbrales. Ojo con el orden de las condiciones (N3).</figcaption></figure>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🌊</span> La idea clave: un nivel que se va olvidando</h3>
+    <p>El pico del N4 sube de golpe con una palmada y en la vuelta siguiente vuelve casi a cero. Para un semáforo eso es un problema: parpadearía sin parar. La solución es guardar un <b>nivel</b> que funcione así:</p>
+    <ul>
+      <li>Si el pico de esta vuelta es <b>mayor</b> que el nivel, el nivel sube hasta el pico, de golpe.</li>
+      <li>Si no, el nivel <b>baja un poco</b>: se multiplica por 0,95 (pierde un 5 %).</li>
+    </ul>
+    <div class="entender"><h4>💡 Para entenderlo: como una campana</h4><p>Cuando golpeas una campana, el sonido no desaparece de golpe: va bajando poco a poco. El nivel hace lo mismo con el ruido. Si alguien grita, el nivel sube enseguida; si después hay silencio, tarda un rato en bajar. Y si el ruido sigue, el nivel se mantiene arriba porque cada pico nuevo lo vuelve a subir.</p><p>Con números: si el nivel está en 1000 y hay silencio, en cada vuelta queda en 950, 902, 857, 815… Unas 23 vueltas después ya está por debajo de 300. Si cada vuelta del Bucle dura unos 0,1 s, eso son unos 2 segundos. Cambiando el 0,95 decides si olvida más deprisa (0,8) o más despacio (0,98).</p></div>
+    <p>Comprueba la diferencia en la simulación: la línea naranja es el pico de cada vuelta y la morada, el nivel.</p>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="row"><button class="btn ghost on" data-r50="0">Silencio</button><button class="btn ghost" data-r50="1">Conversación</button><button class="btn ghost" data-r50="2">Mucho ruido</button></div>
+        <button class="btn" id="r50-palm">Palmada aislada</button>
+        <label class="small">Factor de olvido: <b id="r50-fv">0,95</b></label>
+        <input type="range" id="r50-f" min="0.5" max="0.99" step="0.01" value="0.95" style="width:220px">
+      </div>
+      <div class="plotter" id="plot-r50"></div>
+    </div>
+    <div class="note"><b>Antes de programar, interpreta</b>
+      <ul>
+        <li>Da una palmada aislada en silencio. ¿Cuánto tiempo tarda el nivel en volver abajo? ¿Y el pico?</li>
+        <li>Pon el factor en 0,5 y luego en 0,99. ¿Qué ventajas e inconvenientes tiene cada valor para un semáforo?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🆘</span> Pistas (ábrelas solo si te atascas)</h3>
+    <details class="capo"><summary>💡 Pista 1 · ¿Qué variables necesito?</summary><div class="in"><p>Como mínimo: <code>muestra</code> y <code>pico</code> (para medir, como en el N4), <code>estado</code> (0 verde, 1 ámbar, 2 rojo) y <code>anterior</code> (para escribir solo cuando cambie). Si haces el nivel suavizado, también <code>nivel</code>. Todas son de tipo número.</p></div></details>
+    <details class="capo"><summary>💡 Pista 2 · ¿Cómo decido el estado?</summary><div class="in"><p>Con un <b>si</b> con una rama <b>sino si</b> y otra <b>sino</b> (el segundo bloque si de <span class="ruta">Lógica</span>, más un <b>+</b>). Pregunta primero por lo más bajo: si es menor que el primer umbral → verde; sino si es menor que el segundo → ámbar; sino → rojo. ¿Por qué no hace falta preguntar «mayor que el primer umbral y menor que el segundo»?</p></div></details>
+    <details class="capo"><summary>💡 Pista 3 · Mi semáforo parpadea</summary><div class="in"><p>Mira el plotter: si el valor que usas para decidir salta arriba y abajo cerca de un umbral, el color cambiará a cada momento. Usa el <b>nivel</b> en lugar del pico para decidir. Para multiplicar, el bloque de operaciones está en <span class="ruta">Matemáticas</span>.</p></div></details>
+    <details class="capo"><summary>💡 Pista 4 · La consola escribe sin parar</summary><div class="in"><p>Es el patrón del N3: guarda el estado de la vuelta anterior y pinta el color y escribe la línea solo <b>si estado ≠ anterior</b>. Después, <b>anterior = estado</b>.</p></div></details>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧪</span> Tabla de pruebas</h3>
+    <p>Copiadla en el porfolio y rellenadla con vuestro semáforo. La columna «Qué espero» se rellena <b>antes</b> de probar.</p>
+    <table class="t">
+      <tr><th>Caso</th><th>Qué hago</th><th>Qué espero</th><th>Qué pasa (valores de consola/plotter)</th><th>¿Bien?</th></tr>
+      <tr><td>1</td><td>Silencio total durante 10 s</td><td></td><td></td><td></td></tr>
+      <tr><td>2</td><td>Conversación normal a 1 m de la placa</td><td></td><td></td><td></td></tr>
+      <tr><td>3</td><td>Varias personas hablando alto</td><td></td><td></td><td></td></tr>
+      <tr><td>4</td><td>Una palmada aislada en silencio</td><td></td><td></td><td></td></tr>
+      <tr><td>5</td><td>Música del móvil cerca de la placa</td><td></td><td></td><td></td></tr>
+      <tr><td>6</td><td>(Vuestro caso)</td><td></td><td></td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📊</span> Rúbrica de evaluación</h3>
+    <p>Cada criterio se califica por separado. Para alcanzar un nivel hay que cumplir lo que dice <b>y lo de los niveles anteriores</b>.</p>
+    <h4>Criterio 1.1 · Diseña y programa una solución que funciona</h4>
+    <table class="t rubrica">
+      <tr><th>Insuficiente</th><th>Suficiente</th><th>Bien</th><th>Notable</th><th>Sobresaliente</th></tr>
+      <tr>
+        <td>El programa no funciona, no distingue tres estados o usa una lectura suelta del micrófono.</td>
+        <td>Funciona con tres estados de color a partir del <b>pico</b> de muchas lecturas, y la consola informa del estado.</td>
+        <td>Los umbrales salen de vuestras <b>medidas</b> (CSV) y están justificados; la consola escribe solo cuando cambia el estado; las variables tienen nombres claros.</td>
+        <td>Usa un <b>nivel suavizado</b>, de modo que un golpe aislado no lo dispara y el semáforo no parpadea; envía el nivel y los umbrales al plotter.</td>
+        <td>Añade una <b>mejora propia</b> bien resuelta (aviso sonoro con retardo, histéresis, calibración…) y el programa está organizado en partes claras: medir, decidir y mostrar.</td>
+      </tr>
+    </table>
+    <h4 style="margin-top:14px">Criterio 1.2 · Prueba, corrige y valida</h4>
+    <table class="t rubrica">
+      <tr><th>Insuficiente</th><th>Suficiente</th><th>Bien</th><th>Notable</th><th>Sobresaliente</th></tr>
+      <tr>
+        <td>No hay pruebas, o solo se dice «funciona» sin datos.</td>
+        <td>Prueba al menos <b>tres situaciones</b> (silencio, conversación, mucho ruido) y anota lo que pasa.</td>
+        <td>Completa la <b>tabla de pruebas</b> (al menos 5 casos, con la palmada aislada) con lo esperado y lo obtenido, y lo acompaña de capturas de la consola o del plotter.</td>
+        <td>Detecta al menos <b>un fallo</b>, explica su causa con los datos y muestra cómo lo corrigió (antes y después).</td>
+        <td>Valida el semáforo en <b>otro lugar o situación real</b> (otra aula, el pasillo, la biblioteca), ajusta los umbrales con datos y explica los límites de su solución.</td>
+      </tr>
+    </table>
+    <p class="small" style="margin-top:8px">Si no se entrega el reto, la calificación es «No entregado». Que el reto se haga en pareja no impide que la calificación sea individual: cada miembro debe saber explicar el programa.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📁</span> Al porfolio</h3>
+    <ul class="portfolio">
+      <li>El CSV de vuestras medidas y la tabla de valores típicos (silencio, conversación, ruido).</li>
+      <li>El plan en palabras (pseudocódigo) y la justificación de los umbrales.</li>
+      <li>Captura del programa completo y del Serial Plotter funcionando.</li>
+      <li>La tabla de pruebas rellena, con el «antes y después» de algún fallo corregido.</li>
+      <li>Un vídeo corto (30–60 s) del semáforo pasando por los tres colores.</li>
+      <li>Si habéis usado un asistente de IA: qué le preguntasteis, qué os aportó y qué comprobasteis vosotros.</li>
+    </ul>
+  </div>
+  <div class="done-row"><button class="check" data-done="r50">☐ He terminado el Reto 50</button></div>
+</section>
+<div class="pager"><a href="n4.html">← N4 · Sensores</a></div>
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
