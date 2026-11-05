@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N5 · Sonido y bucles · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html">N0 · Tu placa</a>
+    <a href="n1.html">N1 · Secuencias</a>
+    <a href="n2.html">N2 · Variables</a>
+    <a href="n3.html">N3 · Botones</a>
+    <a href="n4.html">N4 · Sensores</a>
+    <a href="r50.html">R50 · Reto</a>
+    <a href="n5.html" class="on" aria-current="page">N5 · Sonido</a>
+    <span class="soon" title="Próximamente">N6–N10</span>
+    <a href="glosario.html">Glosario</a>
+    <a href="guia.html">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="n5">
+  <h2 class="lvl"><span class="badge">N5</span> Sonido y bucles</h2>
+  <p class="lead">La placa ya sabe medir el sonido; ahora va a <b>producirlo</b>. Con el zumbador harás sirenas, notas y melodías, y por el camino aprenderás las tres formas de repetir algo: un número fijo de veces, contando, o mientras se cumpla una condición.</p>
+  <div class="row"><span class="pill">⏱️ 2 sesiones</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span><span class="pill crit">T</span></div>
+  <p class="small">🔈 Los simuladores de este nivel suenan: sube el volumen del ordenador (o usa auriculares en clase).</p>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🎯</span> Objetivo</h3>
+    <ul>
+      <li>Hacer sonar el zumbador eligiendo la <b>frecuencia</b> (lo agudo) y la <b>duración</b>.</li>
+      <li>Usar los tres bucles: <b>repetir</b>, <b>contar con</b> y <b>mientras</b>, y saber cuándo conviene cada uno.</li>
+      <li>Tocar notas y melodías, y entender la relación entre notas y frecuencias.</li>
+      <li>Descubrir qué significa que un bloque «bloquea» el programa mientras suena.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar</h3>
+    <p>En el N4 viste que el sonido es una <span class="g" data-g="onda">onda</span>. El número de veces que vibra por segundo es su <span class="g" data-g="frecuencia">frecuencia</span>, y se mide en <b>hercios (Hz)</b>: cuanto más alta, más agudo. El oído humano oye, más o menos, entre 20 Hz y 20 000 Hz; una voz está entre 100 y 300 Hz y un silbato llega a 3000 Hz.</p>
+    <p>El <b>zumbador</b> de la placa (pin io33) es una pequeña membrana que la placa empuja y suelta muy deprisa con impulsos eléctricos. El bloque <b>Zumbador</b> (<span class="ruta">micro:STEAMakers › Actuadores</span>) tiene dos huecos: <b>Ms</b>, cuánto dura el sonido, y <b>Hz</b>, la frecuencia.</p>
+    <table class="t">
+      <tr><th>Bucle</th><th>Qué hace</th><th>En Python</th><th>Úsalo cuando…</th></tr>
+      <tr><td><b>repetir N veces</b><br><span class="ruta">Control</span></td><td>Repite lo de dentro un número fijo de veces</td><td><code>for _ in range(3):</code></td><td>Sabes cuántas veces: «tres pitidos»</td></tr>
+      <tr><td><b>contar con</b><br><span class="ruta">Control</span></td><td>Repite mientras una variable va de un valor a otro, de tanto en tanto</td><td><code>for f in range(500, 1501, 50):</code></td><td>Necesitas el número de cada vuelta: «de 500 a 1500 Hz»</td></tr>
+      <tr><td><b>mientras</b><br><span class="ruta">Control</span></td><td>Repite mientras una condición sea verdadera</td><td><code>while boton_pulsado():</code></td><td>No sabes cuántas veces: «mientras mantengas el botón»</td></tr>
+    </table>
+    <div class="entender"><h4>💡 Para entenderlo: tres formas de dar vueltas a la pista</h4><p>En educación física te pueden decir «da <b>tres vueltas</b>» (repetir), «da vueltas y ve contando <b>de la 1 a la 10</b>, y en cada una di el número» (contar con) o «corre <b>mientras</b> suene la música» (mientras). En los tres casos repites lo mismo; lo que cambia es <b>cómo sabes cuándo parar</b>.</p><p>Recuerda que todo esto ocurre <b>dentro</b> del Bucle principal, que ya se repite para siempre: es como dar tres vueltas a la pista… cada día del curso.</p></div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 1 · La sirena</h3>
+    <p>Una sirena es un sonido que sube y baja. Con <b>contar con</b>, la variable <code>frecuencia</code> va de 500 a 1500 Hz de 50 en 50; en cada vuelta suena 20 ms con esa frecuencia. Luego, otro «contar con» la hace bajar. De paso, la enviamos al plotter.</p>
+    <figure class="prog-img"><img src="img/N5a_sirena.webp" alt="Programa sirena: en Bucle, contar con frecuencia desde 500 hasta 1500 de a 50: zumbador 20 ms con la frecuencia y plotter; después contar con frecuencia desde 1500 hasta 500 de a 50 con lo mismo"><figcaption>Proyecto «N5a La sirena».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">En Inicializar: <b>Iniciar Baudios 115200</b> y un mensaje (<span class="ruta">Comunicaciones › Puerto serie</span>).</li>
+      <li class="just">En Bucle, un bloque <b>contar con</b> (<span class="ruta">Control</span>). Pulsa el desplegable de la variable <b>i</b> y elige <b>Cambiar nombre de variable…</b>: llámala <b>frecuencia</b>. Pon <b>desde 500 hasta 1500 de a 50</b>.</li>
+      <li class="just">Dentro: un bloque <b>Zumbador</b> (<span class="ruta">micro:STEAMakers › Actuadores</span>) con <b>Ms 20</b> y, en <b>Hz</b>, la variable <b>frecuencia</b> (<span class="ruta">Variables</span>). Debajo, un <b>Plotter</b> con el nombre «frecuencia» y la variable.</li>
+      <li class="just">Duplica el «contar con» (clic derecho → <b>Duplicar</b>) y ponlo debajo con <b>desde 1500 hasta 500 de a 50</b>. ¡Ojo! El paso sigue siendo <b>50, positivo</b>: el bloque ya sabe que tiene que restar porque el principio es mayor que el final.</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn" id="n5a-play">▶ Escuchar la sirena</button>
+        <label class="small">Paso («de a»): <b id="n5a-pv">50</b> Hz</label>
+        <input type="range" id="n5a-paso" min="10" max="250" step="10" value="50" style="width:200px">
+      </div>
+      <div class="plotter" id="plot-n5a"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves (y oyes)</b>
+      <ul>
+        <li>¿Cuántas vueltas da cada «contar con»? (Pista: de 500 a 1500 de 50 en 50, contando los dos extremos). ¿Cuánto dura entonces una subida?</li>
+        <li>Cambia el paso a 10 y a 250. ¿Qué cambia en el sonido y en la forma de la gráfica? ¿Y en lo que tarda la sirena?</li>
+        <li>¿Qué forma tiene la gráfica del plotter? ¿Por qué?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 2 · Un arpegio que se repite</h3>
+    <p>Un <b>arpegio</b> son las notas de un acorde tocadas una detrás de otra. Aquí tocamos DO, MI y SOL <b>tres veces</b> con un <b>repetir</b>, cada nota con un color, y terminamos con un DO más agudo. El bloque <b>Tono (Hz)</b> te da la frecuencia de cada nota sin tener que sabértela.</p>
+    <figure class="prog-img"><img src="img/N5b_arpegio.webp" alt="Programa arpegio: repetir 3 veces: rellenar rojo y zumbador 150 ms DO, rellenar verde y MI, rellenar azul y SOL; después rellenar blanco, zumbador 400 ms a 1046,5 Hz, limpiar, enviar Fin y esperar 1000 ms"><figcaption>Proyecto «N5b Arpegio con repetir».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">En Inicializar: consola, <b>Iniciar</b> la matriz y <b>Establecer brillo 40</b> (<span class="ruta">micro:STEAMakers › NeoMatrix</span>).</li>
+      <li class="just">En Bucle: un <b>Enviar línea</b> y un <b>repetir 3 veces</b> (<span class="ruta">Control</span>).</li>
+      <li class="just">Dentro del repetir, tres parejas: <b>Rellenar</b> con un color y <b>Zumbador</b> de 150 ms. En el hueco <b>Hz</b> del zumbador encaja el bloque <b>Tono (Hz)</b> (<span class="ruta">micro:STEAMakers › Actuadores</span>) y elige la nota en su desplegable: DO, MI y SOL.</li>
+      <li class="just">Fuera del repetir: <b>Rellenar</b> blanco, <b>Zumbador</b> de 400 ms con el número <b>1046.5</b> (un DO una <span class="g" data-g="octava">octava</span> más agudo: el doble de 523,26), <b>Limpiar</b>, un mensaje y <b>Esperar 1000 ms</b>.</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div><div class="mx" id="mx-n5b"></div><div class="mx-label">Simulación</div><div class="row" style="justify-content:center;margin-top:6px"><button class="btn" id="n5b-play">▶ Escuchar</button></div></div>
+      <div class="serial" id="sim-n5b"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves (y oyes)</b>
+      <ul>
+        <li>¿Cuántas notas suenan en total en cada vuelta del Bucle? ¿Cuánto dura una vuelta completa? Haz la cuenta con las duraciones.</li>
+        <li>La matriz cambia de color <b>justo antes</b> de cada nota y se queda así mientras suena. ¿Por qué no hace falta ningún «Esperar» entre una nota y la siguiente?</li>
+        <li>¿Cuántos bloques te ahorras gracias al «repetir»?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 3 · Mientras pulsas</h3>
+    <p>El zumbador suena <b>mientras</b> mantengas el botón A, y al soltarlo la consola te dice cuánto tiempo lo has mantenido. Como no sabemos de antemano cuántas vueltas va a dar, el bucle adecuado es <b>mientras</b>.</p>
+    <figure class="prog-img"><img src="img/N5c_mientras.webp" alt="Programa mientras pulsas: si pulsador A pulsado: duracion igual a 0; repetir mientras pulsador A pulsado: zumbador 50 ms LA y sumar 50 a duracion; después enviar línea con la duración"><figcaption>Proyecto «N5c Mientras pulsas».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">Crea una variable de número, <b>duracion</b> (<span class="ruta">Variables</span> › <b>Crear variable… (Número)</b>).</li>
+      <li class="just">En Bucle, un <b>si</b> (<span class="ruta">Lógica</span>) con <b>Pulsador A pulsado</b> (<span class="ruta">micro:STEAMakers › Sensores</span>). Aquí usamos «pulsado» y no «se ha pulsado», porque nos interesa el botón <b>mientras</b> está apretado.</li>
+      <li class="just">Dentro del si: <b>Establecer duracion = 0</b> y un bloque <b>repetir mientras</b> (<span class="ruta">Control</span>) con la misma condición, <b>Pulsador A pulsado</b>.</li>
+      <li class="just">Dentro del mientras: <b>Zumbador</b> 50 ms con <b>Tono LA</b>, y <b>sumar 50 a duracion</b> (<span class="ruta">Matemáticas</span>): cada vuelta suma los milisegundos que ha durado.</li>
+      <li class="just">Fuera del mientras (pero dentro del si): un <b>Enviar línea</b> con «Has mantenido A unos » + <b>Número entero</b>(duracion) + « ms».</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+        <button class="btn hold" id="n5c-a">Mantén A</button>
+        <div class="small">Mantén pulsado el ratón (o el dedo)</div>
+      </div>
+      <div class="serial" id="sim-n5c"></div>
+    </div>
+    <div class="entender"><h4>💡 Para entenderlo: un bloque que «se queda esperando»</h4><p>Mientras el zumbador suena, la placa <b>no hace nada más</b>: se queda parada en ese bloque hasta que termina la nota, igual que con «Esperar». Y mientras está dentro del «mientras», tampoco sale de ahí: el resto del Bucle no se ejecuta hasta que sueltas el botón. Decimos que estos bloques <b><span class="g" data-g="bloqueante">bloquean</span></b> el programa. No es un problema en una melodía, pero lo será cuando quieras que la placa haga varias cosas a la vez (lo verás en el reto pro y en el N8).</p></div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Haz una pulsación muy corta. ¿Cuál es el valor más pequeño que puede salir? ¿Por qué nunca sale, por ejemplo, 20 ms?</li>
+        <li>¿Qué pasaría si quitaras el «si» y dejaras solo el «mientras» en el Bucle? Piensa en qué se escribiría en la consola cuando nadie pulsa.</li>
+        <li>Mide con el móvil cuánto tiempo mantienes el botón y compáralo con lo que dice la consola. ¿Coinciden? ¿Qué podría hacer que no cuadrara del todo?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 4 · Una melodía en una línea (RTTTL)</h3>
+    <p>Escribir una melodía nota a nota con bloques es muy largo. Para eso existe el formato <span class="g" data-g="rtttl">RTTTL</span>, que inventó Nokia para los tonos de los móviles antiguos: una melodía entera cabe en una línea de texto. El bloque <b>Reproducir RTTTL</b> (<span class="ruta">micro:STEAMakers › Actuadores</span>) la toca. Aquí suena el <i>Himno de la alegría</i> de Beethoven (1824), una música que ya es de dominio público.</p>
+    <figure class="prog-img"><img src="img/N5d_rtttl.webp" alt="Programa melodía RTTTL: en Bucle, enviar línea con el título, zumbador reproducir RTTTL con el texto de la melodía y esperar 2000 ms"><figcaption>Proyecto «N5d Melodía RTTTL».</figcaption></figure>
+    <p>El texto completo del bloque es:</p>
+<pre class="code">alegria:d=4,o=5,b=140:e,e,f,g,g,f,e,d,c,c,d,e,e.,8d,2d,e,e,f,g,g,f,e,d,c,c,d,e,d.,8c,2c</pre>
+    <table class="t">
+      <tr><th>Parte</th><th>Significado</th></tr>
+      <tr><td><code>alegria</code></td><td>El nombre de la melodía</td></tr>
+      <tr><td><code>d=4,o=5,b=140</code></td><td>Valores por defecto: cada nota dura una <b>negra</b> (4), en la <b>octava 5</b>, a <b>140 negras por minuto</b></td></tr>
+      <tr><td><code>e</code>, <code>f</code>, <code>c</code>…</td><td>Las notas con su nombre en inglés: c = DO, d = RE, e = MI, f = FA, g = SOL, a = LA, b = SI; <code>p</code> es un silencio</td></tr>
+      <tr><td><code>8d</code>, <code>2d</code></td><td>Un número delante cambia la duración: 8 = corchea (la mitad de una negra), 2 = blanca (el doble)</td></tr>
+      <tr><td><code>e.</code></td><td>Un punto alarga la nota la mitad de su duración</td></tr>
+    </table>
+    <div class="sim-row" style="margin-top:10px">
+      <div style="flex:1;min-width:260px"><label class="small">Prueba a cambiar la melodía o el tempo (b=…):</label><textarea id="n5d-txt" rows="3" style="width:100%;font:13px ui-monospace,Consolas,monospace;border:1px solid var(--line);border-radius:8px;padding:8px">alegria:d=4,o=5,b=140:e,e,f,g,g,f,e,d,c,c,d,e,e.,8d,2d,e,e,f,g,g,f,e,d,c,c,d,e,d.,8c,2c</textarea>
+      <div class="row"><button class="btn" id="n5d-play">▶ Tocar</button><button class="btn ghost" id="n5d-stop">■ Parar</button><span class="small" id="n5d-msg"></span></div></div>
+    </div>
+    <div class="note"><b>Interpreta lo que oyes</b>
+      <ul>
+        <li>Cambia <code>b=140</code> por <code>b=80</code> y por <code>b=220</code>. ¿Qué cambia? ¿Cambia alguna nota?</li>
+        <li>Cambia <code>o=5</code> por <code>o=6</code>. ¿Qué le pasa a la melodía? ¿Por qué crees que suena igual pero «más arriba»?</li>
+        <li>Escribe en RTTTL el principio de una melodía tradicional que conozcas (una canción popular, un villancico…) y pruébala aquí antes de pasarla a la placa.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🎹</span> Las notas son números</h3>
+    <p>Cada nota es una frecuencia. Pulsa las teclas para oírlas y ver sus hercios: son las que da el bloque <b>Tono (Hz)</b>.</p>
+    <div id="n5-piano" class="piano"></div>
+    <p class="small" id="n5-piano-out">Pulsa una tecla.</p>
+    <div class="entender"><h4>💡 Para entenderlo: subir una octava es multiplicar por 2</h4><p>Fíjate en el primer DO (523,26 Hz) y en el último (1046,5 Hz): el agudo vibra <b>exactamente el doble</b> de rápido. Eso es una <b>octava</b>. Entre las dos hay 12 notas (contando las teclas negras), y cada una es la anterior multiplicada por un número fijo, más o menos 1,0595. Si multiplicas 12 veces por 1,0595 sale 2. Por eso el bloque dice que LA vale 880 Hz: es el doble del famoso LA de 440 Hz con el que se afinan las orquestas.</p></div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🚀</span> Retos</h3>
+    <div class="retos">
+      <div class="reto b"><span class="tag">Básico</span><h4>El timbre</h4><p>Al pulsar A suena un «ding-dong» (dos notas, la primera más aguda y la segunda más larga) y la matriz se ilumina mientras suena. La consola avisa de cada llamada. ¿«Pulsado» o «se ha pulsado»?</p></div>
+      <div class="reto m"><span class="tag">Medio</span><h4>Theremín de luz</h4><p>Un theremín es un instrumento que se toca sin tocarlo. Haz que la frecuencia dependa de la luz: cuanta más luz, más agudo. Usa <b>mapear</b> y <b>limitar</b> del N4 para pasar del valor bruto de la luz a una frecuencia entre 200 y 2000 Hz, y que se calle si tapas del todo el sensor. Envía la luz y la frecuencia al plotter.</p></div>
+      <div class="reto p"><span class="tag">Pro</span><h4>Metrónomo</h4><p>Un tic con destello cada cierto tiempo, a un ritmo en <b>bpm</b> (pulsos por minuto) que empieza en 60. A sube 10 bpm y B baja 10, siempre entre 40 y 200. Calcula la espera entre tics (pista: en un minuto hay 60 000 ms) y escribe el bpm en la consola. Después, prueba a cambiar el ritmo rápidamente: ¿responde siempre a los botones? Explica por qué.</p></div>
+    </div>
+  </div>
+
+  <details class="capo">
+    <summary>🔧 Bajo el capó: cómo suena un zumbador</summary>
+    <div class="in">
+      <p>Así traduce STEAMakersBlocks el bloque Zumbador y el «contar con» de la sirena:</p>
+<pre class="code"><span class="k">#include</span> &lt;ABLocks_TimerFreeTone.h&gt;
+...
+<span class="k">for</span> (frecuencia = 500; frecuencia &lt;= 1500; frecuencia = frecuencia + 50) {
+  <span class="f">TimerFreeTone</span>(33, frecuencia, 20);   <span class="c">// pin, Hz, ms</span>
+}
+<span class="k">for</span> (frecuencia = 1500; frecuencia &gt;= 500; frecuencia = frecuencia - 50) { ... }</pre>
+      <div class="bridge">
+        <div><h4>🔊 La onda cuadrada</h4>
+          <p><code>TimerFreeTone</code> pone el pin 33 a 3,3 V y a 0 V alternativamente, tantas veces por segundo como la frecuencia. Para 500 Hz, cada ciclo dura 1/500 s = 2 ms: 1 ms encendido y 1 ms apagado. Esa forma de onda, que salta de golpe entre dos valores, se llama <b>onda cuadrada</b>, y por eso el zumbador suena «electrónico» y no como una flauta. La librería se queda esperando hasta que pasa la duración: es lo que hace que el bloque sea <b>bloqueante</b>.</p>
+          <p>Fíjate también en que la frecuencia se pasa como número entero: el DO de 523,26 Hz suena en realidad a 523 Hz. Nadie nota la diferencia.</p></div>
+        <div><h4>🔁 «Contar con» por dentro</h4>
+          <p>El bloque genera un <code>for</code> distinto según el principio sea menor o mayor que el final: suma el paso o lo resta, y compara con <code>&lt;=</code> o <code>&gt;=</code>. Por eso el paso se escribe <b>siempre positivo</b>. Si pones −50, el código que se genera es <code>frecuencia--50</code>, que no compila.</p>
+          <p>El RTTTL se traduce en <code>TimerFreeToneRtttl(33, "alegria:d=4,...")</code>: la librería lee el texto letra a letra, calcula la frecuencia y la duración de cada nota y llama a TimerFreeTone con cada una.</p></div>
+      </div>
+    </div>
+  </details>
+
+  <div class="card quiz" data-quiz="n5">
+    <h3 class="sec-title"><span class="ico">🔎</span> ¿Lo has entendido?</h3>
+    <div class="qs"></div>
+    <div class="row" style="margin-top:8px"><button class="btn qcheck">Comprobar</button><button class="btn ghost qreset">Empezar de nuevo</button><span class="score"></span></div>
+    <p class="small">Cuando termines, haz una captura con tu puntuación para el porfolio.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📁</span> Al porfolio</h3>
+    <ul class="portfolio">
+      <li>Capturas de tus programas, y del plotter de la sirena.</li>
+      <li>Tus respuestas a «Interpreta lo que ves», con las cuentas (vueltas, duraciones).</li>
+      <li>Un vídeo corto del arpegio o de tu reto sonando.</li>
+      <li>Tu propia melodía en RTTTL (una canción tradicional o inventada por ti) y lo que significa cada parte.</li>
+      <li>El reto que hayas hecho, con su captura y, si es el pro, la explicación de por qué a veces no responde a los botones.</li>
+      <li>Captura de tu resultado en «¿Lo has entendido?».</li>
+    </ul>
+  </div>
+  <div class="done-row"><button class="check" data-done="n5">☐ He terminado el N5</button></div>
+</section>
+<div class="pager"><a href="r50.html">← R50 · Reto</a></div>
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
