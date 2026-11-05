@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N7 · Funciones y movimiento · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css?v=8d70103e">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html">N0 · Tu placa</a>
+    <a href="n1.html">N1 · Secuencias</a>
+    <a href="n2.html">N2 · Variables</a>
+    <a href="n3.html">N3 · Botones</a>
+    <a href="n4.html">N4 · Sensores</a>
+    <a href="r50.html">R50 · Reto</a>
+    <a href="n5.html">N5 · Sonido</a>
+    <a href="n6.html">N6 · Listas</a>
+    <a href="n7.html" class="on" aria-current="page">N7 · Movimiento</a>
+    <span class="soon" title="Próximamente">N8–N10</span>
+    <a href="evaluacion.html">Evaluación</a>
+    <a href="glosario.html">Glosario</a>
+    <a href="guia.html">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="n7">
+  <h2 class="lvl"><span class="badge">N7</span> Funciones y movimiento</h2>
+  <p class="lead">Dentro de la placa hay un pequeño chip que nota la <b>gravedad</b> y los <b>giros</b>: el mismo que usa tu móvil para girar la pantalla. Con él harás un nivel de burbuja y un detector de sacudidas. Y como los programas empiezan a crecer, aprenderás a organizarlos en <b>funciones</b>: trozos de programa con nombre que puedes usar tantas veces como quieras.</p>
+  <div class="row"><span class="pill">⏱️ 2–3 sesiones</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span><span class="pill crit">1.3</span><span class="pill crit">T</span></div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🎯</span> Objetivo</h3>
+    <ul>
+      <li>Leer el <span class="g" data-g="acelerometro">acelerómetro</span> y el <span class="g" data-g="giroscopio">giroscopio</span> de la placa y entender qué miden.</li>
+      <li>Crear y usar <span class="g" data-g="funcion">funciones</span>: sin datos, con <span class="g" data-g="parametro">parámetros</span> y que <b>devuelven</b> un resultado.</li>
+      <li>Calcular con la placa: raíz cuadrada, potencias, valor absoluto y ángulos.</li>
+      <li>Descubrir por qué un sensor puede «equivocarse poco a poco» (la deriva del giroscopio).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar</h3>
+    <p>El chip <b>MPU6050</b> tiene dos sensores. El <b>acelerómetro</b> mide aceleraciones en tres direcciones (ejes X, Y y Z), en m/s². Aunque la placa esté quieta, siempre nota la <b>gravedad</b>: 9,8 m/s² hacia abajo. Si la placa está plana, toda la gravedad cae en un eje; si la inclinas, se reparte entre varios. El <b>giroscopio</b> mide lo deprisa que gira la placa, en grados por segundo.</p>
+    <figure class="esquema"><svg viewBox="0 0 680 270" role="img" aria-label="La gravedad se reparte entre los ejes al inclinar la placa" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,system-ui,sans-serif"><title>La gravedad se reparte entre los ejes al inclinar la placa</title><defs><marker id="ar7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs><text x="170" y="24" font-size="13" font-weight="700" text-anchor="middle" fill="#1d2433">Placa plana</text><line x1="110.0" y1="110.0" x2="230.0" y2="110.0" stroke="#1d2433" stroke-width="10" stroke-linecap="round"/><line x1="170" y1="110" x2="170" y2="205" stroke="#d64545" stroke-width="3" marker-end="url(#ar7)"/><text x="162" y="210" font-size="12" fill="#d64545" font-weight="700" text-anchor="end">g = 9,8 m/s²</text><text x="170" y="245" font-size="12" text-anchor="middle" fill="#4a5468">Plana: toda la gravedad cae en el eje perpendicular</text><text x="500" y="24" font-size="13" font-weight="700" text-anchor="middle" fill="#1d2433">Placa inclinada</text><line x1="448.0" y1="140.0" x2="552.0" y2="80.0" stroke="#1d2433" stroke-width="10" stroke-linecap="round"/><line x1="500" y1="110" x2="500" y2="205" stroke="#d64545" stroke-width="3" marker-end="url(#ar7)"/><text x="492" y="210" font-size="12" fill="#d64545" font-weight="700" text-anchor="end">g = 9,8 m/s²</text><line x1="500" y1="110" x2="458.9" y2="133.8" stroke="#0e7c86" stroke-width="3" marker-end="url(#ar7)"/><line x1="500" y1="110" x2="541.1" y2="181.2" stroke="#7048e8" stroke-width="3" marker-end="url(#ar7)"/><text x="430" y="158" font-size="12" fill="#0e7c86" font-weight="700" text-anchor="end">a lo largo de la placa:</text><text x="430" y="173" font-size="12" fill="#0e7c86" font-weight="700" text-anchor="end">9,8 · sen θ</text><text x="555" y="210" font-size="12" fill="#7048e8" font-weight="700">perpendicular:</text><text x="555" y="225" font-size="12" fill="#7048e8" font-weight="700">9,8 · cos θ</text><text x="570" y="70" font-size="12" fill="#4a5468">θ = 30º</text></svg><figcaption>Al inclinar la placa, la gravedad se reparte: una parte «a lo largo» de la placa y otra perpendicular. Midiendo cuánto le toca a cada eje, la placa sabe hacia dónde está inclinada.</figcaption></figure>
+    <p>El bloque <b>Accel+Gyro (MPU6050)</b> está en <span class="ruta">micro:STEAMakers › Sensores</span>. En su desplegable eliges qué quieres leer: Accel-X, Y o Z (m/s²), Giro-X, Y o Z (º/s) o Ángulo-X, Y o Z (º).</p>
+    <div class="bridge">
+      <div><h4>🐍 Funciones en Python</h4>
+<pre class="code"><span class="k">def</span> <span class="f">avisar</span>(veces):          <span class="c"># con parámetro</span>
+    <span class="k">for</span> _ <span class="k">in</span> <span class="f">range</span>(veces):
+        <span class="f">pitar</span>()
+
+<span class="k">def</span> <span class="f">a_posicion</span>(a):         <span class="c"># devuelve un valor</span>
+    <span class="k">return</span> <span class="f">round</span>((a + 5) / 2.5)
+
+<span class="f">avisar</span>(3)
+x = <span class="f">a_posicion</span>(2.5)</pre></div>
+      <div><h4>🧩 En STEAMakersBlocks</h4>
+        <p>En <span class="ruta">Funciones</span> hay dos bloques: <b>para [nombre]</b> (hace algo) y <b>para [nombre] … devuelve</b> (calcula y devuelve un valor). Con el <b>+</b> del bloque añades parámetros (<b>variable: …</b>). Al crear una función aparece, en ese mismo menú, el bloque para <b>llamarla</b>.</p>
+        <p>La función se coloca suelta en el espacio de trabajo, fuera de Inicializar y de Bucle.</p></div>
+    </div>
+    <div class="entender"><h4>💡 Para entenderlo: una función es una receta con nombre</h4><p>En un libro de cocina, la receta «bechamel» se escribe <b>una vez</b>. Cuando otra receta la necesita, dice «añade una bechamel» y ya está: no la vuelve a explicar. Eso es <b>llamar</b> a una función. Los <b>parámetros</b> son los ingredientes que cambian cada vez («bechamel para <i>4</i> personas»), y lo que <b>devuelve</b> es el plato que te entrega. Ventajas: el programa es más corto, se lee mejor y, si hay que corregir algo, se corrige en un solo sitio.</p></div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 1 · El lector del acelerómetro</h3>
+    <p>Antes de usar el sensor hay que mirarlo. Este programa envía al plotter las tres aceleraciones veinte veces por segundo.</p>
+    <figure class="prog-img"><img src="img/N7a_acelerometro.webp" alt="Programa: en Bucle, Plotter ax con Accel-X, Plotter ay con Accel-Y, Plotter az con Accel-Z, esperar 50 ms"><figcaption>Proyecto «N7a Lector del acelerómetro».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">En Inicializar: consola y un mensaje (<span class="ruta">Comunicaciones › Puerto serie</span>).</li>
+      <li class="just">En Bucle: tres bloques <b>Plotter</b> con los nombres <b>ax</b>, <b>ay</b> y <b>az</b>. En cada <b>Valor</b>, un bloque <b>Accel+Gyro (MPU6050)</b> (<span class="ruta">micro:STEAMakers › Sensores</span>) con Accel-X, Accel-Y y Accel-Z.</li>
+      <li class="just"><b>Esperar 50 ms</b> y abre el Serial Plotter.</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:220px">
+        <label class="small">Inclinación hacia los lados: <b id="n7-tx">0</b>º</label><input type="range" id="n7-incx" min="-90" max="90" value="0">
+        <label class="small">Inclinación hacia delante/atrás: <b id="n7-ty">0</b>º</label><input type="range" id="n7-incy" min="-90" max="90" value="0">
+        <div class="row"><button class="btn ghost" id="n7-plana">Dejar plana</button><button class="btn" id="n7-shake">Sacudir</button></div>
+        <div class="small">Simulación: los ejes y los signos de tu placa pueden ser distintos. Descúbrelos en la real.</div>
+      </div>
+      <div class="plotter" id="plot-n7a"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Con la placa plana sobre la mesa, ¿qué eje marca unos 9,8? ¿Y si le das la vuelta (boca abajo)? Haz un dibujo de la placa con los tres ejes y hacia dónde apunta cada uno.</li>
+        <li>Inclina hacia la derecha y hacia la izquierda. ¿Qué eje cambia y de qué signo?</li>
+        <li>Pon la placa de canto, en vertical. ¿Cuánto vale ahora cada eje? ¿Por qué el total sigue rondando 9,8?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 2 · Nivel de burbuja (función que devuelve)</h3>
+    <p>Un punto en la matriz que se mueve como la burbuja de un nivel de albañil: verde si la placa está plana. Para pasar de la aceleración (de −5 a 5 m/s², más o menos) a una posición de la matriz (de 0 a 4) hace falta la misma cuenta <b>dos veces</b>, una para X y otra para Y. En lugar de repetirla, la escribimos una vez en una función, <b>aPosicion</b>, que <b>devuelve</b> la posición.</p>
+    <figure class="prog-img tall-img"><img src="img/N7b_nivel.webp" alt="Programa nivel de burbuja: función aPosicion con parámetro a que devuelve limitar redondear (a + 5) / 2,5 entre 0 y 4; en Bucle, x = aPosicion(Accel-X), y = aPosicion(Accel-Y), limpiar, si x = 2 y y = 2 píxel verde, si no píxel azul, enviar línea y esperar 100 ms"><figcaption>Proyecto «N7b Nivel de burbuja».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">De <span class="ruta">Funciones</span>, arrastra al espacio de trabajo el bloque <b>para … devuelve</b>. Cambia «hacer algo» por <b>aPosicion</b>. Pulsa su <b>+</b> para añadir un parámetro y llámalo <b>a</b>.</li>
+      <li class="just">En <b>devuelve</b>: <b>limitar</b>( <b>redondear</b>( (a + 5) ÷ 2,5 ), 0, 4 ). «redondear» está en el bloque de funciones matemáticas de <span class="ruta">Matemáticas</span> (el que pone «raíz cuadrada»; cámbialo en su desplegable).</li>
+      <li class="just">Crea dos variables, <b>x</b> e <b>y</b>. En Bucle: <b>Establecer x = aPosicion</b>(Accel-X) y <b>Establecer y = aPosicion</b>(Accel-Y). El bloque <b>aPosicion</b> para llamarla ha aparecido en <span class="ruta">Funciones</span>.</li>
+      <li class="just"><b>Limpiar</b>, y un <b>si … sino</b>: si x = 2 <b>y</b> y = 2, <b>Píxel</b>(x, y) en verde; si no, en azul. Termina con un <b>Enviar línea</b> con x e y y <b>Esperar 100 ms</b>.</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div><div class="mx" id="mx-n7b"></div><div class="mx-label">Usa los deslizadores de arriba</div></div>
+      <div class="serial" id="sim-n7b"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Calcula a mano aPosicion(0), aPosicion(−5), aPosicion(2,4) y aPosicion(8). ¿Para qué sirve el «limitar»?</li>
+        <li>Si la burbuja se mueve al revés de lo que esperabas, ¿qué cambiarías? ¿Dónde: en la función o en las llamadas?</li>
+        <li>¿Cuántas veces está escrita la cuenta en el programa? ¿Cuántas veces se ejecuta en cada vuelta del Bucle?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 3 · Detector de sacudidas (función con parámetro)</h3>
+    <p>Para saber si la placa se <b>agita</b>, no importa hacia dónde: interesa la aceleración <b>total</b>. Se calcula como la diagonal de una caja (teorema de Pitágoras en 3D): <b>magnitud = √(ax² + ay² + az²)</b>. En reposo vale unos 9,8; al agitar sube mucho. Cuando pasa de 15, contamos una sacudida y la función <b>avisar</b> pita tantas veces como le digamos.</p>
+    <figure class="prog-img tall-img"><img src="img/N7c_sacudidas.webp" alt="Programa detector de sacudidas: función avisar con parámetro veces que repite veces un zumbador de 80 ms y espera 80 ms; en Bucle, ax, ay y az, magnitud igual a raíz cuadrada de ax al cuadrado más ay al cuadrado más az al cuadrado, plotter magnitud y umbral, si magnitud mayor que 15 sumar 1 a sacudidas, enviar línea y avisar con veces 3"><figcaption>Proyecto «N7c Detector de sacudidas».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">De <span class="ruta">Funciones</span>, el bloque <b>para … hacer</b> (sin «devuelve»). Llámalo <b>avisar</b> y añádele un parámetro, <b>veces</b>. Dentro: <b>repetir</b> (en el hueco del número, la variable <b>veces</b>) → <b>Zumbador</b> 80 ms a 2000 Hz y <b>Esperar 80 ms</b>.</li>
+      <li class="just">Variables: <b>ax</b>, <b>ay</b>, <b>az</b>, <b>magnitud</b> y <b>sacudidas</b> (esta, a 0 en Inicializar).</li>
+      <li class="just">En Bucle: guarda las tres aceleraciones en ax, ay y az. Después, <b>magnitud = raíz cuadrada</b>( ax ^ 2 + ay ^ 2 + az ^ 2 ). La potencia (^) está en el bloque de operaciones de <span class="ruta">Matemáticas</span>.</li>
+      <li class="just">Dos <b>Plotter</b> (magnitud y un umbral fijo de 15) y un <b>si</b>: si magnitud &gt; 15 → sumar 1 a sacudidas, <b>Enviar línea</b> y el bloque <b>avisar</b> con <b>veces = 3</b>. Termina con <b>Esperar 20 ms</b>.</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><button class="btn" id="n7c-shake">Sacudir</button><span class="small">También responde a los deslizadores</span></div>
+      <div class="plotter" id="plot-n7c"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Con la placa quieta en distintas posiciones (plana, de canto, inclinada), ¿cuánto vale la magnitud? ¿Por qué casi no cambia?</li>
+        <li>Una sacudida fuerte, ¿cuenta una vez o varias? ¿Qué papel tiene la función avisar en eso? (Pista: ¿cuánto tarda en terminar?).</li>
+        <li>Cambia avisar(3) por avisar(sacudidas). ¿Qué pasa a partir de la quinta sacudida? ¿Es buena idea?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🚀</span> Retos</h3>
+    <div class="retos">
+      <div class="reto b"><span class="tag">Básico</span><h4>Dado agitado</h4><p>Agita la placa y sale un número del 1 al 6 en la matriz, como un dado de verdad. Mete lo de «lanzar el dado» (número al azar, mostrarlo, un pitido y una línea en la consola) en una función <b>lanzar</b>.</p></div>
+      <div class="reto m"><span class="tag">Medio</span><h4>Alarma de movimiento</h4><p>A arma la alarma (un punto azul en la matriz) y B la desarma. Si está armada y alguien mueve la placa (la magnitud se aleja más de 2 m/s² de 9,8), suena una alarma de 5 destellos rojos con pitido, metida en una función <b>alarma</b>. Usa una variable verdadero/falso y el bloque <b>absoluto</b>.</p></div>
+      <div class="reto p"><span class="tag">Pro</span><h4>Inclinómetro</h4><p>Calcula el ángulo de inclinación con el acelerómetro: <b>ángulo = arcotangente(ax ÷ az)</b>, en una función con <b>dos parámetros</b> que lo devuelva en grados (ojo: la placa calcula la arcotangente en <span class="g" data-g="radian">radianes</span>). Envía al plotter tu ángulo y el del bloque «Ángulo-Y» del giroscopio, deja la placa quieta un par de minutos y explica qué le pasa a cada uno.</p></div>
+    </div>
+  </div>
+
+  <details class="capo">
+    <summary>🔧 Bajo el capó: el MPU6050 y las funciones en C++</summary>
+    <div class="in">
+      <p>Así traduce STEAMakersBlocks la función del nivel de burbuja y el bloque del sensor:</p>
+<pre class="code"><span class="k">#include</span> "MPU6050_tockn.h"
+MPU6050 ag_mpu6050(Wire);
+
+<span class="k">double</span> <span class="f">aPosicion</span>(<span class="k">double</span> a) {
+  <span class="k">return</span> <span class="f">constrain</span>(<span class="f">round</span>((a + 5) / 2.5), 0, 4);
+}
+<span class="k">double</span> <span class="f">fnc_mpu6050</span>(<span class="k">int</span> _type) {
+  ag_mpu6050.<span class="f">update</span>();                          <span class="c">// lee el chip por I2C</span>
+  <span class="k">if</span>(_type==1) v = ag_mpu6050.<span class="f">getAccX</span>()*9.80665;  <span class="c">// de «g» a m/s²</span>
+  ...
+  <span class="k">if</span>(_type==8) v = ag_mpu6050.<span class="f">getGyroAngleY</span>();
+}</pre>
+      <div class="bridge">
+        <div><h4>📡 El chip habla por I2C</h4>
+          <p>El MPU6050 no está en un pin analógico: es un pequeño ordenador que se comunica con el ESP32 por el <b>bus I2C</b>, dos cables (datos y reloj) que pueden compartir varios chips. El sensor de temperatura del N8 también va por ahí. La librería <code>MPU6050_tockn</code> mide la aceleración en «g» (1 g = 9,80665 m/s²) y el bloque la convierte multiplicando. Cada vez que usas el bloque se llama a <code>update()</code> y se hace una lectura nueva: tres bloques son tres lecturas, un poquito separadas en el tiempo.</p></div>
+        <div><h4>📐 Ángulos y deriva</h4>
+          <p>El «Ángulo» del giroscopio se calcula <b>sumando</b> los giros que mide, vuelta tras vuelta (integración). Cada medida tiene un error minúsculo, pero al sumarlas sin parar el error se acumula y el ángulo se va desviando aunque la placa esté quieta: es la <span class="g" data-g="deriva">deriva</span>. El ángulo del acelerómetro no deriva, porque se calcula con la gravedad en cada momento, pero se vuelve loco si mueves la placa con brusquedad. Los drones y los móviles combinan los dos.</p>
+          <p>La función <code>atan</code> de C++ devuelve el ángulo en radianes; para pasarlo a grados se multiplica por 180/π ≈ 57,3.</p></div>
+      </div>
+      <p>Las funciones que creas con bloques se convierten en funciones de C++ de verdad, con su tipo: <code>void</code> si no devuelven nada y <code>double</code> si devuelven un número. El parámetro también lleva su tipo: <code>double a</code>.</p>
+    </div>
+  </details>
+
+  <div class="card quiz" data-quiz="n7">
+    <h3 class="sec-title"><span class="ico">🔎</span> ¿Lo has entendido?</h3>
+    <div class="qs"></div>
+    <div class="row" style="margin-top:8px"><button class="btn qcheck">Comprobar</button><button class="btn ghost qreset">Empezar de nuevo</button><span class="score"></span></div>
+    <p class="small">Cuando termines, haz una captura con tu puntuación para el porfolio.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📁</span> Al porfolio</h3>
+    <ul class="portfolio">
+      <li>Capturas de tus programas y del Serial Plotter del Programa 1 en tres posiciones (plana, inclinada, de canto).</li>
+      <li>Tu dibujo de la placa con los ejes X, Y y Z y hacia dónde apuntan.</li>
+      <li>Tus respuestas a «Interpreta lo que ves», con las cuentas de aPosicion hechas a mano.</li>
+      <li>Explica con tus palabras qué ventaja tiene usar una función en el nivel de burbuja.</li>
+      <li>Vídeo corto del nivel de burbuja o del detector de sacudidas.</li>
+      <li>El reto que hayas hecho. Si es el pro, la captura del plotter tras dos minutos y tu explicación de la deriva.</li>
+      <li>Captura de tu resultado en «¿Lo has entendido?».</li>
+    </ul>
+  </div>
+  <div class="done-row"><button class="check" data-done="n7">☐ He terminado el N7</button></div>
+</section>
+<div class="pager"><a href="n6.html">← N6 · Listas</a></div>
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js?v=8d70103e"></script>
+</body>
+</html>
