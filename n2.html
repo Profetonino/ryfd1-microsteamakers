@@ -24,6 +24,7 @@
     <a href="n4.html">N4 · Sensores</a>
     <span class="soon" title="Próximamente">R50</span>
     <span class="soon" title="Próximamente">N5–N10</span>
+    <a href="glosario.html">Glosario</a>
     <a href="guia.html">Guía rápida</a>
   </div>
 </nav>
@@ -31,7 +32,7 @@
 <main>
 <section class="page on" id="n2">
   <h2 class="lvl"><span class="badge">N2</span> Variables: la memoria de la placa</h2>
-  <p class="lead">Hasta ahora la placa hacía siempre lo mismo. Para que «recuerde» cosas (cuántas veces has pulsado, qué número ha salido, cuánto tiempo lleva encendida) necesitamos variables. Ya las conoces de Python; aquí verás que tienen tipo, que se ven en la consola y que, a veces, nos engañan.</p>
+  <p class="lead">Hasta ahora la placa hacía siempre lo mismo. Para que «recuerde» cosas (cuántas veces has pulsado, qué número ha salido, cuánto tiempo lleva encendida) necesitamos <span class="g" data-g="variable">variables</span>. Ya las conoces de Python; aquí verás que tienen tipo, que se ven en la consola y que, a veces, nos engañan.</p>
   <div class="row"><span class="pill">⏱️ 2 sesiones</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span><span class="pill crit">T</span></div>
 
   <div class="card">
@@ -46,7 +47,7 @@
 
   <div class="card">
     <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar: una caja con nombre… y con tipo</h3>
-    <p>Una variable es un espacio de la memoria del microcontrolador al que le ponemos un nombre para guardar un dato y usarlo después. En Python podías escribir <code>dado = 4</code> y Python adivinaba el tipo. En STEAMakersBlocks, en cambio, <b>cada tipo de variable tiene su propio bloque</b> (y su color), porque el programa se traduce a C++, un lenguaje que necesita saber desde el principio qué clase de dato va a guardar cada variable.</p>
+    <p>Una variable es un espacio de la memoria del microcontrolador al que le ponemos un nombre para guardar un dato y usarlo después. En Python podías escribir <code>dado = 4</code> y Python adivinaba el tipo. En STEAMakersBlocks, en cambio, <b>cada tipo de variable tiene su propio bloque</b> (y su color), porque el programa se traduce a <span class="g" data-g="cpp">C++</span>, un lenguaje que necesita saber desde el principio qué clase de dato va a guardar cada variable.</p>
     <table class="t">
       <tr><th>Tipo en STEAMakersBlocks</th><th>Para qué sirve</th><th>En Python</th><th>En C++ (lo que genera)</th></tr>
       <tr><td>Número</td><td>Contadores, medidas, resultados de cálculos</td><td><code>int</code> / <code>float</code></td><td><code>double</code></td></tr>
@@ -59,12 +60,13 @@
   <div class="card">
     <h3 class="sec-title"><span class="ico">🧩</span> Programa 1 · El dado electrónico</h3>
     <p>Cada vez que pulses el botón A, la placa elegirá un número al azar del 1 al 6, lo guardará en la variable <code>dado</code>, lo mostrará en la matriz y lo contará por la consola. Usamos el botón solo como «disparador»: en el N3 aprenderás a sacarle todo el partido.</p>
+    <div class="entender"><h4>💡 Para entenderlo: cajas con etiqueta</h4><p>Una variable es como una <b>caja con una etiqueta</b>: la etiqueta es el nombre (<code>dado</code>) y dentro guardas un dato que puedes cambiar cuando quieras. El <b>tipo</b> es la forma de la caja: en una caja de huevos no cabe una carta. Por eso C++ quiere saber desde el principio qué vas a guardar: un número, un texto o un sí/no.</p><p>¿Y por qué hay que «convertir» un número para enseñarlo? La consola y la matriz solo saben mostrar <b>texto</b>, es decir, letras y cifras dibujadas. El número 7 que guarda la placa es un valor para hacer cuentas; para verlo hay que convertirlo en el carácter «7». Ese es el trabajo de <b>Número entero</b> o de <b>Formatear número</b>, y cada uno lo hace a su manera.</p></div>
     <figure class="prog-img"><img src="img/N2a_dado.webp" alt="Programa del dado: en Inicializar, consola, matriz y dado igual a 0; en Bucle, si el pulsador A se ha pulsado, dado igual a entero aleatorio de 1 a 6, enviar línea Ha salido más el número y mostrar el número en la matriz"><figcaption>Proyecto «N2a Dado electrónico».</figcaption></figure>
     <ol class="steps">
-      <li class="just">Crea la variable: menú <b>Variables → Crear variable…</b> y llámala <code>dado</code>. Es de tipo número.</li>
+      <li class="just">Crea la variable: en <span class="ruta">Variables</span>, pulsa <b>Crear variable… (Número)</b> y llámala <code>dado</code>. Al crearla aparecen en ese menú sus bloques <b>Establecer dado =</b> y <b>dado</b>.</li>
       <li class="just">En Inicializar: consola a 115200, Iniciar la matriz, <b>Establecer dado = 0</b> y un mensaje que diga qué hay que hacer.</li>
       <li class="just">En Bucle, un bloque <b>si</b> (menú Lógica) con la condición <b>Pulsador A se ha pulsado</b> (menú micro:STEAMakers → Sensores).</li>
-      <li class="just">Dentro del si: <b>Establecer dado = entero aleatorio de 1 a 6</b> (menú Matemáticas), un <b>Enviar línea</b> con <b>crear texto con</b> «Ha salido: » + <b>Número entero</b> (dado), y el bloque <b>Texto</b> de la matriz con el mismo número.</li>
+      <li class="just">Dentro del si: <b>Establecer dado = entero aleatorio de 1 a 6</b> (menú Matemáticas), un <b>Enviar línea</b> con <b>crear texto con</b> «Ha salido: » + <b>Número entero</b> (dado), y el bloque <b>Texto</b> de la matriz (<span class="ruta">micro:STEAMakers › NeoMatrix</span>) con el mismo número. <b>Número entero</b> está en <span class="ruta">Matemáticas</span>. <b>crear texto con</b> está en <span class="ruta">Texto</span>. Con sus botones <b>+</b> y <b>−</b> cambias el número de huecos: pon uno por cada trozo de texto o dato que quieras unir.</li>
     </ol>
     <div class="sim-row">
       <div><div class="mx" id="mx-n2a"></div><div class="mx-label">Simulación de la matriz</div><div class="row" style="justify-content:center;margin-top:6px"><button class="btn" id="btn-n2a">Pulsar A</button></div></div>
@@ -82,6 +84,7 @@
     <h3 class="sec-title"><span class="ico">🐞</span> Programa 2 · El contador que miente</h3>
     <p>Este programa cuenta de 0 a 9 una y otra vez, un número por segundo. Funciona… pero algo no cuadra. Tu misión es de detective: <b>móntalo tal cual, súbelo y observa con atención la consola y la matriz</b>. Hay un error escondido.</p>
     <figure class="prog-img"><img src="img/N2b_contador_miente.webp" alt="Programa contador: enviar línea contador igual más Formatear número contador con 0 decimales, texto en la matriz con Formatear número, sumar 1 a contador, contador igual a resto de contador entre 10, esperar 1000"><figcaption>Proyecto «N2b El contador que miente». El bloque «resto de … ÷ 10» hace que después del 9 vuelva al 0.</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps"><li class="just">Crea una variable de número llamada <b>contador</b> (<span class="ruta">Variables</span> › <b>Crear variable… (Número)</b>).</li><li class="just">En Inicializar: <b>Iniciar Baudios 115200</b> (<span class="ruta">Comunicaciones › Puerto serie</span>), <b>Iniciar</b> la matriz (<span class="ruta">micro:STEAMakers › NeoMatrix</span>), <b>Establecer contador = 0</b> y un <b>Enviar línea</b> con «Contador de 0 a 9».</li><li class="just">En Bucle: <b>Enviar línea</b> con <b>crear texto con</b> de dos huecos: «contador = » y <b>Formatear número</b> (<span class="ruta">Texto</span>) con la variable y 0 decimales. <b>crear texto con</b> está en <span class="ruta">Texto</span>. Con sus botones <b>+</b> y <b>−</b> cambias el número de huecos: pon uno por cada trozo de texto o dato que quieras unir.</li><li class="just">Debajo, el bloque <b>Texto</b> de la matriz (<span class="ruta">micro:STEAMakers › NeoMatrix</span>) en X = 0, Y = 0, otra vez con <b>Formatear número</b>, y el color que quieras.</li><li class="just">Después: <b>sumar 1 a contador</b> (<span class="ruta">Matemáticas</span>) y <b>Establecer contador = resto de contador ÷ 10</b> (el bloque «resto de» también está en <span class="ruta">Matemáticas</span>). Así, al llegar a 10 vuelve a 0.</li><li class="just">Termina con <b>Esperar 1000 ms</b> (<span class="ruta">Tiempo</span>). Móntalo <b>tal cual</b>, con el error incluido: lo vas a investigar.</li></ol></div></details>
     <div class="sim-row">
       <div><div class="mx" id="mx-n2b"></div><div class="mx-label">Lo que verás en la matriz</div></div>
       <div class="serial" id="sim-n2b"></div>
@@ -102,6 +105,7 @@
     <h3 class="sec-title"><span class="ico">🧩</span> Programa 3 · La ficha de la placa: los tres tipos juntos</h3>
     <p>Un programa con una variable de cada tipo: el nombre de la placa (texto), los segundos que lleva encendida (número) y si está encendida (verdadero/falso).</p>
     <figure class="prog-img"><img src="img/N2c_ficha_tipos.webp" alt="Programa con variables nombre de tipo texto, segundos de tipo número y encendida de tipo verdadero falso, que se muestran en la consola cada segundo"><figcaption>Proyecto «N2c Ficha de la placa». Fíjate en los colores: cada tipo de variable tiene el suyo.</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps"><li class="just">Crea las tres variables en <span class="ruta">Variables</span>, cada una con su botón: <b>Crear variable… (Texto)</b> → <b>nombre</b>; <b>Crear variable… (Número)</b> → <b>segundos</b>; <b>Crear variable… (Boolean)</b> → <b>encendida</b>. Fíjate en que cada tipo tiene un color distinto.</li><li class="just">En Inicializar: consola a 115200, <b>Establecer nombre =</b> un texto (<span class="ruta">Texto</span>), <b>Establecer segundos = 0</b> y <b>Establecer encendida = verdadero</b> (el bloque verdadero/falso está en <span class="ruta">Lógica</span>).</li><li class="just">Un <b>Enviar línea</b> con <b>crear texto con</b> «Hola, me llamo » + la variable <b>nombre</b>.</li><li class="just">En Bucle: <b>sumar 1 a segundos</b> (<span class="ruta">Matemáticas</span>); un <b>Enviar línea</b> con «Llevo » + <b>Número entero</b>(segundos) + « segundos encendida»; otro con «¿Encendida? » + <b>encendida</b>; y <b>Esperar 1000 ms</b>.</li></ol></div></details>
     <div class="serial" id="sim-n2c"></div>
     <div class="note"><b>Interpreta lo que ves</b>
       <ul>

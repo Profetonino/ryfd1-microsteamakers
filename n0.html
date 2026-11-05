@@ -24,6 +24,7 @@
     <a href="n4.html">N4 · Sensores</a>
     <span class="soon" title="Próximamente">R50</span>
     <span class="soon" title="Próximamente">N5–N10</span>
+    <a href="glosario.html">Glosario</a>
     <a href="guia.html">Guía rápida</a>
   </div>
 </nav>
@@ -37,8 +38,8 @@
   <div class="card">
     <h3 class="sec-title"><span class="ico">🎯</span> Objetivo</h3>
     <ul>
-      <li>Saber qué es un microcontrolador y en qué se diferencia de un ordenador.</li>
-      <li>Reconocer los sensores y actuadores que lleva la micro:STEAMakers.</li>
+      <li>Saber qué es un <span class="g" data-g="microcontrolador">microcontrolador</span> y en qué se diferencia de un ordenador.</li>
+      <li>Reconocer los <span class="g" data-g="sensor">sensores</span> y <span class="g" data-g="actuador">actuadores</span> que lleva la micro:STEAMakers.</li>
       <li>Crear un proyecto en STEAMakersBlocks, subirlo a la placa y abrir la consola serie.</li>
       <li>Entender para qué sirven las dos zonas de todo programa: <b>Inicializar</b> y <b>Bucle</b>.</li>
     </ul>
@@ -46,7 +47,7 @@
 
   <div class="card">
     <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar: ¿qué es un microcontrolador?</h3>
-    <p>Un microcontrolador es un ordenador diminuto metido en un solo chip. Tiene su procesador, su memoria y sus «patas» (los pines) para comunicarse con el mundo. No tiene pantalla ni teclado: se dedica a una sola tarea, la que tú le programes, y la repite sin descanso mientras tenga alimentación. Hay microcontroladores en el microondas, en la lavadora, en el mando de la tele y en cualquier juguete que se mueva o se ilumine.</p>
+    <p>Un microcontrolador es un ordenador diminuto metido en un solo chip. Tiene su procesador, su memoria y sus «patas» (los <span class="g" data-g="pin">pines</span>) para comunicarse con el mundo. No tiene pantalla ni teclado: se dedica a una sola tarea, la que tú le programes, y la repite sin descanso mientras tenga alimentación. Hay microcontroladores en el microondas, en la lavadora, en el mando de la tele y en cualquier juguete que se mueva o se ilumine.</p>
     <p>Todos los sistemas que vamos a construir siguen el mismo esquema: <b>entrada → proceso → salida</b>. Los sensores (luz, sonido, temperatura, botones…) son las entradas; el programa que corre en el ESP32 es el proceso; y los actuadores (la matriz de LED, el zumbador, un motor…) son las salidas.</p>
     <div class="note info"><b>La gran diferencia con Python.</b> Tus programas de Python se ejecutaban en el ordenador. Ahora el ordenador solo sirve para <i>escribir</i> el programa y <i>enviarlo</i> a la placa. Una vez subido, el programa queda guardado en la memoria de la placa y se ejecuta ella sola, aunque la desconectes del ordenador y la alimentes con una batería.</div>
   </div>
@@ -67,17 +68,17 @@
         <div class="infobox" id="iginfo"><b>Elige un elemento</b><br><span class="small">Aquí aparecerá su descripción, el pin que usa y en qué nivel lo trabajarás.</span></div>
       </div>
     </div>
-    <p class="small" style="margin-top:10px">El cerebro es un ESP32 de doble núcleo a 240 MHz, con 520 KB de RAM, 4 MB de memoria flash para tu programa, WiFi y Bluetooth. Imágenes de la placa: manual «ESP32 micro:STEAMakers» de Innova Didactic, utilizadas con su permiso.</p>
+    <p class="small" style="margin-top:10px">El cerebro es un ESP32 de doble núcleo a 240 MHz, con 520 KB de RAM, 4 MB de <span class="g" data-g="memoria-flash">memoria flash</span> para tu programa, WiFi y Bluetooth. Imágenes de la placa: manual «ESP32 micro:STEAMakers» de Innova Didactic, utilizadas con su permiso.</p>
   </div>
 
   <div class="card">
     <h3 class="sec-title"><span class="ico">🛠️</span> Prepara tu entorno (solo la primera vez)</h3>
     <ol class="steps">
       <li class="just">Entra en <b>steamakersblocks.com</b> e inicia sesión. Puedes usar <i>Iniciar sesión con Google</i> o <i>con Microsoft</i> con tu cuenta del centro. (Antes esta web se llamaba ArduinoBlocks; si encuentras tutoriales con ese nombre, es lo mismo).</li>
-      <li class="just">Comprueba que en tu ordenador está el <b>Connector</b>, el programa que hace de puente entre la web y la placa. Sin él, la web no puede enviar nada por el USB. Si no está, se descarga desde la propia web (menú de ayuda, «Connector»).</li>
+      <li class="just">Comprueba que en tu ordenador está el <b><span class="g" data-g="connector">Connector</span></b>, el programa que hace de puente entre la web y la placa. Sin él, la web no puede enviar nada por el USB. Si no está, se descarga desde la propia web (menú de ayuda, «Connector»).</li>
       <li class="just">Pulsa <b>Nuevo proyecto → Iniciar un proyecto personal</b>. En <b>Tipo de proyecto</b> elige <b>ESP32 micro:STEAMakers</b> (¡no otro: cada tipo trae bloques distintos!) y ponle un nombre que se entienda, por ejemplo <i>N0 Consola – Tu nombre</i>.</li>
       <li class="just">Conecta la placa al ordenador con un cable USB. Ojo: hay cables que solo cargan y no transmiten datos; si la placa no aparece, prueba con otro.</li>
-      <li class="just">Cuando tengas el programa hecho, pulsa <b>Subir</b>. La web lo traduce a C++, lo compila y lo envía a la placa. Tarda unos segundos; espera a que termine antes de tocar nada.</li>
+      <li class="just">Cuando tengas el programa hecho, pulsa <b>Subir</b>. La web lo traduce a C++, lo <span class="g" data-g="compilar">compila</span> y lo envía a la placa. Tarda unos segundos; espera a que termine antes de tocar nada.</li>
       <li class="just">Abre la <b>Consola</b>, elige la velocidad <b>115200</b> y pulsa <b>Conectar</b>. A partir de aquí verás todo lo que tu programa envíe con los bloques «Enviar línea».</li>
     </ol>
   </div>
@@ -92,6 +93,7 @@
       <li class="just">En Bucle, pon otro <b>Enviar línea</b> con «Esto está en BUCLE…» y, debajo, <b>Esperar 1000 milisegundos</b> (menú <b>Tiempo</b>).</li>
       <li class="just">Sube el programa y abre la consola a 115200.</li>
     </ol>
+    <div class="entender"><h4>💡 Para entenderlo: Inicializar y Bucle</h4><p>Piensa en un día de clase. Por la mañana, <b>una sola vez</b>, preparas la mochila y desayunas: eso es <b>Inicializar</b>. Después, cada hora se repite lo mismo: entra el profesor, explica, suena el timbre… y vuelta a empezar: eso es el <b>Bucle</b>. La placa no «termina» nunca: cuando llega al final del Bucle, vuelve arriba y empieza otra vuelta, millones de veces si hace falta.</p><p>Los <b><span class="g" data-g="baudios">baudios</span></b> son la velocidad a la que la placa «dicta» los datos al ordenador. Si una persona dicta muy deprisa y la otra escribe despacio, salen palabras sin sentido. Por eso placa y consola tienen que estar a la misma velocidad: <b>115200</b>.</p></div>
 
     <h3 class="sec-title" style="margin-top:18px"><span class="ico">🖥️</span> Mira la consola</h3>
     <p>Así debería verse. Pulsa <b>▶ Simular</b> para verlo en marcha (la simulación va al mismo ritmo que la placa).</p>
@@ -111,7 +113,7 @@
     <figure class="prog-img"><img src="img/N0b_hola.webp" alt="Programa en bloques: en Inicializar, consola e iniciar matriz; en Bucle, texto con scroll HOLA, esperar 4000 ms y enviar una línea"><figcaption>Proyecto «N0b Hola mundo en la matriz».</figcaption></figure>
     <ol class="steps">
       <li class="just">En Inicializar: <b>Iniciar Baudios 115200</b> y, del menú <b>micro:STEAMakers → NeoMatrix</b>, el bloque <b>Iniciar</b> (deja la matriz apagada para empezar desde cero).</li>
-      <li class="just">En Bucle: <b>Texto con scroll</b> con la palabra HOLA, el color que quieras y 120 ms (la velocidad: cuanto menos, más rápido).</li>
+      <li class="just">En Bucle: <b>Texto con scroll</b> (<span class="ruta">micro:STEAMakers › NeoMatrix</span>) con la palabra HOLA, el color que quieras y 120 ms (la velocidad: cuanto menos, más rápido).</li>
       <li class="just">Añade <b>Esperar 4000 ms</b> para dar tiempo a que pase el texto y, después, un <b>Enviar línea</b> que avise de que ha terminado.</li>
     </ol>
     <div class="sim-row">

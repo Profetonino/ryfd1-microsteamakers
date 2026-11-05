@@ -24,6 +24,7 @@
     <a href="n4.html">N4 · Sensores</a>
     <span class="soon" title="Próximamente">R50</span>
     <span class="soon" title="Próximamente">N5–N10</span>
+    <a href="glosario.html">Glosario</a>
     <a href="guia.html">Guía rápida</a>
   </div>
 </nav>
@@ -39,7 +40,7 @@
     <ul>
       <li>Ordenar instrucciones para conseguir un comportamiento (secuencia).</li>
       <li>Controlar el tiempo con esperas y calcular cuánto dura un ciclo.</li>
-      <li>Usar colores RGB y dibujar en la matriz con el bloque Bitmap.</li>
+      <li>Usar colores <span class="g" data-g="rgb">RGB</span> y dibujar en la matriz con el bloque <span class="g" data-g="bitmap">Bitmap</span>.</li>
       <li>«Narrar» lo que hace el programa por la consola para poder comprobarlo.</li>
     </ul>
   </div>
@@ -48,7 +49,7 @@
     <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar</h3>
     <div class="grid2">
       <div>
-        <p><b>El orden importa… y el tiempo también.</b> La placa ejecuta millones de instrucciones por segundo. Si pones «rellenar de rojo» y justo después «rellenar de verde», el rojo dura una millonésima de segundo y tú solo ves el verde. El bloque <b>Esperar</b> congela el programa durante los milisegundos que le digas: es lo que hace que un color «dure».</p>
+        <p><b>El orden importa… y el tiempo también.</b> La placa ejecuta millones de instrucciones por segundo. Si pones «rellenar de rojo» y justo después «rellenar de verde», el rojo dura una millonésima de segundo y tú solo ves el verde. El bloque <b>Esperar</b> congela el programa durante los <span class="g" data-g="ms">milisegundos</span> que le digas: es lo que hace que un color «dure».</p>
         <p><b>Colores RGB.</b> Cada LED de la matriz tiene en realidad tres luces pequeñitas: roja (R), verde (G) y azul (B). Cada una se enciende con una intensidad de 0 a 255. Mezclándolas se obtienen unos 16,7 millones de colores: (255, 0, 0) es rojo puro; (255, 170, 0), ámbar; (255, 255, 255), blanco.</p>
       </div>
       <div>
@@ -68,10 +69,11 @@
       <figure class="prog-img"><img src="img/N1a_semaforo.webp" alt="Programa del semáforo: en Bucle, enviar línea ROJO, rellenar rojo, esperar 3000; VERDE, rellenar verde, esperar 3000; ÁMBAR, rellenar ámbar, esperar 1000"><figcaption>Proyecto «N1a Semáforo de colores».</figcaption></figure>
       <div>
         <ol class="steps">
-          <li class="just">En Inicializar: consola a 115200, <b>Iniciar</b> la matriz y <b>Establecer brillo</b> a 60 (de 0 a 255; a tope deslumbra y gasta más).</li>
-          <li class="just">En Bucle, para cada color, tres bloques en este orden: <b>Enviar línea</b> con el nombre del color, <b>Rellenar</b> con ese color y <b>Esperar</b> el tiempo que dura.</li>
+          <li class="just">En Inicializar: consola a 115200 (<span class="ruta">Comunicaciones › Puerto serie</span>), <b>Iniciar</b> la matriz y <b>Establecer brillo</b> a 60 (los dos en <span class="ruta">micro:STEAMakers › NeoMatrix</span>) (de 0 a 255; a tope deslumbra y gasta más).</li>
+          <li class="just">En Bucle, para cada color, tres bloques en este orden: <b>Enviar línea</b> con el nombre del color, <b>Rellenar</b> con ese color (<span class="ruta">micro:STEAMakers › NeoMatrix</span>; pulsa el cuadrado de color para elegirlo) y <b>Esperar</b> (<span class="ruta">Tiempo</span>) el tiempo que dura.</li>
           <li class="just">Rojo 3000 ms, verde 3000 ms y ámbar 1000 ms.</li>
         </ol>
+    <div class="entender"><h4>💡 Para entenderlo: ¿por qué hace falta Esperar?</h4><p>Imagina que lees una receta en voz alta a toda velocidad: «enciende el horno, saca la bandeja, apaga el horno». Si nadie te dice «espera 20 minutos», el bizcocho no se hace. La placa es igual de obediente y mucho más rápida: ejecuta cada orden en una millonésima de segundo y pasa a la siguiente. <b>Esperar</b> es la única forma de que algo «dure».</p><p>Por eso, para saber cuánto dura un ciclo, basta con <b>sumar las esperas</b>: el resto de bloques tarda tan poco que no cuenta.</p></div>
         <div class="sim-row" style="margin-top:8px">
           <div><div class="mx" id="mx-n1a"></div><div class="mx-label">Simulación</div></div>
         </div>
@@ -90,13 +92,13 @@
 
   <div class="card">
     <h3 class="sec-title"><span class="ico">🧩</span> Programa 2 · Un corazón que late</h3>
-    <p>Una animación no es más que una secuencia de dibujos (fotogramas) que se muestran uno tras otro con una espera entre medias, igual que un dibujo animado. Con el bloque <b>Bitmap</b> pintas los 25 LED de golpe, eligiendo el color de cada uno.</p>
+    <p>Una animación no es más que una secuencia de dibujos (<span class="g" data-g="fotograma">fotogramas</span>) que se muestran uno tras otro con una espera entre medias, igual que un dibujo animado. Con el bloque <b>Bitmap</b> pintas los 25 LED de golpe, eligiendo el color de cada uno.</p>
     <div class="grid2" style="align-items:start">
       <figure class="prog-img tall-img"><img src="img/N1b_corazon.webp" alt="Programa del corazón: dos bitmaps, corazón grande y pequeño, alternados con esperas de 150 y 700 ms y la palabra pum en la consola"><figcaption>Proyecto «N1b Corazón que late».</figcaption></figure>
       <div>
         <ol class="steps">
           <li class="just">En Inicializar: consola, Iniciar la matriz y brillo 50.</li>
-          <li class="just">En Bucle: un <b>Bitmap</b> con el corazón grande, <b>Enviar línea</b> «pum» y <b>Esperar 150 ms</b>.</li>
+          <li class="just">En Bucle: un <b>Bitmap</b> (<span class="ruta">micro:STEAMakers › NeoMatrix</span>; pulsa cada LED del bloque para cambiar su color) con el corazón grande, <b>Enviar línea</b> «pum» y <b>Esperar 150 ms</b>.</li>
           <li class="just">Un Bitmap con el corazón pequeño y Esperar 150 ms.</li>
           <li class="just">Repite el corazón grande con su «pum» (el latido es doble: pum-pum) y termina con el pequeño y una espera larga, de 700 ms.</li>
         </ol>

@@ -24,6 +24,7 @@
     <a href="n4.html">N4 · Sensores</a>
     <span class="soon" title="Próximamente">R50</span>
     <span class="soon" title="Próximamente">N5–N10</span>
+    <a href="glosario.html">Glosario</a>
     <a href="guia.html">Guía rápida</a>
   </div>
 </nav>
@@ -46,13 +47,15 @@
 
   <div class="card">
     <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar</h3>
-    <p>Un botón es un <b>sensor digital</b>: solo tiene dos estados, pulsado (1, verdadero) o suelto (0, falso). En STEAMakersBlocks hay dos bloques para leerlo y conviene no confundirlos:</p>
+    <p>Un botón es un <b><span class="g" data-g="digital">sensor digital</span></b>: solo tiene dos estados, pulsado (1, verdadero) o suelto (0, falso). En STEAMakersBlocks hay dos bloques para leerlo y conviene no confundirlos:</p>
     <table class="t">
       <tr><th>Bloque</th><th>Qué pregunta</th><th>Cuándo es verdadero</th><th>Úsalo para…</th></tr>
       <tr><td><b>Pulsador A pulsado</b></td><td>¿Está pulsado <i>ahora mismo</i>?</td><td>Todo el tiempo que lo mantienes apretado</td><td>Cosas que duran mientras aprietas (una luz, un motor)</td></tr>
       <tr><td><b>Pulsador A se ha pulsado</b></td><td>¿Acaba de producirse una pulsación?</td><td>Una sola vez por cada pulsación completa</td><td>Contar, cambiar de modo, encender/apagar</td></tr>
     </table>
-    <p style="margin-top:12px">Para decidir usamos el bloque <b>si</b> (menú Lógica). Con el engranaje azul puedes añadirle ramas <b>sino si</b> y una rama final <b>si no</b>. La placa comprueba las condiciones <b>de arriba abajo</b> y ejecuta <b>solo la primera</b> que se cumple: el orden importa.</p>
+    <figure class="esquema"><svg viewBox="0 0 680 230" role="img" aria-label="Comparación entre pulsado y se ha pulsado a lo largo del tiempo" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,system-ui,sans-serif"><title>Comparación entre pulsado y se ha pulsado a lo largo del tiempo</title><text x="10" y="58" font-size="13" fill="#1d2433" text-anchor="start" font-weight="600">Tu dedo</text><line x1="120" y1="70" x2="660" y2="70" stroke="#c9d3e4"/><text x="10" y="118" font-size="13" fill="#1d2433" text-anchor="start" font-weight="600">«pulsado»</text><line x1="120" y1="130" x2="660" y2="130" stroke="#c9d3e4"/><text x="10" y="183" font-size="13" fill="#1d2433" text-anchor="start" font-weight="600">«se ha pulsado»</text><line x1="120" y1="195" x2="660" y2="195" stroke="#c9d3e4"/><rect x="217.2" y="44" width="199.8" height="22" rx="5" fill="#ffd8a8"/><text x="317.1" y="60" font-size="12" fill="#8a4b00" text-anchor="middle" font-weight="400">apretado</text><rect x="498.0" y="44" width="43.200000000000045" height="22" rx="5" fill="#ffd8a8"/><path d="M120,130 L217.2,130 L217.2,106 L417.0,106 L417.0,130 L498.0,130 L498.0,106 L541.2,106 L541.2,130 L660,130" fill="none" stroke="#0e7c86" stroke-width="3"/><text x="317.1" y="100" font-size="12" fill="#0e7c86" text-anchor="middle" font-weight="400">verdadero todo el rato</text><text x="664" y="110" font-size="11" fill="#4a5468" text-anchor="start" font-weight="400">1</text><text x="664" y="134" font-size="11" fill="#4a5468" text-anchor="start" font-weight="400">0</text><line x1="417.0" y1="195" x2="417.0" y2="170" stroke="#c2410c" stroke-width="4" stroke-linecap="round"/><circle cx="417.0" cy="168" r="5" fill="#c2410c"/><line x1="541.2" y1="195" x2="541.2" y2="170" stroke="#c2410c" stroke-width="4" stroke-linecap="round"/><circle cx="541.2" cy="168" r="5" fill="#c2410c"/><line x1="120" y1="195" x2="660" y2="195" stroke="#c2410c" stroke-width="2"/><text x="417.0" y="160" font-size="12" fill="#c2410c" text-anchor="middle" font-weight="400">una sola vez, al soltar</text><line x1="128" y1="222" x2="128" y2="228" stroke="#9aa6bb"/><line x1="147" y1="222" x2="147" y2="228" stroke="#9aa6bb"/><line x1="166" y1="222" x2="166" y2="228" stroke="#9aa6bb"/><line x1="185" y1="222" x2="185" y2="228" stroke="#9aa6bb"/><line x1="204" y1="222" x2="204" y2="228" stroke="#9aa6bb"/><line x1="223" y1="222" x2="223" y2="228" stroke="#9aa6bb"/><line x1="242" y1="222" x2="242" y2="228" stroke="#9aa6bb"/><line x1="261" y1="222" x2="261" y2="228" stroke="#9aa6bb"/><line x1="280" y1="222" x2="280" y2="228" stroke="#9aa6bb"/><line x1="299" y1="222" x2="299" y2="228" stroke="#9aa6bb"/><line x1="318" y1="222" x2="318" y2="228" stroke="#9aa6bb"/><line x1="337" y1="222" x2="337" y2="228" stroke="#9aa6bb"/><line x1="356" y1="222" x2="356" y2="228" stroke="#9aa6bb"/><line x1="375" y1="222" x2="375" y2="228" stroke="#9aa6bb"/><line x1="394" y1="222" x2="394" y2="228" stroke="#9aa6bb"/><line x1="413" y1="222" x2="413" y2="228" stroke="#9aa6bb"/><line x1="432" y1="222" x2="432" y2="228" stroke="#9aa6bb"/><line x1="451" y1="222" x2="451" y2="228" stroke="#9aa6bb"/><line x1="470" y1="222" x2="470" y2="228" stroke="#9aa6bb"/><line x1="489" y1="222" x2="489" y2="228" stroke="#9aa6bb"/><line x1="508" y1="222" x2="508" y2="228" stroke="#9aa6bb"/><line x1="527" y1="222" x2="527" y2="228" stroke="#9aa6bb"/><line x1="546" y1="222" x2="546" y2="228" stroke="#9aa6bb"/><line x1="565" y1="222" x2="565" y2="228" stroke="#9aa6bb"/><line x1="584" y1="222" x2="584" y2="228" stroke="#9aa6bb"/><line x1="603" y1="222" x2="603" y2="228" stroke="#9aa6bb"/><line x1="622" y1="222" x2="622" y2="228" stroke="#9aa6bb"/><line x1="641" y1="222" x2="641" y2="228" stroke="#9aa6bb"/><text x="120" y="218" font-size="11" fill="#4a5468" text-anchor="start" font-weight="400">cada marca = una vuelta del Bucle</text></svg><figcaption>Mientras mantienes el botón, «pulsado» es verdadero en <b>todas</b> las vueltas del Bucle; «se ha pulsado» solo es verdadero en <b>una</b>, al soltar.</figcaption></figure>
+    <div class="entender"><h4>💡 Para entenderlo: el timbre de casa</h4><p>«<b>Pulsado</b>» es como preguntar «¿está sonando el timbre <i>ahora mismo</i>?». Si alguien lo mantiene apretado, la respuesta es «sí» todo el rato. «<b>Se ha pulsado</b>» es como preguntar «¿ha llamado alguien?»: una visita es una llamada, aunque dejen el dedo un buen rato.</p><p>Como el Bucle da muchas vueltas por segundo, si cuentas con «pulsado», cada vuelta en la que el botón sigue apretado suma uno más. Para <b>contar</b> o <b>cambiar de modo</b>, «se ha pulsado»; para algo que debe <b>durar mientras aprietas</b>, «pulsado».</p><p><b>Y el orden de los «sino si»</b>: la placa es como un portero que revisa una lista de arriba abajo y deja pasar al <b>primero</b> que cumple la condición; a los demás ya ni los mira. Por eso las condiciones más exigentes («A y B a la vez») van antes que las más generales («A»).</p></div>
+    <p style="margin-top:12px">Para decidir usamos el bloque <b>si</b>. En <span class="ruta">Lógica</span> hay <b>dos bloques si</b>: uno sencillo y otro que ya trae la rama <b>sino</b>. Con el botón <b>+</b> del bloque añades ramas <b>sino si</b>, y con el <b>−</b> las quitas. La placa comprueba las condiciones <b>de arriba abajo</b> y ejecuta <b>solo la primera</b> que se cumple: el orden importa.</p>
     <div class="bridge">
       <div><h4>🐍 En Python</h4>
 <pre class="code"><span class="k">if</span> a <span class="k">and</span> b:
@@ -64,7 +67,7 @@
       <div><h4>🧩 En STEAMakersBlocks</h4>
         <p><b>si</b> = <code>if</code> · <b>sino si</b> = <code>elif</code> · <b>si no</b> = <code>else</code></p>
         <p><b>y</b> = <code>and</code> · <b>o</b> = <code>or</code> · <b>no</b> = <code>not</code></p>
-        <p>Comparar: <b>=</b> (<code>==</code>), <b>≠</b> (<code>!=</code>), <b>&lt;</b>, <b>&gt;</b>, <b>≤</b>, <b>≥</b></p>
+        <p>Comparar: <b>=</b> (<code>==</code>), <b>≠</b> (<code>!=</code>), <b>&lt;</b>, <b>&gt;</b>, <b>≤</b>, <b>≥</b></p><p class="small">Los bloques de comparar, <b>y/o</b>, <b>no</b> y <b>verdadero/falso</b> están en <span class="ruta">Lógica</span>.</p>
       </div>
     </div>
   </div>
@@ -73,6 +76,7 @@
     <h3 class="sec-title"><span class="ico">🧩</span> Programa 1 · El lector de botones</h3>
     <p>Antes de usar un sensor hay que <b>verlo</b>. Este programa envía cinco veces por segundo el estado de los tres pulsadores. Fíjate en que no hay ningún «si»: solo leemos y mostramos.</p>
     <figure class="prog-img"><img src="img/N3a_lector_botones.webp" alt="Programa lector de botones: en Bucle, enviar línea con A igual a Pulsador A pulsado, B igual a Pulsador B pulsado y táctil igual a Pulsador táctil, y esperar 200 ms"><figcaption>Proyecto «N3a Lector de botones».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps"><li class="just">En Inicializar: <b>Iniciar Baudios 115200</b> y un <b>Enviar línea</b> con un mensaje de bienvenida (<span class="ruta">Comunicaciones › Puerto serie</span>).</li><li class="just">En Bucle: un <b>Enviar línea</b> con <b>crear texto con</b> de <b>6 huecos</b>. <b>crear texto con</b> está en <span class="ruta">Texto</span>. Con sus botones <b>+</b> y <b>−</b> cambias el número de huecos: pon uno por cada trozo de texto o dato que quieras unir.</li><li class="just">Rellena los huecos alternando texto (<span class="ruta">Texto</span>) y sensor: «A = », <b>Pulsador A pulsado</b>; «   B = », <b>Pulsador B pulsado</b>; «   táctil = », <b>Pulsador táctil</b>. Los tres pulsadores están en <span class="ruta">micro:STEAMakers › Sensores</span>; en el desplegable del bloque eliges A o B.</li><li class="just">Termina con <b>Esperar 200 ms</b> (<span class="ruta">Tiempo</span>): son cinco lecturas por segundo.</li></ol></div></details>
     <div class="sim-row">
       <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
         <div class="row"><button class="btn hold" data-k="A">Mantén A</button><button class="btn hold" data-k="B">Mantén B</button><button class="btn hold" data-k="T">Toca logo</button></div>
@@ -94,8 +98,8 @@
     <p>A suma 1, B resta 1 y el logo pone el contador a cero con un pitido. Cada cambio se cuenta por la consola y el número se dibuja en la matriz. Para que la matriz no parpadee, solo se redibuja cuando el valor <b>cambia</b>: para eso sirve la variable <code>anterior</code>.</p>
     <figure class="prog-img"><img src="img/N3b_contador.webp" alt="Programa contador: si pulsador A se ha pulsado suma 1, sino si B se ha pulsado resta 1, sino si táctil pone a cero y pita; si contador distinto de anterior, dibuja el número y actualiza anterior"><figcaption>Proyecto «N3b Contador con botones».</figcaption></figure>
     <ol class="steps">
-      <li class="just">Crea dos variables de número: <code>contador</code> (empieza en 0) y <code>anterior</code> (empieza en −1, un valor imposible, para que el primer número se dibuje seguro).</li>
-      <li class="just">Un <b>si</b> con dos ramas <b>sino si</b>: A <b>se ha pulsado</b> → sumar 1; B <b>se ha pulsado</b> → sumar −1; táctil → contador = 0 y zumbador. En cada rama, un «Enviar línea» que diga el valor.</li>
+      <li class="just">Crea dos variables de número en <span class="ruta">Variables</span>: <code>contador</code> (empieza en 0) y <code>anterior</code> (empieza en −1, un valor imposible, para que el primer número se dibuje seguro).</li>
+      <li class="just">Un <b>si</b> (<span class="ruta">Lógica</span>; pulsa dos veces su <b>+</b> para tener dos ramas <b>sino si</b>): A <b>se ha pulsado</b> (<span class="ruta">micro:STEAMakers › Sensores</span>) → <b>sumar 1</b> (<span class="ruta">Matemáticas</span>); B <b>se ha pulsado</b> → sumar −1; táctil → contador = 0 y <b>Zumbador</b> (<span class="ruta">micro:STEAMakers › Actuadores</span>). En cada rama, un «Enviar línea» que diga el valor.</li>
       <li class="just">Otro <b>si</b>: si <code>contador ≠ anterior</code> → <b>Texto</b> en la matriz con <b>Número entero</b>(contador) y después <code>anterior = contador</code>.</li>
     </ol>
     <div class="sim-row">
@@ -115,6 +119,7 @@
     <h3 class="sec-title"><span class="ico">🧩</span> Programa 3 · El interruptor</h3>
     <p>Con un solo botón, encender y apagar una luz. El truco es una variable de tipo verdadero/falso, <code>encendida</code>, que cambia a su contrario cada vez que pulsas: <b>encendida = no encendida</b>. Después, un <b>si… si no</b> decide qué hacer según su valor.</p>
     <figure class="prog-img"><img src="img/N3c_interruptor.webp" alt="Programa interruptor: si pulsador A se ha pulsado, encendida igual a no encendida; si encendida rellenar amarillo y enviar Luz encendida, si no limpiar y enviar Luz apagada"><figcaption>Proyecto «N3c Interruptor de luz».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps"><li class="just">Crea una variable de tipo <b>Boolean</b> llamada <b>encendida</b> (<span class="ruta">Variables</span> › <b>Crear variable… (Boolean)</b>).</li><li class="just">En Inicializar: consola, <b>Iniciar</b> la matriz y <b>Establecer brillo 60</b> (<span class="ruta">micro:STEAMakers › NeoMatrix</span>), <b>Establecer encendida = falso</b> (verdadero/falso en <span class="ruta">Lógica</span>) y un mensaje.</li><li class="just">En Bucle: un <b>si</b> sencillo con <b>Pulsador A se ha pulsado</b> (<span class="ruta">micro:STEAMakers › Sensores</span>).</li><li class="just">Dentro: <b>Establecer encendida = no encendida</b> (el bloque <b>no</b> está en <span class="ruta">Lógica</span>; dentro le encajas la variable).</li><li class="just">Debajo, todavía dentro del primer si, un <b>si … sino</b> (el segundo bloque si de <span class="ruta">Lógica</span>) cuya condición es la propia variable <b>encendida</b>: en «hacer», <b>Rellenar</b> amarillo y un aviso; en «sino», <b>Limpiar</b> y otro aviso.</li></ol></div></details>
     <div class="sim-row">
       <div><div class="mx" id="mx-n3c"></div><div class="mx-label">Simulación</div><div class="row" style="justify-content:center;margin-top:6px"><button class="btn" id="n3c-a">Pulsar A</button></div></div>
       <div class="serial" id="sim-n3c"></div>
@@ -137,7 +142,7 @@
   </div>
 
   <details class="capo">
-    <summary>🔧 Bajo el capó: lógica inversa y rebotes</summary>
+    <summary>🔧 Bajo el capó: <span class="g" data-g="logica-inversa">lógica inversa</span> y rebotes</summary>
     <div class="in">
       <p>Así traduce STEAMakersBlocks el Programa 1:</p>
 <pre class="code">Serial.<span class="f">println</span>(<span class="f">String</span>(<span class="s">"A = "</span>) + <span class="f">String</span>(!<span class="f">digitalRead</span>(0))
@@ -146,7 +151,7 @@
       <p>¿Ves el signo <code>!</code> (que significa <i>no</i>) delante de los botones? Los botones A (pin io0) y B (io17) están conectados con <b>lógica inversa</b>: en reposo el pin está a 3,3 V (lee 1) y al pulsar se une a masa (lee 0). El bloque le da la vuelta con <code>!</code> para que tú veas 1 al pulsar. El logo táctil (io27) da directamente 1 cuando lo tocas.</p>
       <div class="bridge">
         <div><h4>🔁 «Se ha pulsado» y los rebotes</h4>
-          <p>Un pulsador es una pieza mecánica: al apretarlo, sus contactos chocan y rebotan varias veces en unos milisegundos, y la placa podría contar varias pulsaciones en vez de una. Por eso el bloque «se ha pulsado» usa una pequeña librería con <b>antirrebote</b>:</p>
+          <p>Un pulsador es una pieza mecánica: al apretarlo, sus contactos chocan y <span class="g" data-g="rebote">rebotan</span> varias veces en unos milisegundos, y la placa podría contar varias pulsaciones en vez de una. Por eso el bloque «se ha pulsado» usa una pequeña librería con <b><span class="g" data-g="antirrebote">antirrebote</span></b>:</p>
 <pre class="code">Button button_debounced_0(0, 50);  <span class="c">// pin 0, 50 ms de antirrebote</span>
 <span class="k">if</span> (button_debounced_0.<span class="f">released</span>()) { ... }</pre>
           <p>Ignora los cambios que duran menos de 50 ms y avisa una sola vez por pulsación completa (fíjate en <code>released</code>: reacciona al <i>soltar</i>).</p></div>
