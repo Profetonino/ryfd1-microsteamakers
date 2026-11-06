@@ -4,12 +4,12 @@ Manual de prácticas y retos para aprender a programar hardware real con la plac
 
 Material de la optativa **Robótica y Fabricación Digital I** (1.º de Bachillerato) del **IES Murillo** (Sevilla).
 
-👉 **Web:** se publica con GitHub Pages desde este repositorio.
+👉 **Web:** https://profetonino.github.io/ryfd1-microsteamakers/
 
 ## Qué incluye
 
 - **Portada** con el mapa del camino (N0 → Reto 100) y cómo se evalúa.
-- **Una página por nivel**: N0 (la placa y el entorno), N1 (secuencias y tiempo), N2 (variables)… y los siguientes, que se irán añadiendo.
+- **Una página por nivel**: N0 (la placa y el entorno), N1 (secuencias y tiempo), N2 (variables), N3 (botones y decisiones), N4 (sensores y umbrales), Reto 50, N5 (sonido y bucles), N6 (listas), N7 (funciones e inclinación) y N8 (datos: medir, registrar y guardar). Los siguientes se irán añadiendo.
 - En cada práctica: programa real en bloques, consola serie simulada, preguntas para interpretar los datos, retos en tres niveles (básico, medio, pro), «Bajo el capó» con el código C++ que generan los bloques y un test autocorregible.
 - **Infografía interactiva de la placa** (cara frontal, trasera y pines de la placa de expansión Keyestudio).
 - **Guía rápida** con los pines y las reglas de la consola serie.
