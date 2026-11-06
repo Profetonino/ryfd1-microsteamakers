@@ -17,7 +17,7 @@
     ['N8','Datos','Temperatura, energía y registro en microSD','n8'],
     ['N9','La placa de expansión','Sensores y actuadores externos','n9'],
     ['N10','Conectividad','Placas que hablan entre sí (ESP-NOW)','n10'],
-    ['R100','Reto 100','Estación ambiental del aula',null,'reto']
+    ['R100','Reto 100','Estación ambiental del aula','r100','reto']
   ];
   const done={};
   function drawLevels(){
@@ -496,6 +496,17 @@
     setInterval(()=>{ const a=9.8*Math.sin(+sl.value*Math.PI/180)+rnd(-0.04,0.04); let n=Math.round(a*4095/9.8); n=Math.max(-4095,Math.min(4095,n)); if(Math.abs(n)<20) n=0;
       iv.textContent=sl.value; msg.textContent=String(n); objetivo=Math.trunc((n+4095)*180/8190); g.textContent=objetivo; },100);
     setInterval(()=>{ actual+=Math.max(-10,Math.min(10,objetivo-actual)); brazo.setAttribute('transform',`rotate(${actual-90} 100 80)`); },30);
+  }
+  // ---------- R100 ----------
+  if(document.getElementById('mx-r100')){
+    const mx=makeMatrix(document.getElementById('mx-r100'));
+    const est=(v,mi,ma,mg)=>{ let r=2; if(v>=mi-mg&&v<=ma+mg) r=1; if(v>=mi&&v<=ma) r=0; return r; };
+    const COL=['#2e9d52','#e8a400','#d64545'], TXT=['bien','regular','mal'], MXC=['#00ff00','#ff9900','#ff0000'];
+    const dot=e=>`<span style="color:${COL[e]};font-weight:700">● ${e}</span>`;
+    const M=[['t',20,26,2],['h',40,60,10],['l',150,4095,90],['r',0,100,200]];
+    const upd=()=>{ let c=0; M.forEach(([k,mi,ma,mg])=>{ const v=+document.getElementById('r100-'+k).value; document.getElementById('r100-'+k+'v').textContent=String(v).replace('.',','); const e=est(v,mi,ma,mg); document.getElementById('r100-'+k+'e').innerHTML=dot(e); if(e>c) c=e; });
+      paint(mx,Array(25).fill(MXC[c])); document.getElementById('r100-txt').textContent=`Confort: ${c} (${TXT[c]})`; };
+    M.forEach(([k])=>document.getElementById('r100-'+k).addEventListener('input',upd)); upd();
   }
   // ---------- R50 ----------
   if(document.getElementById('plot-r50')){
