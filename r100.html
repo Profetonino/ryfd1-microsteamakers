@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reto 100 · Estación ambiental · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css?v=9f4f2ff8">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html">N0 · Tu placa</a>
+    <a href="n1.html">N1 · Secuencias</a>
+    <a href="n2.html">N2 · Variables</a>
+    <a href="n3.html">N3 · Botones</a>
+    <a href="n4.html">N4 · Sensores</a>
+    <a href="r50.html">R50 · Reto</a>
+    <a href="n5.html">N5 · Sonido</a>
+    <a href="n6.html">N6 · Listas</a>
+    <a href="n7.html">N7 · Inclinación</a>
+    <a href="n8.html">N8 · Datos</a>
+    <a href="n9.html">N9 · Expansión</a>
+    <a href="n10.html">N10 · Radio</a>
+    <a href="r100.html" class="on" aria-current="page">R100 · Reto</a>
+    <a href="evaluacion.html">Evaluación</a>
+    <a href="glosario.html">Glosario</a>
+    <a href="guia.html">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="r100">
+  <h2 class="lvl"><span class="badge reto">R100</span> Reto 100 · Estación ambiental del aula</h2>
+  <p class="lead">Has llegado al final del camino. Este reto lo junta todo: sensores, decisiones, funciones, datos, la placa de expansión y, si queréis, la radio. Vais a construir un <b>sistema de verdad</b>, que funciona solo durante horas, y a documentarlo como lo haría un equipo de ingeniería. Es una <b>evidencia evaluable</b>: se califica con la rúbrica del final de la página.</p>
+  <div class="row"><span class="pill">⏱️ 6–8 sesiones</span><span class="pill">👥 Por parejas o tríos</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span><span class="pill crit">1.3</span><span class="pill crit">2.2</span></div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📣</span> La situación</h3>
+    <p>En el aula pasamos muchas horas, y no siempre en buenas condiciones: hay días de calor sofocante, mañanas frías, ambiente cargado cuando las ventanas llevan horas cerradas, poca luz en la mesa del fondo o un ruido que no deja concentrarse. El centro quiere saber <b>cómo es de verdad el ambiente del aula a lo largo del día</b> y tener un aviso visible cuando las condiciones no son buenas.</p>
+    <p>Vuestro encargo: una <b>estación ambiental</b> que</p>
+    <ul>
+      <li><b>mida</b> varias magnitudes del aula (temperatura, humedad, luz, ruido…);</li>
+      <li><b>decida</b> si el ambiente es bueno, regular o malo, combinando todas las medidas en un solo <b>índice de confort</b>;</li>
+      <li><b>muestre</b> ese índice de forma clara (verde, ámbar o rojo) y avise cuando haga falta;</li>
+      <li><b>guarde</b> todas las medidas en la tarjeta microSD para analizarlas después en una hoja de cálculo.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">✅</span> Requisitos</h3>
+    <p><b>Lo mínimo para que el reto esté aprobado:</b></p>
+    <ul>
+      <li>Mide al menos <b>tres magnitudes</b>: temperatura y humedad (AHT20) y luz o ruido.</li>
+      <li>Mide con <b>Ejecutar cada</b> (N8), no con Esperar, para que la placa no se quede bloqueada.</li>
+      <li>Muestra en la matriz un <b>índice de confort con tres estados</b> (verde, ámbar, rojo) y la consola informa de los valores.</li>
+      <li>Guarda en la microSD un archivo <b>CSV con cabecera</b> que se pueda abrir en una hoja de cálculo, durante al menos una clase entera.</li>
+    </ul>
+    <p><b>Para subir de nivel</b> (mira la rúbrica):</p>
+    <ul>
+      <li>Umbrales justificados con <b>vuestras medidas</b> y con <b>información de una fuente fiable</b> sobre condiciones de confort en un aula, citada.</li>
+      <li>Una <b>función propia con parámetros</b> que se reutiliza para clasificar todas las magnitudes (N7).</li>
+      <li>Dos ritmos: medir y mostrar cada pocos segundos, y <b>guardar cada minuto</b>.</li>
+      <li>Al menos un <b>sensor o actuador externo</b> conectado a la placa de expansión (N9): un LED o un zumbador de aviso, una LDR, un servo que haga de aguja indicadora…</li>
+      <li>Un <b>registro de una jornada real</b> analizado con gráficas y conclusiones.</li>
+      <li>Una mejora propia: un <b>panel remoto</b> que recibe el índice por ESP-NOW (N10), máximas y mínimas, aviso solo si el rojo dura varios minutos, botones para consultar cada valor…</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧭</span> Cómo abordarlo: siete fases</h3>
+    <p>Un proyecto así no se hace de una sentada. Repartid el trabajo, pero que <b>todos</b> sepáis explicar todas las partes: la nota es individual.</p>
+    <ol class="steps">
+      <li class="just"><b>Investigar.</b> Buscad qué condiciones se consideran adecuadas en un aula (temperatura, humedad, iluminación, ruido) en fuentes fiables: organismos oficiales, normativa de edificios, guías de prevención de riesgos laborales… Anotad la fuente de cada dato.</li>
+      <li class="just"><b>Medir.</b> Con los programas de los niveles anteriores (N4 y N8), tomad medidas reales del aula y grabad CSV: por la mañana temprano, después del recreo, con la ventana abierta, con las luces apagadas… Comparad la temperatura de la placa con un termómetro de referencia.</li>
+      <li class="just"><b>Diseñar.</b> Antes de tocar un bloque: un <b>diagrama de bloques</b> del sistema (como el de abajo), el <b>pseudocódigo</b>, la tabla de <b>umbrales</b> justificada y la tabla de <b>pines</b> si usáis la placa de expansión.</li>
+      <li class="just"><b>Montar.</b> Si usáis sensores o actuadores externos, montadlos con todo apagado, revisad las conexiones y haced una foto etiquetada (N9).</li>
+      <li class="just"><b>Programar por partes.</b> Primero medir (comprobad en el plotter que cada valor tiene sentido); después decidir (el índice, comprobado en la consola); después mostrar; por último guardar. Una parte cada vez, y no paséis a la siguiente hasta que la anterior funcione.</li>
+      <li class="just"><b>Probar y validar.</b> Rellenad la tabla de pruebas. Después, dejad la estación funcionando <b>una jornada real</b> y analizad el CSV: gráficas, máximos, mínimos, momentos de mal ambiente y sus causas.</li>
+      <li class="just"><b>Documentar y presentar.</b> Escribid la memoria técnica y preparad una presentación de 2–3 minutos.</li>
+    </ol>
+    <figure class="esquema"><svg viewBox="0 0 680 190" role="img" aria-label="Diagrama de bloques de la estación ambiental: medir, decidir, mostrar, guardar y comunicar" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,system-ui,sans-serif">
+      <defs><marker id="r100ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#495057"/></marker></defs>
+      <g font-size="12" text-anchor="middle">
+        <rect x="10" y="60" width="130" height="70" rx="10" fill="#e7f5ff" stroke="#1c7ed6"/><text x="75" y="88" font-weight="700" fill="#1c7ed6">MEDIR</text><text x="75" y="106" fill="#1d2433">temperatura,</text><text x="75" y="121" fill="#1d2433">humedad, luz, ruido</text>
+        <rect x="185" y="60" width="130" height="70" rx="10" fill="#fff4e6" stroke="#e8590c"/><text x="250" y="88" font-weight="700" fill="#e8590c">DECIDIR</text><text x="250" y="106" fill="#1d2433">cada magnitud: 0, 1, 2</text><text x="250" y="121" fill="#1d2433">confort = la peor</text>
+        <rect x="360" y="10" width="140" height="56" rx="10" fill="#ebfbee" stroke="#2e9d52"/><text x="430" y="34" font-weight="700" fill="#2e9d52">MOSTRAR</text><text x="430" y="52" fill="#1d2433">matriz, consola, aviso</text>
+        <rect x="360" y="76" width="140" height="56" rx="10" fill="#f3f0ff" stroke="#7048e8"/><text x="430" y="100" font-weight="700" fill="#7048e8">GUARDAR</text><text x="430" y="118" fill="#1d2433">CSV en la microSD</text>
+        <rect x="360" y="142" width="140" height="42" rx="10" fill="#f8f9fa" stroke="#868e96" stroke-dasharray="5 3"/><text x="430" y="161" font-weight="700" fill="#495057">COMUNICAR</text><text x="430" y="177" fill="#495057">ESP-NOW (opcional)</text>
+        <rect x="545" y="142" width="125" height="42" rx="10" fill="#f8f9fa" stroke="#868e96" stroke-dasharray="5 3"/><text x="607" y="168" fill="#495057">panel remoto</text>
+        <rect x="545" y="76" width="125" height="56" rx="10" fill="#fff9db" stroke="#e8a400"/><text x="607" y="100" font-weight="700" fill="#b08900">ANALIZAR</text><text x="607" y="118" fill="#1d2433">hoja de cálculo</text>
+      </g>
+      <g stroke="#495057" stroke-width="1.6" fill="none" marker-end="url(#r100ar)">
+        <path d="M140,95 L183,95"/><path d="M315,85 L358,40"/><path d="M315,95 L358,104"/><path d="M315,108 L358,160"/><path d="M500,104 L543,104"/><path d="M500,163 L543,163"/>
+      </g>
+      <text x="250" y="170" font-size="11" fill="#868e96" text-anchor="middle">cada 2 s: medir, decidir, mostrar</text><text x="250" y="184" font-size="11" fill="#868e96" text-anchor="middle">cada minuto: guardar</text>
+    </svg><figcaption>Las partes de la estación. Cada caja es una parte del programa que podéis programar y probar por separado. Las de línea discontinua son opcionales.</figcaption></figure>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🌡️</span> La idea clave: un índice de confort</h3>
+    <p>Tenéis varias medidas y queréis un solo color. La forma más sencilla y fácil de justificar es esta:</p>
+    <ol class="steps">
+      <li class="just">Cada magnitud se clasifica en <b>0 (bien)</b>, <b>1 (regular)</b> o <b>2 (mal)</b>, según si está dentro del rango adecuado, un poco fuera o muy fuera.</li>
+      <li class="just">El índice de confort es <b>el peor</b> de todos: si una sola magnitud está mal, el ambiente está mal. Basta con que haga mucho calor para que el aula no sea cómoda, aunque la luz sea perfecta.</li>
+    </ol>
+    <p>Para no repetir cuatro veces los mismos «si», se puede hacer <b>una sola función</b> con cuatro parámetros: el valor, el mínimo y el máximo del rango adecuado, y un margen. Por ejemplo, con temperatura adecuada entre 20 y 26 ºC y un margen de 2:</p>
+    <table class="t"><tr><th>Temperatura</th><th>¿Dentro de 20–26?</th><th>¿Dentro de 18–28 (con margen)?</th><th>Resultado</th></tr>
+      <tr><td>23 ºC</td><td>sí</td><td>—</td><td><b>0</b> (bien)</td></tr>
+      <tr><td>27 ºC</td><td>no</td><td>sí</td><td><b>1</b> (regular)</td></tr>
+      <tr><td>30 ºC</td><td>no</td><td>no</td><td><b>2</b> (mal)</td></tr></table>
+    <div class="entender"><h4>💡 Para entenderlo: la cadena y su eslabón más débil</h4><p>Una cadena es tan fuerte como su eslabón más débil. El confort de un aula funciona igual: da igual que la luz y el silencio sean perfectos si hace 31 ºC. Por eso el índice no es la media de las magnitudes (la media escondería el problema), sino la peor. Es la misma idea que usan muchos índices de calidad del aire: se calcula cada contaminante y manda el peor.</p></div>
+    <p>Probad la idea en el simulador. <b>Los umbrales del simulador son solo un ejemplo</b>: los vuestros tienen que salir de vuestra investigación y de vuestras medidas.</p>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:6px;min-width:240px">
+        <label class="small">Temperatura: <b id="r100-tv">23</b> ºC <span id="r100-te"></span></label><input type="range" id="r100-t" min="10" max="35" step="0.5" value="23">
+        <label class="small">Humedad: <b id="r100-hv">50</b> % <span id="r100-he"></span></label><input type="range" id="r100-h" min="10" max="90" value="50">
+        <label class="small">Luz (bruto): <b id="r100-lv">250</b> <span id="r100-le"></span></label><input type="range" id="r100-l" min="0" max="1000" value="250">
+        <label class="small">Ruido (pico): <b id="r100-rv">60</b> <span id="r100-re"></span></label><input type="range" id="r100-r" min="0" max="1000" value="60">
+        <div class="small">Ejemplo: temperatura 20–26 (margen 2) · humedad 40–60 (margen 10) · luz ≥ 150 (margen 90) · ruido ≤ 100 (margen 200).</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div class="mx" id="mx-r100"></div><div class="mx-label" id="r100-txt">Confort: 0 (bien)</div></div>
+    </div>
+    <div class="note"><b>Antes de programar, interpreta</b>
+      <ul>
+        <li>Pon la temperatura en 27 ºC y todo lo demás bien. ¿Qué color sale? ¿Y si además bajas la luz a 100? ¿Por qué no sale «más ámbar»?</li>
+        <li>¿Qué ventajas e inconvenientes tendría usar la media de los cuatro valores en lugar del peor?</li>
+        <li>¿Qué pasa si un valor está justo en el borde (26,0 ºC) y el sensor tiembla un poco? ¿Cómo lo evitaríais? (Pista: N4.)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🆘</span> Pistas (ábrelas solo si te atascas)</h3>
+    <details class="capo"><summary>💡 Pista 1 · ¿Qué variables necesito?</summary><div class="in"><p>Una por magnitud (<code>temperatura</code>, <code>humedad</code>, <code>luz</code>, <code>ruido</code>), el índice (<code>confort</code>), una auxiliar para comparar (<code>aux</code>), <code>anterior</code> para escribir solo cuando cambia, y para el archivo <code>segundos</code> y una de texto, <code>linea</code>. Si medís el ruido como en el N4, también <code>muestra</code>.</p></div></details>
+    <details class="capo"><summary>💡 Pista 2 · La función que clasifica</summary><div class="in"><p>En <span class="ruta">Funciones</span>, un bloque <b>para … devuelve</b> llamado, por ejemplo, <b>estadoRango</b>, con cuatro parámetros: valor, minimo, maximo y margen. Dentro: <code>resultado = 2</code>; si valor ≥ minimo − margen <b>y</b> valor ≤ maximo + margen → <code>resultado = 1</code>; si valor ≥ minimo <b>y</b> valor ≤ maximo → <code>resultado = 0</code>; devuelve resultado. Fijaos en el orden: cada «si» puede mejorar el resultado del anterior.</p></div></details>
+    <details class="capo"><summary>💡 Pista 3 · ¿Cómo me quedo con el peor?</summary><div class="in"><p><code>confort = estadoRango(temperatura, …)</code>. Después, para cada otra magnitud: <code>aux = estadoRango(humedad, …)</code> y <b>si aux &gt; confort</b> → <code>confort = aux</code>. Al final, confort tiene el valor más alto, es decir, el peor.</p></div></details>
+    <details class="capo"><summary>💡 Pista 4 · Medir cada 2 s y guardar cada minuto</summary><div class="in"><p>Dos bloques <b>Ejecutar cada</b> en el Bucle, uno de 2000 ms y otro de 60000 ms (como en el reto pro del N8). Cada uno lleva su propia cuenta. La cabecera del CSV se escribe en Inicializar solo si el archivo no existe.</p></div></details>
+    <details class="capo"><summary>💡 Pista 5 · Un panel remoto con ESP-NOW</summary><div class="in"><p>La estación envía cada 2 s el índice (o un mensaje con varios valores separados por punto y coma) con <b>Enviar a todos</b>; el panel lo recibe con el patrón del buzón y pinta el color. Es el termómetro a distancia del N10 con otro mensaje. Recordad poner vuestro canal en las dos placas y usar los sensores analógicos externos solo en P2.</p></div></details>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧪</span> Tabla de pruebas</h3>
+    <p>Copiadla en la memoria y rellenadla. La columna «Qué espero» se rellena <b>antes</b> de probar. Añadid los casos que necesite vuestra estación.</p>
+    <table class="t">
+      <tr><th>Caso</th><th>Qué hago</th><th>Qué espero</th><th>Qué pasa (valores de consola/plotter)</th><th>¿Bien?</th></tr>
+      <tr><td>1</td><td>Aula en condiciones normales durante 5 minutos</td><td></td><td></td><td></td></tr>
+      <tr><td>2</td><td>Echo el aliento sobre el sensor (humedad)</td><td></td><td></td><td></td></tr>
+      <tr><td>3</td><td>Tapo el sensor de luz</td><td></td><td></td><td></td></tr>
+      <tr><td>4</td><td>Ruido fuerte cerca de la placa durante unos segundos</td><td></td><td></td><td></td></tr>
+      <tr><td>5</td><td>Reinicio la placa: ¿qué pasa con el archivo y la cabecera?</td><td></td><td></td><td></td></tr>
+      <tr><td>6</td><td>Comparo la temperatura con un termómetro de referencia</td><td></td><td></td><td></td></tr>
+      <tr><td>7</td><td>Abro el CSV en la hoja de cálculo: ¿columnas y decimales correctos?</td><td></td><td></td><td></td></tr>
+      <tr><td>8</td><td>(Vuestro caso: sensor externo, panel remoto, sin tarjeta…)</td><td></td><td></td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📝</span> La memoria técnica</h3>
+    <p>Es el documento que explica vuestra estación a alguien que no la ha visto. Debe tener estos apartados:</p>
+    <ol class="steps">
+      <li class="just"><b>Portada:</b> título, autores, fecha.</li>
+      <li class="just"><b>El problema</b> y los requisitos de vuestra estación.</li>
+      <li class="just"><b>Investigación:</b> qué condiciones son adecuadas en un aula, con las <b>fuentes citadas</b>, y vuestras medidas previas.</li>
+      <li class="just"><b>Diseño:</b> diagrama de bloques, tabla de umbrales justificada, pseudocódigo y, si hay montaje, foto etiquetada y tabla de pines.</li>
+      <li class="just"><b>El programa</b> explicado por partes (medir, decidir, mostrar, guardar…), con capturas y con vuestras palabras.</li>
+      <li class="just"><b>Pruebas:</b> la tabla rellena, con el «antes y después» de los fallos corregidos.</li>
+      <li class="just"><b>Resultados:</b> la gráfica de una jornada y qué conclusiones sacáis sobre el ambiente del aula.</li>
+      <li class="just"><b>Limitaciones y mejoras</b> (por ejemplo, la precisión de los sensores o el calor de la propia placa).</li>
+      <li class="just"><b>Uso de herramientas de IA:</b> si las habéis usado, qué les preguntasteis, qué os aportaron, qué comprobasteis vosotros y qué descartasteis. Ser honestos aquí <b>suma</b> en la rúbrica.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📊</span> Rúbrica de evaluación</h3>
+    <p>Cada criterio se califica por separado. Para alcanzar un nivel hay que cumplir lo que dice <b>y lo de los niveles anteriores</b>.</p>
+    <h4>Criterio 1.1 · Diseña y programa una solución que funciona</h4>
+    <table class="t rubrica">
+      <tr><th>Insuficiente</th><th>Suficiente</th><th>Bien</th><th>Notable</th><th>Sobresaliente</th></tr>
+      <tr>
+        <td>La estación no funciona, mide menos de tres magnitudes o no guarda los datos.</td>
+        <td>Mide al menos <b>tres magnitudes</b> con Ejecutar cada, muestra un índice de <b>tres estados</b> en la matriz y guarda un <b>CSV con cabecera</b> en la microSD.</td>
+        <td>Los <b>umbrales</b> salen de vuestras medidas y de una fuente citada; el programa está organizado en partes claras (medir, decidir, mostrar, guardar) con nombres de variables claros.</td>
+        <td>Usa una <b>función propia con parámetros</b> reutilizada para clasificar las magnitudes y <b>dos ritmos</b> (mostrar y guardar); el índice combina al menos cuatro magnitudes.</td>
+        <td>Añade una <b>mejora propia</b> bien resuelta (panel remoto por ESP-NOW, máximas y mínimas, aviso con retardo, consulta con botones…) y el sistema es robusto ante reinicios o falta de tarjeta.</td>
+      </tr>
+    </table>
+    <h4 style="margin-top:14px">Criterio 1.2 · Prueba, corrige y valida</h4>
+    <table class="t rubrica">
+      <tr><th>Insuficiente</th><th>Suficiente</th><th>Bien</th><th>Notable</th><th>Sobresaliente</th></tr>
+      <tr>
+        <td>No hay pruebas, o solo se dice «funciona» sin datos.</td>
+        <td>Prueba cada sensor por separado y el índice en al menos <b>tres situaciones</b> distintas.</td>
+        <td>Completa la <b>tabla de pruebas</b> (al menos 6 casos) con lo esperado y lo obtenido, con capturas de la consola o del plotter.</td>
+        <td>Detecta y corrige al menos <b>un fallo</b> explicando su causa con datos (antes y después), y compara la temperatura con una <b>referencia</b>.</td>
+        <td>Valida la estación con el <b>registro de una jornada real</b>, analiza los datos, ajusta los umbrales si hace falta y explica los <b>límites</b> de su solución.</td>
+      </tr>
+    </table>
+    <h4 style="margin-top:14px">Criterio 1.3 · Documenta y explica, valorando la ayuda recibida</h4>
+    <table class="t rubrica">
+      <tr><th>Insuficiente</th><th>Suficiente</th><th>Bien</th><th>Notable</th><th>Sobresaliente</th></tr>
+      <tr>
+        <td>No hay memoria, o es una copia de capturas sin explicar.</td>
+        <td>La memoria describe el problema, el programa (con capturas) y las conexiones.</td>
+        <td>La memoria tiene todos los apartados, con <b>diagrama de bloques</b>, pseudocódigo, el programa explicado con vuestras palabras y la <b>gráfica</b> de los datos.</td>
+        <td>Justifica las <b>decisiones de diseño</b> y las alternativas descartadas, <b>cita las fuentes</b> y declara con honestidad el uso de IA (qué se preguntó, qué aportó, qué se comprobó).</td>
+        <td>En la <b>presentación</b>, cada miembro explica con claridad cualquier parte del sistema, y la memoria incluye una valoración crítica de la ayuda de la IA y mejoras bien fundamentadas.</td>
+      </tr>
+    </table>
+    <h4 style="margin-top:14px">Criterio 2.2 · Programa un sistema que responde a lo que captan los sensores</h4>
+    <table class="t rubrica">
+      <tr><th>Insuficiente</th><th>Suficiente</th><th>Bien</th><th>Notable</th><th>Sobresaliente</th></tr>
+      <tr>
+        <td>El sistema no reacciona a los sensores o lo hace de forma incorrecta.</td>
+        <td>El indicador cambia <b>automáticamente</b> según lo que miden los sensores de la placa.</td>
+        <td>Responde de forma <b>estable</b> (sin parpadeos: solo actualiza al cambiar, umbrales con margen) y combina varias magnitudes en un solo índice.</td>
+        <td>Incorpora al menos un <b>sensor o actuador externo</b> por la placa de expansión, bien montado (foto etiquetada) y bien programado.</td>
+        <td>Es un sistema <b>completo o distribuido</b>: nodo sensor y panel por ESP-NOW, o un aviso que actúa sobre el entorno con lógica temporal (por ejemplo, solo si el rojo dura varios minutos).</td>
+      </tr>
+    </table>
+    <p class="small" style="margin-top:8px">Si no se entrega el reto, la calificación es «No entregado». El reto se hace en grupo, pero la calificación es individual: cada miembro debe saber explicar el sistema completo.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📁</span> Qué se entrega</h3>
+    <ul class="portfolio">
+      <li>La <b>memoria técnica</b> con todos sus apartados.</li>
+      <li>El <b>CSV de una jornada</b> y la hoja de cálculo con las gráficas.</li>
+      <li>El programa (enlace o archivo del proyecto de STEAMakersBlocks) y capturas.</li>
+      <li>Un <b>vídeo</b> corto (1–2 minutos) de la estación funcionando y pasando por los tres estados.</li>
+      <li>La <b>presentación</b> de 2–3 minutos en clase.</li>
+    </ul>
+  </div>
+  <div class="done-row"><button class="check" data-done="r100">☐ He terminado el Reto 100</button></div>
+</section>
+<div class="pager"><a href="n10.html">← N10 · Radio</a></div>
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js?v=9f4f2ff8"></script>
+</body>
+</html>
