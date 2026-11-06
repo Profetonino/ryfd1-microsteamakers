@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N10 · Placas que hablan (ESP-NOW) · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css?v=ef95562f">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html">N0 · Tu placa</a>
+    <a href="n1.html">N1 · Secuencias</a>
+    <a href="n2.html">N2 · Variables</a>
+    <a href="n3.html">N3 · Botones</a>
+    <a href="n4.html">N4 · Sensores</a>
+    <a href="r50.html">R50 · Reto</a>
+    <a href="n5.html">N5 · Sonido</a>
+    <a href="n6.html">N6 · Listas</a>
+    <a href="n7.html">N7 · Inclinación</a>
+    <a href="n8.html">N8 · Datos</a>
+    <a href="n9.html">N9 · Expansión</a>
+    <a href="n10.html" class="on" aria-current="page">N10 · Radio</a>
+    <a href="evaluacion.html">Evaluación</a>
+    <a href="glosario.html">Glosario</a>
+    <a href="guia.html">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="n10">
+  <h2 class="lvl"><span class="badge">N10</span> Placas que hablan entre sí (ESP-NOW)</h2>
+  <p class="lead">El ESP32 de tu placa lleva una <b>radio</b> dentro: la misma que usa para el WiFi. Con <b>ESP-NOW</b>, dos o más placas se envían mensajes cortos directamente, sin router ni internet, en milésimas de segundo. En este nivel harás un «walkie-talkie» de botones, un termómetro a distancia y un mando que mueve un servo desde otra placa. Es la base de muchos proyectos de robótica: mandos, sensores repartidos por el aula, robots que se coordinan…</p>
+  <div class="row"><span class="pill">⏱️ 2–3 sesiones</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span><span class="pill crit">1.3</span><span class="pill crit">2.2</span><span class="pill crit">T</span></div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🎯</span> Objetivo</h3>
+    <ul>
+      <li>Entender cómo se comunican dos placas por radio: <span class="g" data-g="canal-radio">canal</span>, <span class="g" data-g="mac">dirección MAC</span> y <span class="g" data-g="difusion">difusión</span>.</li>
+      <li>Enviar y recibir mensajes de texto con los bloques de <span class="g" data-g="esp-now">ESP-NOW</span>.</li>
+      <li>Usar el patrón del <b>buzón</b>: el evento guarda el mensaje y el Bucle lo procesa.</li>
+      <li>Convertir los mensajes en números para usarlos en cálculos, gráficas y actuadores.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar</h3>
+    <p>Para este nivel hacen falta <b>dos placas</b>: la tuya y la de otra pareja (o dos de vuestro grupo). ESP-NOW es un sistema de comunicación creado por Espressif, el fabricante del ESP32. Envía mensajes cortos (hasta 250 caracteres) por la banda de 2,4 GHz, la del WiFi, con un alcance de unas decenas de metros dentro de un edificio.</p>
+    <div class="entender"><h4>💡 Para entenderlo: los walkie-talkies</h4><p>ESP-NOW se parece mucho a unos walkie-talkies. Para oíros, los dos tenéis que estar en el mismo <b>canal</b>. Cuando hablas, te oyen <b>todos</b> los que estén en ese canal (eso es la <b>difusión</b>), no solo tu compañero. Y no hace falta ninguna antena ni operador en medio: los aparatos hablan directamente entre ellos. Además, cada placa tiene un número de serie único, su <b>dirección MAC</b> (como 3C:61:05:A2:1B:F4), que permite, si se quiere, enviar un mensaje a una placa concreta.</p></div>
+    <div class="note warn"><b>En clase, cada pareja en su canal.</b> Si todas las placas del aula usan el canal 1, cada una recibirá los mensajes de todas las demás y será un caos. El profesor os dará un <b>número de canal del 1 al 13</b>: ponedlo en <b>todas</b> las placas de vuestro grupo, en el bloque «Establecer canal».</div>
+    <h4>Los bloques</h4>
+    <p>Están en <span class="ruta">Comunicaciones › ESP-NOW</span>. Para empezar, siempre los mismos tres bloques en Inicializar:</p>
+    <table class="t"><tr><th>Bloque</th><th>Qué hace</th></tr>
+      <tr><td><b>Iniciar</b></td><td>Enciende la radio en modo ESP-NOW. Deja sin marcar «Encriptar comunicación».</td></tr>
+      <tr><td><b>Emparejar nodo remoto MAC FF:FF:FF:FF:FF:FF</b></td><td>Apunta en la «agenda» de la placa la dirección especial FF:FF:FF:FF:FF:FF, que significa «todos». Sin este paso, «Enviar a todos» no envía nada.</td></tr>
+      <tr><td><b>Establecer canal</b></td><td>El canal de vuestro grupo (1 a 13).</td></tr></table>
+    <p>Para enviar: <b>Enviar a todos</b> con el texto que quieras. Para recibir: el bloque <b>Al recibir datos</b>, que va suelto en el espacio de trabajo (como una función) y se ejecuta solo cuando llega un mensaje. Dentro, <b>Datos recibidos</b> te da el texto del mensaje (o, si cambias el desplegable, la MAC de quien lo envió).</p>
+    <div class="entender"><h4>💡 Para entenderlo: el buzón</h4><p>«Al recibir datos» se ejecuta <b>a la vez</b> que el Bucle, en paralelo, en el momento en que llega el mensaje. Si dentro pones cosas lentas (pitar, esperar, dibujar), puede pisarse con lo que esté haciendo el Bucle. Por eso usamos el patrón del <b>buzón</b>: el evento solo <b>deja la carta</b> (guarda el mensaje en una variable de texto y pone una variable <b>nuevo</b> a verdadero) y el Bucle, cuando pasa por ahí, <b>mira el buzón</b>: si nuevo es verdadero, lo pone a falso y procesa el mensaje con calma.</p></div>
+    <div class="bridge">
+      <div><h4>🐍 La misma idea en Python</h4>
+<pre class="code">mensaje = ""
+nuevo = <span class="k">False</span>
+
+<span class="k">def</span> <span class="f">al_recibir</span>(datos):   <span class="c"># lo llama la radio</span>
+    <span class="k">global</span> mensaje, nuevo
+    mensaje = datos
+    nuevo = <span class="k">True</span>
+
+<span class="k">while</span> <span class="k">True</span>:              <span class="c"># el Bucle</span>
+    <span class="k">if</span> nuevo:
+        nuevo = <span class="k">False</span>
+        <span class="f">print</span>(<span class="s">"Recibido:"</span>, mensaje)</pre></div>
+      <div><h4>📦 Los mensajes son texto</h4>
+        <p>Por ESP-NOW viajan <b>textos</b>. Si envías una temperatura, sale «23.5» (con punto), y al otro lado llega el texto «23.5», no el número. Para hacer cuentas o compararlo hay que convertirlo con <b>Texto a número</b> (<span class="ruta">Texto</span>). Para comparar textos (por ejemplo, si ha llegado «A»), usa el bloque de comparar textos de <span class="ruta">Texto</span>, no el de números.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 1 · Mensajes por radio</h3>
+    <p>El mismo programa en las dos placas: al pulsar A, una placa envía «A»; al pulsar B, envía «B». La otra placa lo muestra en su matriz y en la consola. Es vuestro primer walkie-talkie.</p>
+    <figure class="prog-img tall-img"><img src="img/N10a_mensajes.webp" alt="Programa: en Inicializar, consola, matriz, brillo, ESP-NOW Iniciar, Emparejar nodo remoto MAC FF:FF:FF:FF:FF:FF, Establecer canal 1, nuevo = falso. Bloque Al recibir datos: mensaje = Datos recibidos, nuevo = verdadero. En Bucle: si se ha pulsado A, Enviar a todos A; si se ha pulsado B, Enviar a todos B; si nuevo, nuevo = falso, enviar línea Recibido: mensaje y Texto mensaje en la matriz."><figcaption>Proyecto «N10a Mensajes por radio».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">Variables: <b>mensaje</b> de tipo <b>Texto</b> y <b>nuevo</b> de tipo <b>Boolean</b> (<span class="ruta">Variables</span>).</li>
+      <li class="just">En Inicializar: consola, matriz y brillo; los tres bloques de ESP-NOW (Iniciar, Emparejar con FF en las seis casillas y Establecer canal con <b>vuestro</b> número); y <b>nuevo = falso</b>.</li>
+      <li class="just">Suelto en el espacio de trabajo, el bloque <b>Al recibir datos</b>. Dentro: <b>mensaje = Datos recibidos</b> (opción Datos) y <b>nuevo = verdadero</b>. Nada más.</li>
+      <li class="just">En Bucle: <b>si se ha pulsado A</b> → <b>Enviar a todos</b> «A» y un Enviar línea; lo mismo con B.</li>
+      <li class="just">Otro <b>si</b> con la variable <b>nuevo</b> como condición: <b>nuevo = falso</b>, <b>Enviar línea</b> «Recibido: » + mensaje y <b>Texto</b> (<span class="ruta">micro:STEAMakers › NeoMatrix</span>) con el mensaje.</li>
+      <li class="just">Sube el <b>mismo</b> programa a las dos placas y prueba. Después, poned canales distintos en cada una: ¿qué pasa?</li>
+    </ol></div></details>
+    <div class="sim-row" id="sim-n10a" style="gap:18px">
+      <div class="n10-placa" data-p="1" style="display:flex;flex-direction:column;gap:6px;align-items:center;min-width:170px">
+        <b class="small">Placa 1</b><div class="mx" id="mx-n10a1"></div>
+        <div class="row"><button class="btn" data-b="A">A</button><button class="btn" data-b="B">B</button></div>
+        <label class="small">Canal <select data-c><option>1</option><option>2</option><option>3</option></select></label>
+      </div>
+      <div class="n10-placa" data-p="2" style="display:flex;flex-direction:column;gap:6px;align-items:center;min-width:170px">
+        <b class="small">Placa 2</b><div class="mx" id="mx-n10a2"></div>
+        <div class="row"><button class="btn" data-b="A">A</button><button class="btn" data-b="B">B</button></div>
+        <label class="small">Canal <select data-c><option>1</option><option>2</option><option>3</option></select></label>
+      </div>
+      <div class="serial" id="con-n10a" style="flex:1;min-width:220px"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>¿Cuánto tarda en aparecer la letra en la otra placa? ¿Se nota algún retraso?</li>
+        <li>Poned canales distintos en cada placa. ¿Llegan los mensajes? ¿Y si otra pareja está en vuestro canal?</li>
+        <li>Alejad las placas poco a poco (pasillo, otra aula). ¿Hasta dónde llegan los mensajes? ¿Qué cosas los cortan (paredes, el cuerpo, una caja metálica)?</li>
+        <li>Cambia «Datos recibidos» a la opción <b>MAC</b> y envíala por la consola. ¿Cuál es la MAC de la placa de tu compañero? ¿Y la tuya?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 2 · Termómetro a distancia</h3>
+    <p>Ahora cada placa tiene un papel: el <b>emisor</b> mide la temperatura cada 2 segundos y la envía; el <b>receptor</b> la convierte en número, la manda al Serial Plotter y pone su matriz azul, verde o roja. Imagina el emisor en el patio y el receptor en clase.</p>
+    <div class="bridge">
+      <div><figure class="prog-img"><img src="img/N10b_emisor.webp" alt="Emisor: en Inicializar consola y los tres bloques de ESP-NOW con canal 1. En Bucle, Ejecutar cada 2000 ms: temperatura = sensor Temperatura, Enviar a todos la temperatura formateada con 1 decimal y Enviar línea."><figcaption>«N10b Termómetro emisor».</figcaption></figure></div>
+      <div><figure class="prog-img"><img src="img/N10b_receptor.webp" alt="Receptor: buzón con mensaje y nuevo. En Bucle, si nuevo: nuevo = falso, temperatura = Texto a número(mensaje), Plotter, Enviar línea, y matriz azul si menor que 20, verde si menor que 26, roja si no."><figcaption>«N10b Termómetro receptor».</figcaption></figure></div>
+    </div>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just"><b>Emisor:</b> en Inicializar, consola y los tres bloques de ESP-NOW. En Bucle, <b>Ejecutar cada 2000 ms</b> (N8): temperatura = sensor de temperatura; <b>Enviar a todos</b> con <b>Formatear número</b>(temperatura, 1 decimal); y un Enviar línea para ver qué sale.</li>
+      <li class="just"><b>Receptor:</b> los mismos tres bloques y el buzón (variables mensaje y nuevo, y el bloque Al recibir datos) como en el programa 1.</li>
+      <li class="just">En el Bucle del receptor: <b>si nuevo</b> → nuevo = falso; <b>temperatura = Texto a número(mensaje)</b>; Plotter de temperatura; Enviar línea; y un si / sino si / sino para el color de la matriz.</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:220px">
+        <b class="small">Emisor</b>
+        <label class="small">Temperatura donde está: <b id="n10b-tv">22.0</b> ºC</label><input type="range" id="n10b-t" min="10" max="35" step="0.5" value="22">
+        <label class="small"><input type="checkbox" id="n10b-off"> Apagar el emisor</label>
+        <b class="small" style="margin-top:6px">Receptor</b><div class="mx" id="mx-n10b"></div>
+      </div>
+      <div class="plotter" id="plot-n10b"></div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>¿Qué texto exacto envía el emisor? ¿Qué pasaría en el receptor si te olvidaras del «Texto a número» y compararas el mensaje con 20?</li>
+        <li>Apaga el emisor. ¿Qué hace el receptor? ¿Cómo sabría el receptor que el emisor lleva mucho rato sin hablar? (Pista: el cronómetro o millis del N8.)</li>
+        <li>Si otra pareja pone su emisor en vuestro canal, ¿qué verá vuestro receptor? ¿Cómo podríais distinguir vuestros mensajes de los suyos?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 3 · Un servo a distancia</h3>
+    <p>Juntamos tres niveles: el <b>emisor</b> usa tu función <b>inclinacion</b> del N7 y envía el lado (de −4095 a 4095) diez veces por segundo; el <b>receptor</b> lo convierte en un ángulo de 0º a 180º y mueve el servo del N9. Inclinas una placa y el servo de la otra la sigue: así funcionan los mandos de radiocontrol.</p>
+    <div class="bridge">
+      <div><figure class="prog-img"><img src="img/N10c_emisor.webp" alt="Emisor: función inclinacion del N7; en Bucle, Ejecutar cada 100 ms: lado = inclinacion(Accel-X), Enviar a todos Número entero(lado) y Plotter."><figcaption>«N10c Servo a distancia emisor».</figcaption></figure></div>
+      <div><figure class="prog-img"><img src="img/N10c_receptor.webp" alt="Receptor: buzón; en Bucle, si nuevo: valor = Texto a número(mensaje), angulo = mapear valor de -4095..4095 a 0..180, Servo Pin 26 (P10) y Plotter."><figcaption>«N10c Servo a distancia receptor».</figcaption></figure></div>
+    </div>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just"><b>Emisor:</b> copia tu función <b>inclinacion</b> del N7. En Bucle, <b>Ejecutar cada 100 ms</b>: lado = inclinacion(Accel-X) y <b>Enviar a todos</b> el <b>Número entero</b> de lado (así viaja «1532» en vez de «1532.00»).</li>
+      <li class="just"><b>Receptor:</b> monta el servo como en el N9 (V2 en 5 V, servo en P10, shield alimentada). Buzón como siempre.</li>
+      <li class="just">En el Bucle del receptor: si nuevo → valor = Texto a número(mensaje); <b>angulo = mapear</b>(valor, −4095, 4095, 0, 180); bloque <b>Servo</b> en P10 con ese ángulo.</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:220px">
+        <b class="small">Emisor</b>
+        <label class="small">Inclinación: <b id="n10c-iv">0</b>º</label><input type="range" id="n10c-i" min="-90" max="90" value="0">
+        <div class="small">Envía: <code id="n10c-msg">0</code></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;min-width:220px">
+        <b class="small">Receptor</b>
+        <svg viewBox="0 0 200 120" width="200" height="120" aria-label="Servo del receptor"><rect x="60" y="70" width="80" height="40" rx="6" fill="#1c7ed6"/><circle cx="100" cy="80" r="10" fill="#fff"/><g id="n10c-brazo"><rect x="96" y="20" width="8" height="62" rx="4" fill="#f1f3f5" stroke="#868e96"/></g></svg>
+        <div class="small">Ángulo: <b id="n10c-g">90</b>º</div>
+      </div>
+    </div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>¿Cuántos mensajes por segundo envía el emisor? ¿Qué notarías en el servo si enviara uno por segundo? ¿Y si enviara mil?</li>
+        <li>Cuando la placa está plana, ¿qué ángulo tiene el servo? ¿Por qué? ¿Ayuda aquí la zona muerta del N7?</li>
+        <li>Haz que el emisor envíe también el frente y que el receptor mueva un segundo servo. ¿Cómo meterías los dos números en un solo mensaje y los separarías al otro lado?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🚀</span> Retos</h3>
+    <div class="retos">
+      <div class="reto b"><span class="tag">Básico</span><h4>Timbre inalámbrico</h4><p>Un solo programa para las dos placas: al pulsar A se envía «DING» y la otra placa pita y se pone amarilla medio segundo. Comprueba que el mensaje es exactamente «DING» antes de sonar (bloque de comparar textos), para que otros mensajes no hagan sonar el timbre.</p></div>
+      <div class="reto m"><span class="tag">Medio</span><h4>La urna</h4><p>Una placa hace de <b>urna</b> y varias placas votan con el programa 1 (A o B). La urna cuenta los votos de cada opción y los dibuja como dos barras en la matriz, con la regla de las barras del N6. Al pulsar A en la urna, la votación vuelve a empezar.</p></div>
+      <div class="reto p"><span class="tag">Pro</span><h4>¿Me has oído?</h4><p>La radio no es perfecta: un mensaje puede perderse. Haz que el receptor del programa 2 conteste «OK» cada vez que recibe una temperatura, y que el emisor espere esa respuesta: si el «OK» llega antes de 500 ms, la matriz se pone verde; si no, roja. Usa millis o el cronómetro para medir el tiempo de espera. Así funcionan los acuses de recibo de las aplicaciones de mensajería.</p></div>
+    </div>
+  </div>
+
+  <details class="capo">
+    <summary>🔧 Bajo el capó: cómo viaja un mensaje</summary>
+    <div class="in">
+<pre class="code"><span class="k">#include</span> &lt;esp_now.h&gt;
+<span class="k">#include</span> "WiFi.h"
+
+<span class="k">void</span> <span class="f">setup</span>() {
+  WiFi.<span class="f">mode</span>(WIFI_STA);                          <span class="c">// la radio, sin conectarse a ningún router</span>
+  <span class="k">if</span> (<span class="f">esp_now_init</span>() != ESP_OK) ESP.<span class="f">restart</span>();
+  <span class="f">esp_now_register_recv_cb</span>(espnow_data_rx);       <span class="c">// qué hacer al recibir</span>
+  <span class="f">espnow_add_peer</span>(0xFF,0xFF,0xFF,0xFF,0xFF,0xFF); <span class="c">// «todos» en la agenda</span>
+  <span class="f">esp_wifi_set_channel</span>(1, WIFI_SECOND_CHAN_NONE);
+}
+<span class="k">void</span> <span class="f">espnow_send_broadcast</span>(String _data) {
+  <span class="f">esp_now_send</span>(0, (uint8_t *) _data.<span class="f">c_str</span>(), _data.<span class="f">length</span>()); <span class="c">// 0 = a toda la agenda</span>
+}</pre>
+      <div class="bridge">
+        <div><h4>📨 Enviar y recibir</h4>
+          <p><code>esp_now_send</code> con la dirección 0 envía el mensaje a todas las placas de la agenda. Por eso hace falta emparejar FF:FF:FF:FF:FF:FF, la dirección de difusión: es la forma de decir «a cualquiera que escuche». Para enviar a una placa concreta se empareja su MAC y se usa «Enviar a» con esa dirección.</p>
+          <p>Cuando llega un mensaje, la radio llama a una función que copia el texto y lo mete en una <b>cola</b>; otra tarea del sistema lo saca de la cola y ejecuta tu bloque «Al recibir datos». Es otra tarea de FreeRTOS, como la del medidor de energía del N8: por eso funciona en paralelo al Bucle y conviene que sea corta.</p></div>
+        <div><h4>🔐 ¿Y la seguridad?</h4>
+          <p>Los mensajes viajan <b>sin cifrar</b>: cualquier placa en vuestro canal puede leerlos y también enviaros mensajes falsos. Para un mando de un robot de verdad, eso es un problema de ciberseguridad. ESP-NOW permite cifrar (casilla «Encriptar comunicación» con dos claves, PMK y LMK), pero solo entre placas emparejadas por su MAC, no en difusión.</p>
+          <p>Un detalle práctico: el bloque <b>¿Último envío correcto?</b> genera, en la versión actual de STEAMakersBlocks, un código que no compila. No lo uses; para saber si un mensaje ha llegado, pide al receptor que conteste, como en el reto pro.</p></div>
+      </div>
+    </div>
+  </details>
+
+  <div class="card quiz" data-quiz="n10">
+    <h3 class="sec-title"><span class="ico">🔎</span> ¿Lo has entendido?</h3>
+    <div class="qs"></div>
+    <div class="row" style="margin-top:8px"><button class="btn qcheck">Comprobar</button><button class="btn ghost qreset">Empezar de nuevo</button><span class="score"></span></div>
+    <p class="small">Cuando termines, haz una captura con tu puntuación para el porfolio.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📁</span> Al porfolio</h3>
+    <ul class="portfolio">
+      <li>Capturas de los programas (emisor y receptor) y del Serial Plotter del receptor del programa 2.</li>
+      <li>Un esquema sencillo de vuestro sistema: qué placa envía, qué mensaje, cada cuánto y qué hace la que recibe.</li>
+      <li>Tu explicación del patrón del buzón con tus palabras.</li>
+      <li>La prueba de alcance: hasta dónde llegaron los mensajes y qué los cortaba.</li>
+      <li>Tus respuestas a «Interpreta lo que ves».</li>
+      <li>Vídeo corto del servo a distancia (o del reto) con las dos placas a la vista.</li>
+      <li>El reto que hayas hecho y captura de tu resultado en «¿Lo has entendido?».</li>
+    </ul>
+  </div>
+  <div class="done-row"><button class="check" data-done="n10">☐ He terminado el N10</button></div>
+</section>
+<div class="pager"><a href="n9.html">← N9 · Expansión</a></div>
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js?v=ef95562f"></script>
+</body>
+</html>
