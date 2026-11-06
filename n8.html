@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N8 · Datos: medir, registrar y guardar · RyFD I</title>
+<link rel="stylesheet" href="assets/estilos.css?v=b6889c18">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Robótica y Fabricación Digital I · 1.º Bachillerato · IES Murillo</div>
+    <h1>De 0 a 100 con micro:STEAMakers</h1>
+    <p class="sub">Prácticas y retos para aprender a programar hardware real: sensores, actuadores y, sobre todo, la consola serie.</p>
+  </div>
+</header>
+<nav class="menu" aria-label="Secciones">
+  <div class="wrap" id="menu">
+    <a href="index.html">Inicio</a>
+    <a href="n0.html">N0 · Tu placa</a>
+    <a href="n1.html">N1 · Secuencias</a>
+    <a href="n2.html">N2 · Variables</a>
+    <a href="n3.html">N3 · Botones</a>
+    <a href="n4.html">N4 · Sensores</a>
+    <a href="r50.html">R50 · Reto</a>
+    <a href="n5.html">N5 · Sonido</a>
+    <a href="n6.html">N6 · Listas</a>
+    <a href="n7.html">N7 · Inclinación</a>
+    <a href="n8.html" class="on" aria-current="page">N8 · Datos</a>
+    <span class="soon" title="Próximamente">N9–N10</span>
+    <a href="evaluacion.html">Evaluación</a>
+    <a href="glosario.html">Glosario</a>
+    <a href="guia.html">Guía rápida</a>
+  </div>
+</nav>
+
+<main>
+<section class="page on" id="n8">
+  <h2 class="lvl"><span class="badge">N8</span> Datos: medir, registrar y guardar</h2>
+  <p class="lead">Hasta ahora la placa medía y reaccionaba al momento. En este nivel se convierte en un pequeño <b>laboratorio</b>: mide la temperatura y la humedad del aula, averigua cuánta energía gasta ella misma y <b>guarda</b> las medidas en una tarjeta microSD para que luego las analices en una hoja de cálculo. Y aprenderás el bloque que usan casi todos los programas de verdad: <b>Ejecutar cada</b>, que hace cosas cada cierto tiempo <b>sin dejar la placa bloqueada</b>.</p>
+  <div class="row"><span class="pill">⏱️ 2–3 sesiones</span><span class="pill crit">1.1</span><span class="pill crit">1.2</span><span class="pill crit">1.3</span><span class="pill crit">T</span></div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🎯</span> Objetivo</h3>
+    <ul>
+      <li>Leer el sensor de temperatura y <span class="g" data-g="humedad-relativa">humedad</span> (AHT20) y el <b>medidor de consumo</b> de la placa.</li>
+      <li>Repetir tareas cada cierto tiempo con <b>Ejecutar cada</b> y entender por qué es mejor que <b>Esperar</b> cuando la placa tiene que hacer varias cosas.</li>
+      <li>Construir un <span class="g" data-g="registrador">registrador de datos</span>: escribir líneas <span class="g" data-g="csv">CSV</span> en la tarjeta microSD.</li>
+      <li>Llevar los datos a una hoja de cálculo, hacer una gráfica y sacar conclusiones.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧠</span> Antes de empezar</h3>
+    <p>La placa tiene tres piezas nuevas para nosotros, todas ya montadas (las viste en el N0):</p>
+    <table class="t"><tr><th>Pieza</th><th>Qué mide o hace</th><th>Bloque</th></tr>
+      <tr><td><b>AHT20</b></td><td>Temperatura del aire (ºC) y humedad relativa (%). Se comunica con el ESP32 por el bus <span class="g" data-g="i2c">I2C</span>, como el acelerómetro.</td><td><span class="ruta">micro:STEAMakers › Sensores</span>: el del termómetro, con el desplegable <b>Temperatura ºC</b> o <b>Humedad %</b>.</td></tr>
+      <tr><td><b>Medidor de consumo</b></td><td>La <b>corriente</b> que consume la placa (A). Con ella calcula la <span class="g" data-g="potencia">potencia</span> (W) y va sumando la <span class="g" data-g="energia">energía</span> gastada (Wh).</td><td><span class="ruta">micro:STEAMakers › Sensores</span>: <b>Medidor de energía</b>, con A, V, W o Wh.</td></tr>
+      <tr><td><b>Ranura microSD</b></td><td>Guarda archivos en una tarjeta, como un pendrive diminuto. Está en la cara de atrás de la placa.</td><td><span class="ruta">micro:STEAMakers › Tarjeta SD</span></td></tr></table>
+    <div class="note info"><b>Necesitas una tarjeta microSD</b> para el programa 3 (vale una pequeña, de 1 a 32 GB, formateada en FAT32). Métela en la ranura <b>con la placa desconectada</b>.</div>
+    <h4>Esperar frente a Ejecutar cada</h4>
+    <p>¿Recuerdas el metrónomo del N5, que a veces no hacía caso a los botones? Pasaba porque <b>Esperar</b> deja la placa parada: mientras espera, no mira nada más. El bloque <b>Ejecutar cada</b> (<span class="ruta">Tiempo</span>) funciona de otra manera: en cada vuelta del Bucle mira el reloj interno de la placa y solo ejecuta lo que tiene dentro cuando ha pasado el tiempo indicado. El resto de vueltas lo salta, y el Bucle sigue girando a toda velocidad, atento a todo lo demás.</p>
+    <figure class="esquema"><svg viewBox="0 0 680 220" role="img" aria-label="Comparación en el tiempo entre Esperar y Ejecutar cada" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,system-ui,sans-serif">
+      <text x="10" y="22" font-size="13" font-weight="700" fill="#1d2433">Con «Esperar 2000 ms»</text>
+      <rect x="40" y="34" width="20" height="26" fill="#2e9d52"/><rect x="60" y="34" width="250" height="26" fill="#ced4da"/><rect x="310" y="34" width="20" height="26" fill="#2e9d52"/><rect x="330" y="34" width="250" height="26" fill="#ced4da"/><rect x="580" y="34" width="20" height="26" fill="#2e9d52"/>
+      <text x="185" y="52" font-size="11" text-anchor="middle" fill="#495057">esperando: no ve nada</text><text x="455" y="52" font-size="11" text-anchor="middle" fill="#495057">esperando: no ve nada</text>
+      <line x1="140" y1="66" x2="140" y2="84" stroke="#d64545" stroke-width="2"/><text x="140" y="96" font-size="11" text-anchor="middle" fill="#d64545">pulsas A</text>
+      <path d="M140,100 Q225,112 310,66" fill="none" stroke="#d64545" stroke-dasharray="4 3"/><text x="250" y="114" font-size="11" fill="#d64545">la atiende 1,3 s después… o nunca</text>
+      <text x="10" y="148" font-size="13" font-weight="700" fill="#1d2433">Con «Ejecutar cada 2000 ms»</text>
+      <g fill="#4dabf7">
+        <rect x="40" y="160" width="20" height="26" fill="#2e9d52"/>
+        <rect x="64" y="166" width="4" height="14"/><rect x="72" y="166" width="4" height="14"/><rect x="80" y="166" width="4" height="14"/><rect x="88" y="166" width="4" height="14"/><rect x="96" y="166" width="4" height="14"/><rect x="104" y="166" width="4" height="14"/><rect x="112" y="166" width="4" height="14"/><rect x="120" y="166" width="4" height="14"/><rect x="128" y="166" width="4" height="14"/><rect x="136" y="166" width="4" height="14"/><rect x="144" y="166" width="4" height="14"/><rect x="152" y="166" width="4" height="14"/><rect x="160" y="166" width="4" height="14"/><rect x="168" y="166" width="4" height="14"/><rect x="176" y="166" width="4" height="14"/><rect x="184" y="166" width="4" height="14"/><rect x="192" y="166" width="4" height="14"/><rect x="200" y="166" width="4" height="14"/><rect x="208" y="166" width="4" height="14"/><rect x="216" y="166" width="4" height="14"/><rect x="224" y="166" width="4" height="14"/><rect x="232" y="166" width="4" height="14"/><rect x="240" y="166" width="4" height="14"/><rect x="248" y="166" width="4" height="14"/><rect x="256" y="166" width="4" height="14"/><rect x="264" y="166" width="4" height="14"/><rect x="272" y="166" width="4" height="14"/><rect x="280" y="166" width="4" height="14"/><rect x="288" y="166" width="4" height="14"/><rect x="296" y="166" width="4" height="14"/>
+        <rect x="310" y="160" width="20" height="26" fill="#2e9d52"/>
+        <rect x="334" y="166" width="4" height="14"/><rect x="342" y="166" width="4" height="14"/><rect x="350" y="166" width="4" height="14"/><rect x="358" y="166" width="4" height="14"/><rect x="366" y="166" width="4" height="14"/><rect x="374" y="166" width="4" height="14"/><rect x="382" y="166" width="4" height="14"/><rect x="390" y="166" width="4" height="14"/><rect x="398" y="166" width="4" height="14"/><rect x="406" y="166" width="4" height="14"/><rect x="414" y="166" width="4" height="14"/><rect x="422" y="166" width="4" height="14"/><rect x="430" y="166" width="4" height="14"/><rect x="438" y="166" width="4" height="14"/><rect x="446" y="166" width="4" height="14"/><rect x="454" y="166" width="4" height="14"/><rect x="462" y="166" width="4" height="14"/><rect x="470" y="166" width="4" height="14"/><rect x="478" y="166" width="4" height="14"/><rect x="486" y="166" width="4" height="14"/><rect x="494" y="166" width="4" height="14"/><rect x="502" y="166" width="4" height="14"/><rect x="510" y="166" width="4" height="14"/><rect x="518" y="166" width="4" height="14"/><rect x="526" y="166" width="4" height="14"/><rect x="534" y="166" width="4" height="14"/><rect x="542" y="166" width="4" height="14"/><rect x="550" y="166" width="4" height="14"/><rect x="558" y="166" width="4" height="14"/><rect x="566" y="166" width="4" height="14"/>
+        <rect x="580" y="160" width="20" height="26" fill="#2e9d52"/>
+      </g>
+      <line x1="140" y1="192" x2="140" y2="204" stroke="#d64545" stroke-width="2"/><text x="148" y="212" font-size="11" fill="#d64545">pulsas A → la atiende en la siguiente vuelta (milésimas de segundo)</text>
+      <rect x="440" y="6" width="12" height="12" fill="#2e9d52"/><text x="456" y="16" font-size="11" fill="#495057">mide y envía los datos</text>
+      <rect x="440" y="124" width="12" height="12" fill="#4dabf7"/><text x="456" y="134" font-size="11" fill="#495057">vueltas rápidas del Bucle</text>
+    </svg><figcaption>Los dos programas miden cada 2 segundos. Con Esperar, la placa pasa casi todo el tiempo parada. Con Ejecutar cada, el Bucle da miles de vueltas por segundo y, en cada una, mira el reloj y los botones.</figcaption></figure>
+    <div class="entender"><h4>💡 Para entenderlo: el horno y el reloj de la cocina</h4><p>Tienes un bizcocho en el horno y hay que mirarlo cada 10 minutos. Una forma es sentarte delante del horno y no moverte (eso es <b>Esperar</b>): si llaman al timbre, no abres. La otra es mirar el reloj de la cocina de vez en cuando mientras haces otras cosas y, cuando han pasado 10 minutos desde la última vez, abrir el horno (eso es <b>Ejecutar cada</b>). El reloj de la placa se llama <span class="g" data-g="millis">millis</span>: cuenta los milisegundos que han pasado desde que se encendió.</p></div>
+    <div class="bridge">
+      <div><h4>🐍 La misma idea en Python</h4>
+<pre class="code"><span class="k">import</span> time
+ultima = 0
+<span class="k">while</span> <span class="k">True</span>:
+    ahora = time.<span class="f">time</span>()
+    <span class="k">if</span> ahora - ultima &gt;= 2:   <span class="c"># ¿han pasado 2 s?</span>
+        ultima = ahora
+        <span class="f">medir_y_enviar</span>()
+    <span class="f">mirar_botones</span>()           <span class="c"># siempre atento</span></pre></div>
+      <div><h4>🧩 En STEAMakersBlocks</h4>
+        <p>En <span class="ruta">Tiempo</span> está <b>Ejecutar cada … ms</b>, que hace todo eso en un solo bloque. Puedes poner varios en el mismo Bucle, cada uno con su tiempo: cada bloque lleva su propia cuenta.</p>
+        <p>En el mismo menú tienes <b>Tiempo transcurrido (milisegundos)</b>: el valor de millis, por si quieres saber cuánto lleva encendida la placa.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 1 · El clima del aula</h3>
+    <p>Cada 2 segundos, la placa mide la temperatura y la humedad, las envía al Serial Plotter y escribe una línea en la consola. Y en cualquier momento, si pulsas A, la temperatura pasa por la matriz. Gracias a Ejecutar cada, el botón responde al instante.</p>
+    <figure class="prog-img"><img src="img/N8a_clima.webp" alt="Programa: en Bucle, Ejecutar cada 2000 ms: temperatura = sensor Temperatura ºC, humedad = sensor Humedad %, Plotter de las dos y Enviar línea con la temperatura con un decimal y la humedad como número entero. Fuera del Ejecutar cada: si se ha pulsado A, texto con scroll de la temperatura en naranja."><figcaption>Proyecto «N8a Clima del aula».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">Crea las variables <b>temperatura</b> y <b>humedad</b>. En Inicializar: consola, matriz, brillo 20 y un mensaje.</li>
+      <li class="just">En Bucle, el bloque <b>Ejecutar cada</b> (<span class="ruta">Tiempo</span>) con <b>2000</b> ms. Dentro: <b>Establecer temperatura</b> = sensor de temperatura y humedad (<span class="ruta">micro:STEAMakers › Sensores</span>) con <b>Temperatura ºC</b>; lo mismo para <b>humedad</b> con <b>Humedad %</b>.</li>
+      <li class="just">Dentro del Ejecutar cada: dos <b>Plotter</b> y un <b>Enviar línea</b> con <b>crear texto con</b>: la temperatura con <b>Formatear número</b> a 1 decimal (<span class="ruta">Texto</span>) y la humedad con <b>Número entero</b> (<span class="ruta">Matemáticas</span>).</li>
+      <li class="just"><b>Fuera</b> del Ejecutar cada, pero dentro del Bucle: <b>si se ha pulsado A</b> → <b>Texto con scroll</b> (<span class="ruta">micro:STEAMakers › NeoMatrix</span>) con la temperatura.</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:230px">
+        <label class="small"><input type="radio" name="n8a-modo" value="cada" checked> Programa con <b>Ejecutar cada 2000</b></label>
+        <label class="small"><input type="radio" name="n8a-modo" value="esperar"> Programa con <b>Esperar 2000</b></label>
+        <button class="btn" id="n8a-btnA">Pulsar A</button>
+        <button class="btn ghost" id="n8a-calor">Acercar la mano (calor)</button>
+        <div class="small">Pulsa A varias veces en cada modo y mira en la consola cuánto tarda la placa en hacerte caso.</div>
+      </div>
+      <div class="plotter" id="plot-n8a"></div>
+    </div>
+    <div class="serial" id="sim-n8a" style="margin-top:10px"></div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>¿Qué temperatura y humedad hay en el aula? Compáralas con un termómetro de pared o con la previsión del tiempo. Si la placa marca más, ¿se te ocurre por qué? (Pista: toca el chip grande de la placa después de un rato funcionando.)</li>
+        <li>Echa el aliento sobre la placa (o tápala con la mano un minuto). ¿Qué cambia más deprisa, la temperatura o la humedad? ¿Cuánto tarda en volver?</li>
+        <li>Cambia el Ejecutar cada por <b>Esperar 2000</b> al final del Bucle (o prueba el simulador). ¿Qué le pasa al botón A? Explícalo con el dibujo de arriba.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 2 · ¿Cuánto gasta la matriz?</h3>
+    <p>Un experimento de verdad: la matriz se enciende entera en blanco y cada pulsación de A sube su brillo 50 puntos (de 0 a 250, y vuelta a empezar). Cada segundo, la placa mide su propia <b>corriente</b> y la envía al plotter junto con el brillo. ¿Gasta más la matriz cuanto más brilla? ¿Cuánto?</p>
+    <figure class="prog-img"><img src="img/N8b_gasto_matriz.webp" alt="Programa: en Inicializar brillo = 0, establecer brillo, rellenar blanco. En Bucle: si se ha pulsado A, brillo + 50, si brillo mayor que 250 entonces 0, establecer brillo y rellenar blanco. Ejecutar cada 1000 ms: corriente = redondear(Medidor de energía en A × 1000), Plotter corriente_mA y brillo, Enviar línea con brillo, corriente y potencia."><figcaption>Proyecto «N8b Gasto de la matriz».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">Variables <b>brillo</b> y <b>corriente</b>. En Inicializar: consola, <b>brillo = 0</b>, <b>Establecer brillo</b> con la variable brillo y <b>Rellenar</b> en blanco.</li>
+      <li class="just">En Bucle: <b>si se ha pulsado A</b> → <b>sumar 50 a brillo</b> (<span class="ruta">Matemáticas</span>); otro <b>si</b>: si brillo &gt; 250, brillo = 0; y otra vez <b>Establecer brillo</b> y <b>Rellenar</b> blanco para que se note el cambio.</li>
+      <li class="just"><b>Ejecutar cada 1000</b> ms: <b>corriente = redondear(Medidor de energía (A) × 1000)</b>. Así pasamos de amperios a <b>miliamperios</b> (mA), que son números más cómodos.</li>
+      <li class="just">Dentro del mismo Ejecutar cada: <b>Plotter</b> de corriente_mA y de brillo, y un <b>Enviar línea</b> con el brillo, la corriente y la potencia (Medidor de energía con <b>W</b>, a 2 decimales).</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:200px;align-items:flex-start">
+        <div class="mx" id="mx-n8b"></div>
+        <button class="btn" id="n8b-btnA">Pulsar A (+50 de brillo)</button>
+        <div class="small">⚠️ En el simulador, las corrientes son <b>inventadas</b>. Las de verdad tienes que medirlas tú.</div>
+      </div>
+      <div class="plotter" id="plot-n8b"></div>
+    </div>
+    <div class="entender"><h4>💡 Para entenderlo: corriente, potencia y energía</h4><p>Piensa en un grifo. La <b>corriente</b> (amperios, A) es cuánta agua pasa por segundo. La <b>potencia</b> (vatios, W) es lo «fuerte» que está trabajando el aparato en ese momento: P = V × I, tensión por corriente. La placa funciona a 3,3 V, así que con 0,1 A la potencia es 3,3 × 0,1 = 0,33 W. La <b>energía</b> (vatios hora, Wh) es lo que se ha gastado en total, como el agua acumulada en el cubo: potencia × tiempo. Una bombilla de 10 W encendida 3 horas gasta 30 Wh. Es lo mismo que pone en la factura de la luz, pero en kWh (1 kWh = 1000 Wh).</p></div>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>Completa una tabla <b>brillo → corriente</b> (0, 50, 100, 150, 200, 250) y haz la gráfica en una hoja de cálculo. ¿Sale una recta? ¿Cuánto gasta la placa con la matriz apagada?</li>
+        <li>¿Cambia la corriente si en lugar de blanco rellenas de rojo? ¿Por qué crees que pasa? (Pista: cada píxel lleva dentro tres LED.)</li>
+        <li>¿Nota algo el medidor cuando suena el zumbador? Añade un pitido al pulsar B y compruébalo.</li>
+        <li>Calcula: si la placa funcionara todo el día con la matriz a brillo 250, ¿cuántos Wh gastaría? Usa tu medida de potencia.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🧩</span> Programa 3 · Registrador de datos en la microSD</h3>
+    <p>Ahora la placa trabaja sola: cada 10 segundos mide y <b>escribe una línea</b> en un archivo, <b>datos.csv</b>, de la tarjeta microSD. Puedes dejarla toda una clase (o toda la noche con un cargador) y luego llevar el archivo a una hoja de cálculo. Al pulsar B, la placa vuelca el archivo entero por la consola.</p>
+    <p>Cada línea del archivo es una medida, con los datos separados por punto y coma. Así, al abrirlo en una hoja de cálculo, cada dato cae en su columna:</p>
+<pre class="code">segundos;temperatura;humedad;      <span class="c">← cabecera (la primera vez)</span>
+10;23.4;56;
+20;23.4;56;
+30;23.5;57;</pre>
+    <figure class="prog-img tall-img"><img src="img/N8c_registrador.webp" alt="Programa registrador: en Inicializar, SD Iniciar, y si no existe datos.csv escribir la cabecera segundos;temperatura;humedad;. En Bucle, Ejecutar cada 10000 ms: segundos = Número entero de milisegundos ÷ 1000, temperatura y humedad, linea = CSV con punto y coma de segundos, temperatura con 1 decimal y humedad; Escribir linea en datos.csv y enviarla a la consola. Si se ha pulsado B: volcar datos.csv por el puerto serie y enviar el número de líneas."><figcaption>Proyecto «N8c Registrador en la microSD».</figcaption></figure>
+    <details class="paso"><summary>🛠️ Móntalo paso a paso</summary><div class="in"><ol class="steps">
+      <li class="just">Variables de número: <b>segundos</b>, <b>temperatura</b> y <b>humedad</b>. Y una de <b>texto</b>: <b>linea</b> («Crear variable… (Texto)» en <span class="ruta">Variables</span>).</li>
+      <li class="just">En Inicializar: consola y <b>SD Iniciar</b> (<span class="ruta">micro:STEAMakers › Tarjeta SD</span>). Después, un <b>si</b> con <b>no ¿Existe el archivo? «datos.csv»</b> (el «no» está en <span class="ruta">Lógica</span>): si no existe, <b>Escribir</b> en «datos.csv» la cabecera <b>segundos;temperatura;humedad;</b> con «Salto de línea» marcado.</li>
+      <li class="just">En Bucle, <b>Ejecutar cada 10000</b> ms. Dentro: <b>segundos = Número entero(Tiempo transcurrido ÷ 1000)</b> (<span class="ruta">Tiempo</span>) y las lecturas de temperatura y humedad.</li>
+      <li class="just"><b>Establecer linea = CSV</b> (<span class="ruta">Texto</span>, el bloque <b>CSV</b> con el separador <b>;</b>) con tres elementos: segundos (Número entero), temperatura (Formatear número, 1 decimal) y humedad (Número entero). El <b>+</b> del bloque añade elementos.</li>
+      <li class="just"><b>Escribir</b> en «datos.csv» el texto <b>linea</b> y, para verlo, <b>Enviar línea</b> con linea.</li>
+      <li class="just">Fuera del Ejecutar cada: <b>si se ha pulsado B</b> → <b>Volcar por puerto serie</b> «datos.csv» y <b>Enviar línea</b> con el <b>Número de líneas</b> del archivo.</li>
+    </ol></div></details>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:220px">
+        <div class="small">Simulación acelerada: cada segundo real cuenta como 10 s.</div>
+        <button class="btn" id="n8c-btnB">Pulsar B (volcar)</button>
+        <button class="btn ghost" id="n8c-reset">Reiniciar la placa</button>
+        <button class="btn ghost" id="n8c-borrar">Tarjeta nueva (vacía)</button>
+        <button class="btn" id="n8c-csv">⬇️ Descargar datos.csv</button>
+      </div>
+      <div class="serial" id="sim-n8c"></div>
+    </div>
+    <h4>Del archivo a la gráfica</h4>
+    <ol class="steps">
+      <li class="just"><b>Consigue el archivo.</b> Opción A: desconecta la placa, saca la tarjeta y léela en el ordenador con un adaptador. Opción B: pulsa B, selecciona en la consola las líneas del archivo, cópialas y pégalas en un archivo de texto. Para practicar, también puedes usar el botón «Descargar datos.csv» del simulador.</li>
+      <li class="just"><b>Ábrelo en una hoja de cálculo.</b> En Hojas de cálculo de Google: <b>Archivo › Importar › Subir</b>, y como separador elige <b>Personalizado</b> con <b>;</b>.</li>
+      <li class="just"><b>Cuidado con los decimales.</b> La placa escribe «23.4» con punto, y en España la hoja espera coma. Si los números salen raros (234, o alineados a la izquierda como si fueran texto), selecciona las columnas y usa <b>Editar › Buscar y reemplazar</b> para cambiar «.» por «,».</li>
+      <li class="just"><b>Haz la gráfica.</b> Selecciona las columnas y usa <b>Insertar › Gráfico</b> (de líneas). Pon título y nombre a los ejes con sus unidades.</li>
+    </ol>
+    <div class="note"><b>Interpreta lo que ves</b>
+      <ul>
+        <li>¿Por qué el programa comprueba si existe el archivo antes de escribir la cabecera? ¿Qué pasaría sin ese «si» cada vez que reinicias la placa?</li>
+        <li>Reinicia la placa (o pulsa «Reiniciar» en el simulador). ¿Qué les pasa a los segundos del archivo? ¿Qué problema da eso al hacer la gráfica? ¿Cómo lo arreglarías?</li>
+        <li>Quita la tarjeta y enciende la placa. ¿Qué dice la consola? ¿Es verdad? ¿Cómo podrías avisar de que no hay tarjeta?</li>
+        <li>Con una medida cada 10 s, ¿cuántas líneas tendrá el archivo después de una clase de 55 minutos? ¿Y de un día entero? Comprueba la primera con el «Número de líneas».</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">🚀</span> Retos</h3>
+    <div class="retos">
+      <div class="reto b"><span class="tag">Básico</span><h4>Alerta de confort</h4><p>Cada 5 segundos, la placa comprueba si el aula está «cargada»: si la temperatura pasa de 27 ºC <b>o</b> la humedad pasa del 70 %, la matriz se pone roja, pita y escribe «Ventilad el aula»; si no, se queda verde. Busca en <span class="ruta">Lógica</span> el bloque que une dos condiciones con «o». Justifica los umbrales que elijas.</p></div>
+      <div class="reto m"><span class="tag">Medio</span><h4>Máximas y mínimas</h4><p>Como el termómetro de una estación meteorológica: la placa guarda la temperatura <b>más alta</b> y la <b>más baja</b> desde que se encendió. Al pulsar A, la máxima pasa por la matriz en rojo; al pulsar B, la mínima en azul. Piensa bien con qué valor deben empezar las variables maxima y minima.</p></div>
+      <div class="reto p"><span class="tag">Pro</span><h4>Media por minuto</h4><p>Usa <b>dos</b> Ejecutar cada en el mismo Bucle: uno cada segundo, que mide la temperatura y la va sumando (y cuenta cuántas lecturas lleva); y otro cada minuto, que calcula la <b>media</b>, la guarda en la microSD (en un archivo «medias.csv» con cabecera) y vuelve a poner la suma y la cuenta a cero. Explica qué ventaja tiene guardar medias en lugar de todas las lecturas.</p></div>
+    </div>
+  </div>
+
+  <details class="capo">
+    <summary>🔧 Bajo el capó: millis, la tarjeta SD y el medidor de energía</summary>
+    <div class="in">
+      <p>Así traduce STEAMakersBlocks el Ejecutar cada y la escritura en la tarjeta:</p>
+<pre class="code"><span class="k">unsigned long</span> task_time_ms = 0;                <span class="c">// cuándo se ejecutó la última vez</span>
+
+<span class="k">void</span> <span class="f">loop</span>() {
+  <span class="k">if</span> ((<span class="f">millis</span>() - task_time_ms) &gt;= 10000) {  <span class="c">// ¿han pasado 10 s?</span>
+    task_time_ms = <span class="f">millis</span>();
+    ...
+    <span class="f">fnc_sd_print_esp32ks</span>("datos.csv", s_linea, <span class="k">true</span>);
+  }
+}
+
+<span class="k">void</span> <span class="f">fnc_sd_print_esp32ks</span>(String _f, String _t, <span class="k">boolean</span> _nl) {
+  sd_file = SD.<span class="f">open</span>("/" + _f, FILE_APPEND);   <span class="c">// abrir para añadir al final</span>
+  <span class="k">if</span> (sd_file) {
+    sd_file.<span class="f">println</span>(_t);
+    sd_file.<span class="f">close</span>();                          <span class="c">// cerrar: queda guardado de verdad</span>
+  }
+}</pre>
+      <div class="bridge">
+        <div><h4>⏱️ El truco de millis</h4>
+          <p><code>millis()</code> devuelve los milisegundos desde que arrancó la placa, en una variable <code>unsigned long</code> (un entero sin signo de 32 bits). Cada Ejecutar cada guarda en su propia variable (<code>task_time_ms</code>, <code>task_time_ms2</code>…) el momento de la última ejecución y resta. A los 49,7 días el contador da la vuelta y vuelve a 0, pero como se usa una resta con números sin signo, la cuenta sigue saliendo bien. Por eso se escribe <code>millis() - anterior &gt;= intervalo</code> y no <code>millis() &gt;= anterior + intervalo</code>.</p>
+          <p>La tarjeta se maneja por el bus <b>SPI</b> (pines 18, 19, 23 y 5) con la librería <code>SD</code>. El archivo se abre, se escribe y se <b>cierra</b> en cada línea: es algo más lento, pero si se va la corriente, lo escrito hasta ese momento ya está a salvo.</p></div>
+        <div><h4>⚡ Cómo mide la energía</h4>
+          <p>El medidor es un amplificador (INA180) que convierte la corriente de la placa en una tensión que lee el ADC en el pin 36. El bloque hace <b>500 lecturas</b> seguidas, calcula la media para quitar ruido y la convierte en amperios con una recta de calibración: <code>A = media × 0,000428 + 0,0436</code>. La potencia es A × 3,3 (la tensión se toma fija, 3,3 V).</p>
+          <p>Para los Wh, STEAMakersBlocks crea una <b>tarea</b> que se ejecuta en paralelo (FreeRTOS) cada 100 ms y suma potencia × 0,1 s. Sumar poco a poco lo que pasa en cada instante se llama <b>integrar</b>; es lo mismo que hacía el giroscopio para calcular el ángulo en el N7.</p></div>
+      </div>
+    </div>
+  </details>
+
+  <div class="card quiz" data-quiz="n8">
+    <h3 class="sec-title"><span class="ico">🔎</span> ¿Lo has entendido?</h3>
+    <div class="qs"></div>
+    <div class="row" style="margin-top:8px"><button class="btn qcheck">Comprobar</button><button class="btn ghost qreset">Empezar de nuevo</button><span class="score"></span></div>
+    <p class="small">Cuando termines, haz una captura con tu puntuación para el porfolio.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="sec-title"><span class="ico">📁</span> Al porfolio</h3>
+    <ul class="portfolio">
+      <li>Capturas de tus programas y del Serial Plotter del programa 1 cuando echas el aliento sobre la placa.</li>
+      <li>Tu explicación, con tus palabras, de la diferencia entre Esperar y Ejecutar cada.</li>
+      <li>La tabla brillo → corriente del programa 2, su gráfica y tus conclusiones.</li>
+      <li>Un archivo CSV de al menos una clase, la gráfica hecha en la hoja de cálculo y un párrafo explicando qué se ve (¿cuándo sube la temperatura? ¿Y la humedad?).</li>
+      <li>Tus respuestas a «Interpreta lo que ves».</li>
+      <li>El reto que hayas hecho.</li>
+      <li>Captura de tu resultado en «¿Lo has entendido?».</li>
+    </ul>
+  </div>
+  <div class="done-row"><button class="check" data-done="n8">☐ He terminado el N8</button></div>
+</section>
+<div class="pager"><a href="n7.html">← N7 · Inclinación</a></div>
+</main>
+<footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
+<script src="assets/app.js?v=b6889c18"></script>
+</body>
+</html>
