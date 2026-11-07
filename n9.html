@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>N9 · La placa de expansión · RyFD I</title>
-<link rel="stylesheet" href="assets/estilos.css?v=9f4f2ff8">
+<link rel="stylesheet" href="assets/estilos.css?v=c29b81ff">
 </head>
 <body>
 <header class="top">
@@ -49,6 +49,7 @@
       <li>Conectar módulos de 3 pines (G-V-S) sin equivocarte y saber a qué pin va cada uno.</li>
       <li>Leer entradas <b>digitales</b> y <b>analógicas</b> externas y manejar salidas: un LED y un <span class="g" data-g="servo">servomotor</span>.</li>
       <li>Medir distancias con un sensor de <span class="g" data-g="ultrasonidos">ultrasonidos</span>.</li>
+      <li>Saber cuándo un módulo puede mandar 5 V a la placa y cómo evitarlo con un <span class="g" data-g="conversor-nivel">conversor de nivel</span> o un <span class="g" data-g="divisor">divisor de tensión</span>.</li>
     </ul>
   </div>
 
@@ -103,6 +104,58 @@
       <tr><td><b>Salida digital</b></td><td>LED, relé, zumbador activo</td><td><b>Escribir digital</b> (ALTO/BAJO)</td><td>cualquiera libre</td></tr>
       <tr><td><b>Salida PWM</b> (intensidad)</td><td>LED con brillo regulable, LED RGB</td><td><b>Led PWM</b> o <b>Escribir analógica</b></td><td>cualquiera libre</td></tr></table>
     <p class="small">Mira la serigrafía de cada módulo: si tiene un pin <b>A</b> (analog) o <b>D</b>/<b>S</b> (digital), te da la pista. Y comprueba siempre en la consola qué valor da en reposo y qué valor da cuando actúa: algunos módulos dan 1 al activarse y otros dan 0.</p>
+  </div>
+
+  <div class="card" id="n9-5v">
+    <h3 class="sec-title"><span class="ico">⚡</span> Cuidado con los 5 V: cuándo un sensor puede dañar la placa</h3>
+    <div class="note warn"><b>Lo más importante de este nivel.</b> El ESP32 de tu placa trabaja a <b>3,3 V</b>, y su hoja de características no admite que le entren 5 V por un pin. Si la patilla S de un módulo le manda 5 V, la entrada puede estropearse para siempre, aunque al principio parezca que funciona.</div>
+    <h4>La regla que te salva casi siempre</h4>
+    <p>Un módulo <b>nunca da en su salida más tensión que la de su alimentación</b>. Por eso, si lo alimentas a 3,3 V (lado izquierdo, V1 = 3,3 V), su señal S como mucho valdrá 3,3 V: no hay peligro. El problema aparece solo con los módulos que <b>necesitan 5 V para funcionar</b>, porque entonces su salida puede llegar a 5 V.</p>
+    <table class="t"><tr><th>Caso</th><th>¿Peligro?</th><th>Qué hacer</th></tr>
+      <tr><td>Módulo que funciona a 3,3 V (la mayoría del kit: pulsador, LED, potenciómetro, LDR, inclinación, Hall…)</td><td>No</td><td>Alimentarlo a 3,3 V y conectarlo directamente.</td></tr>
+      <tr><td>Actuador que solo <b>recibe</b> órdenes (servo, relé con entrada a transistor)</td><td>No, por la señal</td><td>Puede ir a 5 V: su patilla S es una entrada del módulo y no devuelve tensión a la placa.</td></tr>
+      <tr><td>Sensor que <b>necesita 5 V</b> y <b>envía</b> una señal a la placa (HC-SR04 clásico, sensores de gas de la serie MQ, algunos módulos con comparador…)</td><td><b>Sí</b></td><td>Usar una de las tres soluciones de abajo.</td></tr></table>
+    <h4>¿Cómo sé si mi módulo da 5 V?</h4>
+    <ol class="steps">
+      <li class="just">Mira su ficha o la serigrafía: ¿pone «3.3–5 V» o solo «5 V»?</li>
+      <li class="just">Si necesita 5 V, <b>mídelo antes de conectarlo a la placa</b>: aliméntalo a 5 V, haz que actúe y mide con el polímetro la tensión entre S y G. Si pasa de 3,3 V, necesitas una solución.</li>
+    </ol>
+    <h4>Tres soluciones</h4>
+    <div class="retos">
+      <div class="reto b"><span class="tag">La mejor</span><h4>1 · Un módulo de 3,3 V</h4><p>Muchos sensores tienen una versión que funciona de 3 a 5 V. Para medir distancias, el <b>RCWL-1601</b> o el <b>HC-SR04P</b> se conectan igual que el HC-SR04 (mismas patillas) y se pueden alimentar a 3,3 V. Sin piezas extra ni riesgo.</p></div>
+      <div class="reto m"><span class="tag">Señales digitales</span><h4>2 · Un conversor de nivel</h4><p>Es una plaquita (normalmente con 4 transistores BSS138) que traduce señales digitales entre 5 V y 3,3 V en los dos sentidos. Tiene un lado <b>HV</b> (5 V) y otro <b>LV</b> (3,3 V). Sirve para pulsos y señales de 0/1, <b>no para señales analógicas</b>.</p></div>
+      <div class="reto p"><span class="tag">Digital o analógica</span><h4>3 · Un divisor de tensión</h4><p>Dos resistencias en serie reparten la tensión: la señal de 5 V entra por arriba y la placa lee el punto del medio, que vale una fracción. Con 1 kΩ arriba y 2 kΩ abajo, 5 V se convierten en 3,33 V. Sirve también para sensores analógicos.</p></div>
+    </div>
+    <figure class="esquema"><svg viewBox="0 0 680 250" role="img" aria-label="Conexión de un HC-SR04 de 5 V con un conversor de nivel y con un divisor de tensión" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,system-ui,sans-serif">
+      <text x="10" y="18" font-size="13" font-weight="700" fill="#1d2433">A · Con un conversor de nivel</text>
+      <rect x="10" y="32" width="110" height="96" rx="8" fill="#e7f5ff" stroke="#1c7ed6"/><text x="65" y="50" font-size="12" text-anchor="middle" font-weight="700" fill="#1c7ed6">HC-SR04</text>
+      <g font-size="10.5" fill="#1d2433"><text x="20" y="70">VCC</text><text x="20" y="88">Trig</text><text x="20" y="106">Echo</text><text x="20" y="124">GND</text></g>
+      <rect x="170" y="32" width="120" height="96" rx="8" fill="#fff4e6" stroke="#e8590c"/><text x="230" y="50" font-size="12" text-anchor="middle" font-weight="700" fill="#e8590c">Conversor</text>
+      <g font-size="10" fill="#1d2433"><text x="176" y="70">HV</text><text x="176" y="88">HV1</text><text x="176" y="106">HV2</text><text x="176" y="124">GND</text><text x="284" y="70" text-anchor="end">LV</text><text x="284" y="88" text-anchor="end">LV1</text><text x="284" y="106" text-anchor="end">LV2</text><text x="284" y="124" text-anchor="end">GND</text></g>
+      <g stroke-width="2" fill="none"><path d="M110,84 L176,84" stroke="#7048e8"/><path d="M110,102 L176,102" stroke="#7048e8"/><path d="M110,120 L176,120" stroke="#495057"/></g>
+      <rect x="340" y="32" width="160" height="96" rx="8" fill="#1d1d1d"/><text x="420" y="50" font-size="11" text-anchor="middle" fill="#e9c46a">Placa de expansión</text>
+      <g font-size="10" fill="#ddd"><text x="350" y="70">V2 (5 V)</text><text x="350" y="88">S de P8 (io4)</text><text x="350" y="106">S de P9 (io16)</text><text x="350" y="124">V1 (3,3 V) y G</text></g>
+      <g stroke-width="2" fill="none"><path d="M290,84 L346,84" stroke="#7048e8"/><path d="M290,102 L346,102" stroke="#7048e8"/></g>
+      <text x="515" y="62" font-size="10.5" fill="#495057">HV y VCC del sensor → 5 V (V2)</text><text x="515" y="78" font-size="10.5" fill="#495057">LV → 3,3 V (V1)</text><text x="515" y="94" font-size="10.5" fill="#495057">Todas las G unidas</text><text x="515" y="110" font-size="10.5" fill="#495057">(tierra común)</text>
+      <text x="10" y="160" font-size="13" font-weight="700" fill="#1d2433">B · Con un divisor de tensión (solo en Echo)</text>
+      <text x="20" y="196" font-size="11" fill="#1d2433">Echo (5 V)</text><path d="M80,192 L120,192" stroke="#7048e8" stroke-width="2"/>
+      <rect x="120" y="184" width="60" height="16" rx="3" fill="#fff" stroke="#495057"/><text x="150" y="196" font-size="10" text-anchor="middle">R1 = 1 kΩ</text>
+      <path d="M180,192 L260,192" stroke="#7048e8" stroke-width="2"/><circle cx="240" cy="192" r="3.5" fill="#7048e8"/>
+      <path d="M240,192 L240,206" stroke="#495057" stroke-width="2"/><rect x="215" y="206" width="50" height="16" rx="3" fill="#fff" stroke="#495057"/><text x="240" y="218" font-size="10" text-anchor="middle">R2 = 2 kΩ</text><path d="M240,222 L240,238" stroke="#495057" stroke-width="2"/><text x="250" y="240" font-size="10" fill="#495057">G</text>
+      <text x="266" y="196" font-size="11" fill="#1d2433">→ S de P9: 5 × 2 ÷ (1 + 2) = 3,33 V</text>
+      <text x="470" y="196" font-size="10.5" fill="#495057">Trig no necesita divisor: va</text><text x="470" y="211" font-size="10.5" fill="#495057">de la placa al sensor y 3,3 V</text><text x="470" y="226" font-size="10.5" fill="#495057">suelen bastar para disparar.</text>
+    </svg><figcaption>Dos maneras de conectar un sensor de distancia que solo funciona a 5 V. En los dos casos, todas las tierras (G) deben estar unidas.</figcaption></figure>
+    <div class="entender"><h4>💡 Para entenderlo: el divisor de tensión es un tobogán con un rellano</h4><p>Imagina un tobogán de 5 metros de alto con un rellano a mitad de bajada. La altura del rellano depende de dónde lo pongas: si el primer tramo es corto y el segundo largo, el rellano queda alto. En el divisor, cada resistencia es un tramo del tobogán y la placa «se sienta» en el rellano: <b>Vsalida = Ventrada × R2 ÷ (R1 + R2)</b>. Con R1 = 1 kΩ y R2 = 2 kΩ, el rellano queda a dos tercios de la altura: 5 × 2/3 = 3,33 V.</p></div>
+    <h4>Calcula tu divisor</h4>
+    <div class="sim-row">
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:240px">
+        <label class="small">Tensión que da el sensor: <b id="dv-vv">5,0</b> V</label><input type="range" id="dv-v" min="3" max="5.5" step="0.1" value="5">
+        <label class="small">R1 (arriba): <select id="dv-r1"><option>470</option><option selected>1000</option><option>2200</option><option>4700</option><option>10000</option></select> Ω</label>
+        <label class="small">R2 (abajo): <select id="dv-r2"><option>1000</option><option selected>2000</option><option>2200</option><option>3300</option><option>4700</option><option>10000</option><option>20000</option></select> Ω</label>
+      </div>
+      <div class="serial" id="dv-out" style="flex:1;min-width:220px"></div>
+    </div>
+    <p class="small">Valores habituales: 1 kΩ + 2 kΩ (o dos de 1 kΩ en serie haciendo de R2) para señales digitales como el Echo; 10 kΩ + 20 kΩ para sensores analógicos. Si te sale más de 3,3 V, aumenta R2 o disminuye R1.</p>
   </div>
 
   <div class="card">
@@ -171,7 +224,7 @@
       <li class="just"><b>Ejecutar cada 100 ms</b>: <b>distancia = Distancia (cm)</b> (<span class="ruta">Sensores</span>, bloque de ultrasonidos) con Trigger <b>4 (P8)</b> y Echo <b>16 (P9)</b>. <b>Plotter</b> de distancia.</li>
       <li class="just">Un <b>si</b> con tres ramas y un sino: si distancia = 999 → <b>Limpiar</b> (no hay eco); si &lt; 10 → rojo; si &lt; 30 → ámbar; si no → verde.</li>
     </ol></div></details>
-    <div class="note warn"><b>Si mide siempre 999 o valores sin sentido:</b> revisa los cables Trig y Echo (¿están cruzados?). Hay dos versiones del sensor: algunas funcionan a 3,3 V y otras necesitan 5 V. Si la tuya no responde a 3,3 V, <b>avisa al profesor</b> antes de cambiar nada: el pin Echo de un sensor a 5 V devuelve 5 V a la placa y hay que montarlo de otra manera.</div>
+    <div class="note warn"><b>¿Tu HC-SR04 es de 5 V?</b> El modelo clásico está pensado para 5 V y a 3,3 V puede no medir (saldrá siempre 999). <b>No lo pases a 5 V sin más</b>: su patilla Echo devolvería 5 V a la placa. Mira el apartado <a href="#n9-5v">«Cuidado con los 5 V»</a>: lo mejor es usar un RCWL-1601 o un HC-SR04P, o montar un conversor de nivel o un divisor de tensión. Si mide 999 con un sensor de 3,3 V, revisa que Trig y Echo no estén cruzados.</div>
     <div class="sim-row">
       <div style="display:flex;flex-direction:column;gap:8px;min-width:220px;align-items:flex-start">
         <div class="mx" id="mx-n9c"></div>
@@ -235,6 +288,7 @@ Servo servo_26;
       <li>Una <b>foto de cada montaje</b> en la que se vean bien las conexiones y los jumpers, con una etiqueta que diga qué hay en cada pin.</li>
       <li>Capturas de tus programas y del Serial Plotter del programa 2.</li>
       <li>La tabla de distancias medidas con regla y con el sensor, y el error de cada una.</li>
+      <li>Para cada módulo que hayas usado: a qué tensión funciona y si su señal puede pasar de 3,3 V (y, si es así, qué solución has usado).</li>
       <li>Tus respuestas a «Interpreta lo que ves», incluida la prueba de otro módulo del kit.</li>
       <li>Vídeo corto del servo o del medidor de distancia funcionando.</li>
       <li>El reto que hayas hecho (con foto del montaje).</li>
@@ -246,6 +300,6 @@ Servo servo_26;
 <div class="pager"><a href="n8.html">← N8 · Datos</a><a href="n10.html">N10 · Radio →</a></div>
 </main>
 <footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
-<script src="assets/app.js?v=9f4f2ff8"></script>
+<script src="assets/app.js?v=c29b81ff"></script>
 </body>
 </html>
