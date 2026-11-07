@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>N9 · La placa de expansión · RyFD I</title>
-<link rel="stylesheet" href="assets/estilos.css?v=c29b81ff">
+<link rel="stylesheet" href="assets/estilos.css?v=d600d1e8">
 </head>
 <body>
 <header class="top">
@@ -58,6 +58,26 @@
     <div class="note warn"><b>Regla de oro:</b> conecta y desconecta los cables siempre <b>con todo apagado</b> (sin USB ni batería). Y antes de dar corriente, pide a tu compañero o compañera que revise el montaje.</div>
     <h4>1 · La placa en su ranura</h4>
     <p>La micro:STEAMakers entra en la ranura de la shield igual que lo haría una micro:bit, con la cara de la matriz hacia el lado que indica la serigrafía de la shield. Debe entrar recta y hasta el fondo. Si dudas, pregunta antes de encender: una placa al revés no funciona.</p>
+    <div class="note warn" id="n9-pines"><b>⚠️ Ojo: los rótulos de la shield son de micro:bit.</b> Esta placa de expansión está diseñada para la <b>micro:bit</b>, y por eso sus conectores se llaman P0, P1, P2… como los pines de la micro:bit. Nuestra micro:STEAMakers encaja en la misma ranura, pero por dentro es un <b>ESP32</b>, y sus pines tienen <b>otro número</b>. El conector rotulado P0, por ejemplo, va al pin <b>12</b> del ESP32. En STEAMakersBlocks siempre eliges el número del ESP32 (el desplegable lo muestra así: «12 (P0)»). Si escribes un 0 pensando en «P0», estarás usando otro pin: el 0 del ESP32, que es el botón A.</div>
+    <p>Usa esta tabla cada vez que conectes algo. La primera columna es lo que lees en la shield; la segunda, lo que eliges en el programa:</p>
+    <table class="t" id="n9-tabla-pines"><tr><th>Rótulo en la shield</th><th>Pin del ESP32 (en el programa)</th><th>¿Lo puedes usar?</th><th>Para qué sirve / cuidado con</th></tr>
+      <tr><td><b>P0</b></td><td><b>12</b></td><td>Sí</td><td>Mejor como salida (LED). Es un pin de arranque: un sensor que lo ponga a 1 al encender puede impedir que la placa arranque. Analógica (ADC2).</td></tr>
+      <tr><td><b>P1</b></td><td><b>14</b></td><td>Sí</td><td>Digital o analógica (ADC2: no funciona con la radio encendida).</td></tr>
+      <tr><td><b>P2</b></td><td><b>32</b></td><td>Sí</td><td>La mejor para sensores analógicos (ADC1: funciona siempre).</td></tr>
+      <tr><td>P3</td><td>13</td><td><b>No</b></td><td>Lo usa la matriz de LED.</td></tr>
+      <tr><td>P4</td><td>27</td><td>Con cuidado</td><td>Es el sensor táctil de la placa. Libre solo si no usas el táctil.</td></tr>
+      <tr><td>P5</td><td>0</td><td><b>No</b></td><td>Botón A.</td></tr>
+      <tr><td><b>P6</b></td><td><b>2</b></td><td>Sí</td><td>Digital.</td></tr>
+      <tr><td><b>P7</b></td><td><b>25</b></td><td>Sí</td><td>Digital.</td></tr>
+      <tr><td><b>P8</b></td><td><b>4</b></td><td>Sí</td><td>Digital (Trig del ultrasonidos en este nivel).</td></tr>
+      <tr><td><b>P9</b></td><td><b>16</b></td><td>Sí</td><td>Digital (Echo del ultrasonidos en este nivel).</td></tr>
+      <tr><td><b>P10</b></td><td><b>26</b></td><td>Sí</td><td>Digital o analógica (ADC2). Servo en este nivel.</td></tr>
+      <tr><td>P11</td><td>17</td><td><b>No</b></td><td>Botón B.</td></tr>
+      <tr><td><b>P12</b></td><td><b>15</b></td><td>Sí</td><td>Digital.</td></tr>
+      <tr><td>P13 · P14 · P15 · P16</td><td>18 · 19 · 23 · 5</td><td><b>No</b></td><td>Bus SPI de la tarjeta microSD.</td></tr>
+      <tr><td>P19 · P20</td><td>22 · 21</td><td>Solo para I2C</td><td>Bus I2C de los sensores internos (SCL y SDA). Aquí solo se conectan módulos I2C, que comparten el bus.</td></tr></table>
+    <p class="small">Lo mismo pasa con los manuales y ejemplos que encuentres de esta shield o del kit de 37 sensores: casi todos están hechos para micro:bit (MakeCode o Python). Te sirven para entender el módulo y cómo se conecta, pero el número de pin y los bloques no se pueden copiar tal cual: tradúcelos con la tabla.</p>
+    <div class="entender"><h4>💡 Para entenderlo: una calle con dos nombres</h4><p>Imagina una calle que en el plano antiguo se llama «Calle P0» y en el plano nuevo «Calle 12». Es la misma calle, pero si le das al taxista el nombre del plano que él no usa, te lleva a otro sitio. La shield trae el plano de la micro:bit (P0, P1…) y el programa usa el del ESP32 (12, 14…). La tabla es el callejero que traduce de uno a otro.</p></div>
     <h4>2 · La alimentación</h4>
     <p>La shield necesita su propia alimentación: <b>sin alimentarla no hay 5 V</b> en sus conectores, y el servo o el sensor de ultrasonidos no funcionarán. En el aula la alimentamos con un cable <b>micro USB</b> en su conector, desde un puerto USB del ordenador o desde una <b>batería externa (powerbank)</b>. Para programar y ver la consola, la placa sigue conectada al ordenador con su cable de siempre.</p>
     <div class="note info"><b>Si usas powerbank:</b> algunas se apagan solas cuando lo conectado consume muy poco. Si la placa se apaga sin motivo al cabo de unos segundos, prueba con otra batería o con el USB del ordenador.</div>
@@ -300,6 +320,6 @@ Servo servo_26;
 <div class="pager"><a href="n8.html">← N8 · Datos</a><a href="n10.html">N10 · Radio →</a></div>
 </main>
 <footer>Material de RyFD I · IES Murillo (Sevilla) · Programas creados y probados en STEAMakersBlocks con la ESP32 micro:STEAMakers.</footer>
-<script src="assets/app.js?v=c29b81ff"></script>
+<script src="assets/app.js?v=d600d1e8"></script>
 </body>
 </html>
