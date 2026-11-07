@@ -226,7 +226,7 @@ details.capo .amp{font-size:.88rem;color:var(--ink2);font-style:italic;margin:4p
 .check{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--ok);color:var(--ok);background:#fff;border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer}
 .check.on{background:var(--ok);color:#fff}
 
-@media (max-width:640px){table.t{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch} table.t th,table.t td{min-width:90px}}
+@media (max-width:640px){table.t{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch} table.t th,table.t td{min-width:90px} #n9-tabla-pines th:last-child,#n9-tabla-pines td:last-child{min-width:230px} #n9-tabla-pines th:first-child,#n9-tabla-pines td:first-child{min-width:70px}}
 table.t{width:100%;border-collapse:collapse;font-size:.93rem}
 table.t th,table.t td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
 table.t th{background:#f2f5fa}
